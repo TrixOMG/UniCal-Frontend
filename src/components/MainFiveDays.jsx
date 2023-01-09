@@ -1,13 +1,12 @@
 import React from "react";
+import Day from "./Day";
 
-const MainFiveDays = () => {
+const MainFiveDays = ({ pFiveDays }) => {
 	return (
-		<div className='grid grid-cols-5 w-full grid-rows-1'>
-			<div>Column1</div>
-			<div>Column2</div>
-			<div>Column3</div>
-			<div>Column4</div>
-			<div>Column5</div>
+		<div className='grid grid-cols-5 w-full grid-rows-1 h-full'>
+			{pFiveDays.map((day, idx) => {
+				return <Day pDay={day} key={idx} />;
+			})}
 		</div>
 	);
 };

@@ -1,14 +1,26 @@
-import React from "react";
+import React, {
+	//useContext,
+	//useEffect,
+	useState,
+} from "react";
+
 import MainFiveDays from "./components/MainFiveDays";
 import Navbar from "./components/Navbar";
 import "./index.css";
+import "./util/util";
+
+import { getFiveDays } from "./util/util";
 
 function App() {
+	const [currentFiveDays, setCurrentFiveDays] = useState(
+		getFiveDays(new Date())
+	);
 	return (
-		<div className='App'>
+		<div className='App h-screen flex flex-col'>
 			<Navbar />
-			<MainFiveDays />
-			{/* <h1 className='underline font-bold`'>Hello World!</h1> */}
+			<div className='flex-1'>
+				<MainFiveDays pFiveDays={currentFiveDays} />
+			</div>
 		</div>
 	);
 }

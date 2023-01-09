@@ -1,10 +1,27 @@
+import dayjs from "dayjs";
 import React from "react";
 
-const Day = () => {
+const Day = ({ pDay }) => {
+	function getAccentOnToday() {
+		console.table();
+		if (
+			dayjs(pDay).format("DD-MM-YY") ===
+			dayjs().format("DD-MM-YY")
+		) {
+			return "bg-blue-600 text-white rounded-lg";
+		} else {
+			return "";
+		}
+	}
+
 	return (
-		<div className='border border-gray-200 flex flex-col'>
-			<header className='flex flex-col items-center'>
-				<p className='text-sm mt-1'>10</p>
+		<div className='border border-gray-200 flex flex-col h-full m-1 rounded-lg'>
+			<header className='flex flex-col items-center h-10'>
+				<p
+					className={`text-sm mt-1 w-7 h-7 text-center p-1 ${getAccentOnToday()}`}
+				>
+					{dayjs(pDay).date()}
+				</p>
 			</header>
 		</div>
 	);
