@@ -14,7 +14,6 @@ const dayjs = require("dayjs");
 
 // пытаюсь сделать функцию, выдающую 5 дней, при этом "сегодня" находится посередине
 // сделать так, чтобы юзер сам мог выбрать день (pSelectedDay)
-
 export function getFiveDays(pSelectedDay) {
 	let resultFiveDays = [];
 	for (let i = -2; i < 3; i++) {
@@ -24,6 +23,26 @@ export function getFiveDays(pSelectedDay) {
 		);
 	}
 	return resultFiveDays;
+}
+
+export function getMonth(month = dayjs().month()) {
+	const year = dayjs().year();
+	const firstDayOfTheMonth = dayjs(
+		new Date(year, month, 1)
+	).day();
+
+	let currentMonthCount = 0 - firstDayOfTheMonth;
+
+	const daysMatrix = new Array(5).fill([]).map(() => {
+		return new Array(7).fill(null).map(() => {
+			currentMonthCount++;
+			return dayjs(
+				new Date(year, month, currentMonthCount)
+			);
+		});
+	});
+	console.log(daysMatrix);
+	return daysMatrix;
 }
 
 // export function oldGetFiveDays(pSelectedDay) {
