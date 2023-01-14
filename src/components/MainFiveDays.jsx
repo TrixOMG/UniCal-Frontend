@@ -5,7 +5,7 @@ const MainFiveDays = ({ pFiveDays }) => {
 	return (
 		<div className='grid grid-cols-5 w-full grid-rows-1 h-full'>
 			{pFiveDays.map((day, idx) => {
-				return <Day pDay={day} key={idx} />;
+				return <Day pDay={day} key={idx} rowIdx={0} />;
 			})}
 		</div>
 	);

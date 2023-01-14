@@ -5,6 +5,7 @@ import React, {
 } from "react";
 
 import MainFiveDays from "./components/MainFiveDays";
+import MainMonth from "./components/MainMonth";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import "./index.css";
@@ -14,6 +15,9 @@ import GlobalContext from "./context/GlobalContext";
 import { getFiveDays, getMonth } from "./util/util";
 
 function App() {
+	let showMainMonth = false;
+	let showFiveDays = true;
+
 	const { monthIndex } = useContext(GlobalContext);
 	const [currentMonth, setCurrentMonth] = useState(
 		getMonth()
@@ -23,7 +27,7 @@ function App() {
 	);
 
 	useEffect(() => {
-		setCurrentMonth(monthIndex);
+		setCurrentMonth(getMonth(monthIndex));
 	}, [monthIndex]);
 
 	return (
@@ -31,8 +35,12 @@ function App() {
 			<Navbar />
 			<div className='flex flex-1'>
 				<Sidebar />
-				<MainFiveDays pFiveDays={currentFiveDays} />
-				<MainMonth />
+				{showFiveDays && (
+					<MainFiveDays pFiveDays={currentFiveDays} />
+				)}
+				{showMainMonth && (
+					<MainMonth month={currentMonth} />
+				)}
 			</div>
 		</div>
 	);

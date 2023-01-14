@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import React from "react";
 
-const Day = ({ pDay }) => {
+const Day = ({ pDay, rowIdx }) => {
 	function getAccentOnToday() {
 		console.table();
 		if (
@@ -15,8 +15,13 @@ const Day = ({ pDay }) => {
 	}
 
 	return (
-		<div className='border border-gray-200 flex flex-col h-full m-1 rounded-lg'>
+		<div className='border border-gray-200 flex flex-col h-full rounded-lg m-1'>
 			<header className='flex flex-col items-center h-10'>
+				{rowIdx === 0 && (
+					<p className='text-sm mt-1'>
+						{dayjs(pDay).format("ddd").toUpperCase()}
+					</p>
+				)}
 				<p
 					className={`text-sm mt-1 w-7 h-7 text-center p-1 ${getAccentOnToday()}`}
 				>
