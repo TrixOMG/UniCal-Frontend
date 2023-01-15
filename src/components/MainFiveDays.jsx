@@ -3,7 +3,7 @@ import Day from "./Day";
 
 const MainFiveDays = ({ pFiveDays }) => {
 	return (
-		<div className='grid grid-cols-5 w-full grid-rows-1 h-full'>
+		<div className='grid grid-cols-5 w-full grid-rows-1 h-full gap-1 mx-1'>
 			{pFiveDays.map((day, idx) => {
 				return <Day pDay={day} key={idx} rowIdx={0} />;
 			})}
