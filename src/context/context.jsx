@@ -20,11 +20,11 @@ const GlobalContextProvider = ({ children }) => {
 		setChosenDay,
 	};
 
-	useEffect(() => {
-		if (!showEventModal) {
-			// setSelectedEvent(null);
-		}
-	}, [showEventModal]);
+	// useEffect(() => {
+	// if (!showEventModal) {
+	// setSelectedEvent(null);
+	// }
+	// }, [showEventModal]);
 
 	return <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>;
 };

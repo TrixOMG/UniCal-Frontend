@@ -16,13 +16,13 @@ function App() {
 	let showMainMonth = true;
 	let showFiveDays = false;
 
-	const { showSidebar } = useGlobalContext();
+	const { showSidebar, showEventModal, monthIndex } = useGlobalContext();
 	const [currentMonth, setCurrentMonth] = useState(getMonth());
 	const [currentFiveDays, setCurrentFiveDays] = useState(getFiveDays(new Date()));
 
-	// useEffect(() => {
-	// setCurrentMonth(getMonth(monthIndex));
-	// }, [monthIndex]);
+	useEffect(() => {
+		setCurrentMonth(getMonth(monthIndex));
+	}, [monthIndex]);
 
 	return (
 		<>
