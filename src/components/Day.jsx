@@ -1,7 +1,11 @@
 import dayjs from "dayjs";
-import React from "react";
+import React, { useState } from "react";
+import { useGlobalContext } from "../context/context";
 
 const Day = ({ pDay, rowIdx }) => {
+	const [dayEvents, setDayEvents] = useState([]);
+	const { setShowEventModal, setChosenDay } = useGlobalContext();
+
 	function getAccentOnToday() {
 		console.table();
 		if (dayjs(pDay).format("DD-MM-YY") === dayjs().format("DD-MM-YY")) {
@@ -19,6 +23,13 @@ const Day = ({ pDay, rowIdx }) => {
 					{dayjs(pDay).date()}
 				</p>
 			</header>
+			<div
+				className='flex-1 cursor-pointer'
+				onClick={() => {
+					setChosenDay(pDay);
+					setShowEventModal(true);
+				}}
+			></div>
 		</div>
 	);
 };

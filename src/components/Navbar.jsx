@@ -1,14 +1,15 @@
+import dayjs from "dayjs";
 import React, { useState } from "react";
 import { useGlobalContext } from "../context/context";
 
 const Navbar = () => {
-	const { showSidebar, toggleShowSidebar } = useGlobalContext();
+	const { showSidebar, setShowSidebar } = useGlobalContext();
 
 	return (
 		<header className='px-4 py-2 flex items-center align-middle'>
 			<div
 				className='material-symbols-outlined px-1 py-1 cursor-pointer w-8 h-8 block'
-				onClick={() => toggleShowSidebar(showSidebar)}
+				onClick={() => setShowSidebar(!showSidebar)}
 			>
 				menu
 			</div>
@@ -21,6 +22,9 @@ const Navbar = () => {
 			<button className='px-1 py-1 cursor-pointer w-8 h-8 block'>
 				<span className='material-icons'>chevron_right</span>
 			</button>
+			{/* <p className='text-gray-500 font-bold'> */}
+			{/* {dayjs(new Date(dayjs().year(), currentMonthIdx)).format("MMMM YYYY")} */}
+			{/* </p> */}
 		</header>
 	);
 };
