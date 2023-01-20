@@ -18,32 +18,71 @@ export function getFiveDays(pSelectedDay) {
 	let resultFiveDays = [];
 	for (let i = -2; i < 3; i++) {
 		let date = new Date();
-		resultFiveDays.push(
-			date.setDate(pSelectedDay.getDate() + i)
-		);
+		resultFiveDays.push(date.setDate(pSelectedDay.getDate() + i));
 	}
 	return resultFiveDays;
 }
 
 export function getMonth(month = dayjs().month()) {
 	const year = dayjs().year();
-	const firstDayOfTheMonth = dayjs(
-		new Date(year, month, 1)
-	).day();
+	const firstDayOfTheMonth = dayjs(new Date(year, month, 1)).day();
 
 	let currentMonthCount = 0 - firstDayOfTheMonth;
 
 	const daysMatrix = new Array(5).fill([]).map(() => {
 		return new Array(7).fill(null).map(() => {
 			currentMonthCount++;
-			return dayjs(
-				new Date(year, month, currentMonthCount)
-			);
+			return dayjs(new Date(year, month, currentMonthCount));
 		});
 	});
 	console.log(daysMatrix);
 	return daysMatrix;
 }
+
+//
+//
+//
+
+export function getUsersTimespan(pTimespan = getFiveDays(dayjs().date())) {
+	let daysMatrix = null;
+
+	const year = dayjs().year();
+	const month = dayjs().month();
+	const firstDayOfTheMonth = dayjs(new Date(year, month, 1)).day();
+
+	const timespanLength = pTimespan.length();
+
+	if (timespanLength <= 7) {
+		// one row
+		daysMatrix = new Array(timespanLength).fill(pTimespan);
+	} else if (timespanLength > 7 && timespanLength <= 14) {
+		// two rows
+		daysMatrix = new Array(2).fill([]).map(() => {
+			return new Array(7); // continue here
+		});
+	} else if (timespanLength > 14 && timespanLength <= 21) {
+		// three rows
+	} else if (timespanLength > 21 && timespanLength <= 28) {
+		// four rows
+	} else if (timespanLength > 28) {
+		// five rows
+		let currentMonthCount = 0 - firstDayOfTheMonth;
+
+		daysMatrix = new Array(5).fill([]).map(() => {
+			return new Array(7).fill(null).map(() => {
+				currentMonthCount++;
+				return dayjs(new Date(year, month, currentMonthCount));
+			});
+		});
+		// console.log(daysMatrix);
+	}
+
+	return daysMatrix;
+}
+
+//
+//
+//
 
 // export function oldGetFiveDays(pSelectedDay) {
 // 	// let resultFiveDays = [];
