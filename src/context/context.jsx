@@ -7,7 +7,9 @@ const GlobalContextProvider = ({ children }) => {
 	const [monthIndex, setMonthIndex] = useState(dayjs().month());
 	const [showSidebar, setShowSidebar] = useState(true);
 	const [showEventModal, setShowEventModal] = useState(false);
-	const [chosenDay, setChosenDay] = useState(dayjs());
+	// const [chosenDay, setChosenDay] = useState(dayjs());
+
+	const [selectedDaysArray, setSelectedDaysArray] = useState([]);
 
 	const value = {
 		monthIndex,
@@ -16,8 +18,10 @@ const GlobalContextProvider = ({ children }) => {
 		setShowSidebar,
 		showEventModal,
 		setShowEventModal,
-		chosenDay,
-		setChosenDay,
+		selectedDaysArray,
+		setSelectedDaysArray,
+		// chosenDay,
+		// setChosenDay,
 	};
 
 	// useEffect(() => {
