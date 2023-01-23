@@ -16,7 +16,7 @@ const Navbar = () => {
 	}
 
 	function handleResetToday() {
-		setMonthIndex(dayjs().month());
+		setMonthIndex(monthIndex === dayjs().month() ? monthIndex + Math.random() : dayjs().month());
 	}
 
 	return (
