@@ -36,7 +36,7 @@ const Calendar = () => {
 		}
 	}
 
-	let selectedDayClass = {};
+	// let selectedDayClass = {};
 
 	// function changeSelectedDayClass(day) {
 	// const sFormat = "DD-MM-YY";
@@ -101,7 +101,6 @@ const Calendar = () => {
 								className={`py-[0.1em] w-full ${getTodayClass(day)} `}
 								onMouseDown={() => handleChangeSelectedDays(day)}
 								onMouseUp={() => handleChangeSelectedDays(day)}
-								style={{ selectedDayClass }}
 							>
 								<span className='text-sm'>{day.format("D")}</span>
 							</button>
