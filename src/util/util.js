@@ -44,43 +44,84 @@ export function getMonth(month = dayjs().month()) {
 //
 //
 
-export function getUsersTimespan(pTimespan = getFiveDays(dayjs().date())) {
-	let daysMatrix = null;
+// export function getUsersTimespan(pTimespan = getFiveDays(dayjs().date())) {
+// 	let daysMatrix = null;
 
-	const year = dayjs().year();
-	const month = dayjs().month();
-	const firstDayOfTheMonth = dayjs(new Date(year, month, 1)).day();
+// 	const year = dayjs().year();
+// 	const month = dayjs().month();
+// 	const firstDayOfTheMonth = dayjs(new Date(year, month, 1)).day();
 
-	const timespanLength = pTimespan.length();
+// 	const timespanLength = pTimespan.length();
+
+// 	if (timespanLength <= 7) {
+// 		// one row
+// 		daysMatrix = new Array(timespanLength).fill(pTimespan);
+// 	} else if (timespanLength > 7 && timespanLength <= 14) {
+// 		// two rows
+// 		daysMatrix = new Array(2).fill([]).map(() => {
+// 			return new Array(7); // continue here
+// 		});
+// 	} else if (timespanLength > 14 && timespanLength <= 21) {
+// 		// three rows
+// 	} else if (timespanLength > 21 && timespanLength <= 28) {
+// 		// four rows
+// 	} else if (timespanLength > 28) {
+// 		// five rows
+// 		let currentMonthCount = 0 - firstDayOfTheMonth;
+
+// 		daysMatrix = new Array(5).fill([]).map(() => {
+// 			return new Array(7).fill(null).map(() => {
+// 				currentMonthCount++;
+// 				return dayjs(new Date(year, month, currentMonthCount));
+// 			});
+// 		});
+// 		// console.log(daysMatrix);
+// 	}
+
+// 	return daysMatrix;
+// }
+
+export function getProperSelectedDays(pSelDaysArray) {
+	// +отсортировать дни в массиве, найти первый и последний день (хронологически)
+	// дополнить массив всеми днями от первого до последнего (с условиями, <7 >7 но <14, и т.д.)
+	// вернуть массив, содержащий правильный промежуток времени
+	// console.log(dayjs("2023-01-24").isAfter("2022-01-24", "date"));
+
+	let setOfDays = new Set(pSelDaysArray);
+
+	let sortedDays = [...setOfDays].sort((a, b) => {
+		return dayjs(a).isAfter(dayjs(b)) ? 1 : -1;
+	});
+
+	let firstDay = sortedDays[0];
+	let lastDay = sortedDays[sortedDays.length - 1];
+	// промежуток между первым и последним днём, нужнен для определения скольки дней возвращать
+	let timespanLength = lastDay.diff(firstDay, "day") + 1;
+	let daysMatrix = [];
+	let index = -1;
 
 	if (timespanLength <= 7) {
-		// one row
-		daysMatrix = new Array(timespanLength).fill(pTimespan);
-	} else if (timespanLength > 7 && timespanLength <= 14) {
-		// two rows
-		daysMatrix = new Array(2).fill([]).map(() => {
-			return new Array(7); // continue here
-		});
-	} else if (timespanLength > 14 && timespanLength <= 21) {
-		// three rows
-	} else if (timespanLength > 21 && timespanLength <= 28) {
-		// four rows
-	} else if (timespanLength > 28) {
-		// five rows
-		let currentMonthCount = 0 - firstDayOfTheMonth;
-
-		daysMatrix = new Array(5).fill([]).map(() => {
-			return new Array(7).fill(null).map(() => {
-				currentMonthCount++;
-				return dayjs(new Date(year, month, currentMonthCount));
+		daysMatrix = Array(timespanLength)
+			.fill([])
+			.map(() => {
+				index++;
+				return dayjs(
+					new Date(dayjs(firstDay).year(), dayjs(firstDay).month(), dayjs(firstDay).date() + index)
+				);
 			});
-		});
-		// console.log(daysMatrix);
+	} else if (timespanLength > 7 && timespanLength <= 14) {
+		// dopisat
+	} else if (timespanLength > 14 && timespanLength <= 21) {
+		// dopisat
+	} else if (timespanLength > 21 && timespanLength <= 28) {
+		// dopisat
+	} else if (timespanLength > 28) {
+		// dopisat
 	}
 
+	// console.log(daysMatrix);
 	return daysMatrix;
 }
-
 //
 //
 //
