@@ -50,7 +50,7 @@ const Calendar = () => {
 			});
 
 		if (pSelDaysArray.length === 1 && pSelDaysArray.includes(pDay.format(sFormat)))
-			return "bg-blue-200 rounded-lg";
+			return "bg-blue-300 rounded-lg";
 		else if (pSelDaysArray.includes(pDay.format(sFormat))) {
 			// style for the first day in the selected days
 			if (
@@ -58,9 +58,9 @@ const Calendar = () => {
 				pDay.format(sFormat) === pSelDaysArray[0] &&
 				selectedDaysArray[0].isBefore(selectedDaysArray[selectedDaysArray.length - 1])
 			)
-				return "bg-blue-200 rounded-l-lg";
+				return "bg-blue-300 rounded-l-lg";
 			else if (pSelDaysArray && pDay.format(sFormat) === pSelDaysArray[0]) {
-				return "bg-blue-200 rounded-r-lg";
+				return "bg-blue-300 rounded-r-lg";
 			}
 			// style for the last day in the selected days
 			else if (
@@ -68,9 +68,9 @@ const Calendar = () => {
 				pDay.format(sFormat) === pSelDaysArray[pSelDaysArray.length - 1] &&
 				selectedDaysArray[0].isBefore(selectedDaysArray[selectedDaysArray.length - 1])
 			)
-				return "bg-blue-200 rounded-r-lg";
+				return "bg-blue-300 rounded-r-lg";
 			else if (pSelDaysArray && pDay.format(sFormat) === pSelDaysArray[pSelDaysArray.length - 1]) {
-				return "bg-blue-200 rounded-l-lg";
+				return "bg-blue-300 rounded-l-lg";
 			}
 			// style for every other day in the selected days
 			else return "bg-blue-200 rounded-none";
@@ -124,7 +124,7 @@ const Calendar = () => {
 						{row.map((day, idx) => (
 							<button
 								key={idx}
-								className={`py-[0.1em] w-full ${getSelectedDaysClass(day)}  `}
+								className={`py-[0.1em] w-full ${getSelectedDaysClass(day)} `}
 								onMouseDown={() => {
 									setIsMouseDown(true);
 									setSelectedDaysArray([].concat(day));
@@ -134,7 +134,11 @@ const Calendar = () => {
 									setIsMouseDown(false);
 								}}
 							>
-								<span className={`text-sm ${getTodayClass(day)} `}>{day.format("D")}</span>
+								<div
+									className={`text-sm ${getTodayClass(day)} hover:bg-blue-300 hover:rounded-lg p-1`}
+								>
+									{day.format("D")}
+								</div>
 							</button>
 						))}
 					</React.Fragment>

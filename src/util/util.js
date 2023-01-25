@@ -132,10 +132,76 @@ export function getProperSelectedDays(pSelDaysArray) {
 			});
 	} else if (timespanLength > 7 && timespanLength <= 14) {
 		//TODO: dopisat
+		daysMatrix = Array(14)
+			.fill([])
+			.map(() => {
+				index++;
+				if (firstDayOfTheArray.isBefore(lastDay)) {
+					return dayjs(
+						new Date(
+							firstDayOfTheArray.year(),
+							firstDayOfTheArray.month(),
+							firstDayOfTheArray.date() + index
+						)
+					);
+				} else {
+					return dayjs(
+						new Date(
+							firstDayOfTheArray.year(),
+							firstDayOfTheArray.month(),
+							firstDayOfTheArray.date() - index
+						)
+					);
+				}
+			});
 	} else if (timespanLength > 14 && timespanLength <= 21) {
 		//TODO: dopisat
+		daysMatrix = Array(21)
+			.fill([])
+			.map(() => {
+				index++;
+				if (firstDayOfTheArray.isBefore(lastDay)) {
+					return dayjs(
+						new Date(
+							firstDayOfTheArray.year(),
+							firstDayOfTheArray.month(),
+							firstDayOfTheArray.date() + index
+						)
+					);
+				} else {
+					return dayjs(
+						new Date(
+							firstDayOfTheArray.year(),
+							firstDayOfTheArray.month(),
+							firstDayOfTheArray.date() - index
+						)
+					);
+				}
+			});
 	} else if (timespanLength > 21 && timespanLength <= 28) {
 		//TODO: dopisat
+		daysMatrix = Array(28)
+			.fill([])
+			.map(() => {
+				index++;
+				if (firstDayOfTheArray.isBefore(lastDay)) {
+					return dayjs(
+						new Date(
+							firstDayOfTheArray.year(),
+							firstDayOfTheArray.month(),
+							firstDayOfTheArray.date() + index
+						)
+					);
+				} else {
+					return dayjs(
+						new Date(
+							firstDayOfTheArray.year(),
+							firstDayOfTheArray.month(),
+							firstDayOfTheArray.date() - index
+						)
+					);
+				}
+			});
 	} else if (timespanLength > 28) {
 		//TODO: dopisat
 	}
