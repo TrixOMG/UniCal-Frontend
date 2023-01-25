@@ -82,22 +82,29 @@ export function getMonth(month = dayjs().month()) {
 // }
 
 export function getProperSelectedDays(pSelDaysArray) {
-	// +отсортировать дни в массиве, найти первый и последний день (хронологически)
-	// дополнить массив всеми днями от первого до последнего (с условиями, <7 >7 но <14, и т.д.)
-	// вернуть массив, содержащий правильный промежуток времени
-	// console.log(dayjs("2023-01-24").isAfter("2022-01-24", "date"));
+	// запомнить здесь первый день и возвращать массив в том порядке, в каком выбрал пользователь
+	// то есть он может быть и в обратном порядке(не в хронологическом), т.к. сейчас нам это не важно
+	// при этом выбранный пользователем день будет всегда первым в массиве
+
+	let firstDayOfTheArray = pSelDaysArray[0];
 
 	let setOfDays = new Set(pSelDaysArray);
+	// console.log(setOfDays);
+	let daysArray = [...setOfDays];
 
-	let sortedDays = [...setOfDays].sort((a, b) => {
-		return dayjs(a).isAfter(dayjs(b)) ? 1 : -1;
-	});
+	// let sortedDays = [...setOfDays].sort((a, b) => {
+	// return dayjs(a).isAfter(dayjs(b)) ? 1 : -1;
+	// });
 
-	let firstDay = sortedDays[0];
-	let lastDay = sortedDays[sortedDays.length - 1];
+	// let firstDay = sortedDays[0];
+	let lastDay = daysArray[daysArray.length - 1];
 	// промежуток между первым и последним днём, нужнен для определения скольки дней возвращать
-	let timespanLength = lastDay.diff(firstDay, "day") + 1;
+	let timespanLength = firstDayOfTheArray.isBefore(lastDay)
+		? lastDay.diff(firstDayOfTheArray, "day") + 1
+		: firstDayOfTheArray.diff(lastDay, "day") + 1;
+	// console.log(timespanLength);
 	let daysMatrix = [];
+
 	let index = -1;
 
 	if (timespanLength <= 7) {
@@ -105,18 +112,32 @@ export function getProperSelectedDays(pSelDaysArray) {
 			.fill([])
 			.map(() => {
 				index++;
-				return dayjs(
-					new Date(dayjs(firstDay).year(), dayjs(firstDay).month(), dayjs(firstDay).date() + index)
-				);
+				if (firstDayOfTheArray.isBefore(lastDay)) {
+					return dayjs(
+						new Date(
+							firstDayOfTheArray.year(),
+							firstDayOfTheArray.month(),
+							firstDayOfTheArray.date() + index
+						)
+					);
+				} else {
+					return dayjs(
+						new Date(
+							firstDayOfTheArray.year(),
+							firstDayOfTheArray.month(),
+							firstDayOfTheArray.date() - index
+						)
+					);
+				}
 			});
 	} else if (timespanLength > 7 && timespanLength <= 14) {
-		// dopisat
+		//TODO: dopisat
 	} else if (timespanLength > 14 && timespanLength <= 21) {
-		// dopisat
+		//TODO: dopisat
 	} else if (timespanLength > 21 && timespanLength <= 28) {
-		// dopisat
+		//TODO: dopisat
 	} else if (timespanLength > 28) {
-		// dopisat
+		//TODO: dopisat
 	}
 
 	// console.log(daysMatrix);

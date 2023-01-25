@@ -35,7 +35,7 @@ const Calendar = () => {
 		const currDay = day.format(sFormat);
 
 		if (today === currDay) {
-			return "bg-blue-500 rounded-lg text-white";
+			return "bg-blue-500 rounded-lg text-white p-1";
 		} else {
 			return "";
 		}
@@ -49,37 +49,49 @@ const Calendar = () => {
 				return a.format(sFormat);
 			});
 
-		// if the day is today
-		if (pDay.format(sFormat) === dayjs().format(sFormat))
-			return "bg-blue-500 rounded-lg text-white";
-		// style for the case of the single selected day
-		else if (pSelDaysArray.length === 1 && pSelDaysArray.includes(pDay.format(sFormat)))
+		if (pSelDaysArray.length === 1 && pSelDaysArray.includes(pDay.format(sFormat)))
 			return "bg-blue-200 rounded-lg";
 		else if (pSelDaysArray.includes(pDay.format(sFormat))) {
 			// style for the first day in the selected days
-			if (pSelDaysArray && pDay.format(sFormat) === pSelDaysArray[0])
+			if (
+				pSelDaysArray &&
+				pDay.format(sFormat) === pSelDaysArray[0] &&
+				selectedDaysArray[0].isBefore(selectedDaysArray[selectedDaysArray.length - 1])
+			)
 				return "bg-blue-200 rounded-l-lg";
-			// style for the last day in the selected days
-			else if (pSelDaysArray && pDay.format(sFormat) === pSelDaysArray[pSelDaysArray.length - 1])
+			else if (pSelDaysArray && pDay.format(sFormat) === pSelDaysArray[0]) {
 				return "bg-blue-200 rounded-r-lg";
+			}
+			// style for the last day in the selected days
+			else if (
+				pSelDaysArray &&
+				pDay.format(sFormat) === pSelDaysArray[pSelDaysArray.length - 1] &&
+				selectedDaysArray[0].isBefore(selectedDaysArray[selectedDaysArray.length - 1])
+			)
+				return "bg-blue-200 rounded-r-lg";
+			else if (pSelDaysArray && pDay.format(sFormat) === pSelDaysArray[pSelDaysArray.length - 1]) {
+				return "bg-blue-200 rounded-l-lg";
+			}
 			// style for every other day in the selected days
 			else return "bg-blue-200 rounded-none";
 		}
 	}
 
-	// function handleChangeSelectedDays(pDay) {
-	// if (selectedDaysArray.length < 2) {
-	// let res = selectedDaysArray;
-	// setSelectedDaysArray(res.concat(pDay.format("DD-MM-YY")));
-	// } else {
-	// setSelectedDaysArray([].concat(pDay.format("DD-MM-YY")));
-	// }
-	// }
-
 	function handleChangeSelectedDays(pDay) {
 		if (isMouseDown) {
-			let res = selectedDaysArray.concat(pDay);
-			setSelectedDaysArray(getProperSelectedDays(res));
+			const convertedSelDArr =
+				selectedDaysArray &&
+				selectedDaysArray.map((day) => {
+					return day.format("DD-MM-YY");
+				});
+
+			if (convertedSelDArr.includes(pDay.format("DD-MM-YY"))) {
+				let res = selectedDaysArray.slice(0, selectedDaysArray.indexOf(pDay));
+				setSelectedDaysArray(getProperSelectedDays(res));
+			} else {
+				let res = selectedDaysArray.concat(pDay);
+				setSelectedDaysArray(getProperSelectedDays(res));
+			}
 		}
 	}
 
@@ -112,17 +124,17 @@ const Calendar = () => {
 						{row.map((day, idx) => (
 							<button
 								key={idx}
-								className={`py-[0.1em] w-full ${getTodayClass(day)} ${getSelectedDaysClass(day)} `}
+								className={`py-[0.1em] w-full ${getSelectedDaysClass(day)}  `}
 								onMouseDown={() => {
 									setIsMouseDown(true);
 									setSelectedDaysArray([].concat(day));
 								}}
-								onMouseOver={() => handleChangeSelectedDays(day)}
+								onMouseEnter={() => handleChangeSelectedDays(day)}
 								onMouseUp={() => {
 									setIsMouseDown(false);
 								}}
 							>
-								<span className='text-sm'>{day.format("D")}</span>
+								<span className={`text-sm ${getTodayClass(day)} `}>{day.format("D")}</span>
 							</button>
 						))}
 					</React.Fragment>
