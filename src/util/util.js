@@ -153,6 +153,12 @@ export function getProperSelectedDays(pSelDaysArray, pDaysArrayLength) {
 
 	return daysMatrix;
 }
+
+
+
+export function getProperTimespanInMain(){
+
+}
 //
 //
 //

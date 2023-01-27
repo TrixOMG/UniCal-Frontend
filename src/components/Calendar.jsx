@@ -11,7 +11,7 @@ const Calendar = () => {
 	const { selectedDaysArray, setSelectedDaysArray } = useGlobalContext();
 
 	// трекинг зажатой клавиши мыши для определения дней
-	const [isMouseDown, setIsMouseDown] = useState(false);
+	const { isMouseDown, setIsMouseDown } = useGlobalContext();
 
 	useEffect(() => {
 		setCurrentMonthIdx(monthIndex);
