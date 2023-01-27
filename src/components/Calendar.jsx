@@ -95,6 +95,25 @@ const Calendar = () => {
 		}
 	}
 
+	function handleChangeFirstDay(pDay, DaysArrayLength) {
+		if (DaysArrayLength <= 1) {
+			setSelectedDaysArray([].concat(pDay));
+			return;
+		}
+
+		// нужнен хронологически корректный массив дней чтобы от него отталкиваться (от его первого дня)
+		let selDaysArray = selectedDaysArray;
+		selDaysArray = [...selDaysArray].sort((a, b) => {
+			return dayjs(a).isAfter(dayjs(b)) ? 1 : -1;
+		});
+
+		if (pDay.format("DD-MM-YY") === selDaysArray[0].format("DD-MM-YY")) {
+			setSelectedDaysArray([].concat(pDay));
+		} else {
+			setSelectedDaysArray(getProperSelectedDays(pDay, DaysArrayLength));
+		}
+	}
+
 	return (
 		<div className='mt-9'>
 			<header className='flex justify-between'>
@@ -111,7 +130,7 @@ const Calendar = () => {
 				</div>
 			</header>
 			<div
-				className='grid grid-cols-7 grid-rows-6 px-1 w-full'
+				className='grid grid-cols-7 grid-rows-6 px-1 w-full gap-y-[0.25rem]'
 				onMouseLeave={() => setIsMouseDown(false)}
 			>
 				{currentMonth[0].map((day, i) => (
@@ -124,15 +143,14 @@ const Calendar = () => {
 						{row.map((day, idx) => (
 							<button
 								key={idx}
-								className={`py-[0.1em] w-full ${getSelectedDaysClass(day)} `}
+								className={`w-full ${getSelectedDaysClass(day)} `}
 								onMouseDown={() => {
 									setIsMouseDown(true);
-									setSelectedDaysArray([].concat(day));
+									handleChangeFirstDay(day, selectedDaysArray.length);
+									// setSelectedDaysArray([].concat(day));
 								}}
 								onMouseEnter={() => handleChangeSelectedDays(day)}
-								onMouseUp={() => {
-									setIsMouseDown(false);
-								}}
+								onMouseUp={() => setIsMouseDown(false)}
 							>
 								<div
 									className={`text-sm ${getTodayClass(day)} hover:bg-blue-300 hover:rounded-lg p-1`}
