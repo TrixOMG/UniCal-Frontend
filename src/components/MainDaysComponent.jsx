@@ -12,7 +12,6 @@ const MainDaysComponent = ({ timeSpan }) => {
 		if (timeSpan.length > 0) setProperTimespan(getProperTimespanInMain(timeSpan));
 	}, [timeSpan]);
 
-	// fix bug with view
 	function getDaysGridClasses() {
 		let rowsClass = "grid-rows-";
 		let colsClass = "grid-cols-";
@@ -22,15 +21,16 @@ const MainDaysComponent = ({ timeSpan }) => {
 			colsClass += selectedDaysArray.length;
 		} else if (selectedDaysArray.length > 7) {
 			rowsClass += selectedDaysArray.length / 7;
+			colsClass += 7;
 		}
 
-		return rowsClass + " " + colsClass;
+		return rowsClass + " " + colsClass + " ";
 	}
 
 	return (
 		<div
 			className={`mx-1 flex-1 grid gap-1 ${
-				timeSpan.length > 0 ? getDaysGridClasses() : "grid-cols-7 grid-rows-5"
+				selectedDaysArray.length > 0 ? getDaysGridClasses() + " " : "grid-cols-7 grid-rows-5 "
 			}`}
 		>
 			{properTimespan.map((row, i) => (

@@ -124,8 +124,8 @@ export function getProperSelectedDays(pSelDaysArray, pDaysArrayLength) {
 		timespanLength = 21;
 	} else if (timespanLength > 21 && timespanLength <= 28) {
 		timespanLength = 28;
-	} else if (timespanLength > 28) {
-		timespanLength = 28;
+	} else if (timespanLength > 28 && timespanLength <= 35) {
+		timespanLength = 35;
 	}
 
 	daysMatrix = Array(timespanLength)
