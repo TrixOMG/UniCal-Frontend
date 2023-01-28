@@ -11,7 +11,7 @@ const Calendar = () => {
 	const { selectedDaysArray, setSelectedDaysArray } = useGlobalContext();
 
 	// трекинг зажатой клавиши мыши для определения дней
-	const { isMouseDown, setIsMouseDown } = useGlobalContext();
+	const [isMouseDown, setIsMouseDown] = useState(false);
 
 	useEffect(() => {
 		setCurrentMonthIdx(monthIndex);
@@ -58,9 +58,9 @@ const Calendar = () => {
 				pDay.format(sFormat) === pSelDaysArray[0] &&
 				selectedDaysArray[0].isBefore(selectedDaysArray[selectedDaysArray.length - 1])
 			)
-				return "bg-blue-300 rounded-l-lg";
+				return "bg-blue-200 rounded-l-lg";
 			else if (pSelDaysArray && pDay.format(sFormat) === pSelDaysArray[0]) {
-				return "bg-blue-300 rounded-r-lg";
+				return "bg-blue-200 rounded-r-lg";
 			}
 			// style for the last day in the selected days
 			else if (
@@ -68,9 +68,9 @@ const Calendar = () => {
 				pDay.format(sFormat) === pSelDaysArray[pSelDaysArray.length - 1] &&
 				selectedDaysArray[0].isBefore(selectedDaysArray[selectedDaysArray.length - 1])
 			)
-				return "bg-blue-300 rounded-r-lg";
+				return "bg-blue-200 rounded-r-lg";
 			else if (pSelDaysArray && pDay.format(sFormat) === pSelDaysArray[pSelDaysArray.length - 1]) {
-				return "bg-blue-300 rounded-l-lg";
+				return "bg-blue-200 rounded-l-lg";
 			}
 			// style for every other day in the selected days
 			else return "bg-blue-200 rounded-none";

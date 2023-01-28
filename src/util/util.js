@@ -14,14 +14,14 @@ const dayjs = require("dayjs");
 
 // пытаюсь сделать функцию, выдающую 5 дней, при этом "сегодня" находится посередине
 // сделать так, чтобы юзер сам мог выбрать день (pSelectedDay)
-export function getFiveDays(pSelectedDay) {
-	let resultFiveDays = [];
-	for (let i = -2; i < 3; i++) {
-		let date = new Date();
-		resultFiveDays.push(date.setDate(pSelectedDay.getDate() + i));
-	}
-	return resultFiveDays;
-}
+// export function getFiveDays(pSelectedDay) {
+// let resultFiveDays = [];
+// for (let i = -2; i < 3; i++) {
+// let date = new Date();
+// resultFiveDays.push(date.setDate(pSelectedDay.getDate() + i));
+// }
+// return resultFiveDays;
+// }
 
 export function getMonth(month = dayjs().month()) {
 	month = Math.floor(month);
@@ -154,10 +154,32 @@ export function getProperSelectedDays(pSelDaysArray, pDaysArrayLength) {
 	return daysMatrix;
 }
 
+export function getProperTimespanInMain(pTimespan) {
+	pTimespan = [...pTimespan].sort((a, b) => {
+		return dayjs(a).isAfter(dayjs(b)) ? 1 : -1;
+	});
 
+	let rows = 0;
+	let cols = 7;
 
-export function getProperTimespanInMain(){
+	if (pTimespan.length <= 7) {
+		rows = 1;
+		cols = pTimespan.length;
+	} else if (pTimespan.length > 7) {
+		rows = pTimespan.length / 7;
+	}
 
+	let index = -1;
+	const daysMatrix = new Array(rows).fill([]).map(() => {
+		return new Array(cols).fill(null).map(() => {
+			index++;
+			return pTimespan[index];
+		});
+	});
+
+	console.log(daysMatrix);
+
+	return daysMatrix;
 }
 //
 //

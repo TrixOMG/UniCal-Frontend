@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 
 import EventModal from "./components/EventModal";
 import MainDaysComponent from "./components/MainDaysComponent";
-import MainFiveDays from "./components/MainFiveDays";
-import MainMonth from "./components/MainMonth";
+// import MainFiveDays from "./components/MainFiveDays";
+// import MainMonth from "./components/MainMonth";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import { GlobalContext, useGlobalContext } from "./context/context";

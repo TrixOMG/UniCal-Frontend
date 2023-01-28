@@ -11,7 +11,7 @@ const GlobalContextProvider = ({ children }) => {
 
 	const [selectedDaysArray, setSelectedDaysArray] = useState([]);
 
-	const [isMouseDown, setIsMouseDown] = useState(false);
+	// const [isMouseDown, setIsMouseDown] = useState(false);
 
 	const value = {
 		monthIndex,
@@ -24,8 +24,8 @@ const GlobalContextProvider = ({ children }) => {
 		setSelectedDaysArray,
 		chosenDay,
 		setChosenDay,
-		isMouseDown,
-		setIsMouseDown,
+		// isMouseDown,
+		// setIsMouseDown,
 	};
 
 	// useEffect(() => {
