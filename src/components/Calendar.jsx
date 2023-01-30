@@ -147,7 +147,6 @@ const Calendar = () => {
 								onMouseDown={() => {
 									setIsMouseDown(true);
 									handleChangeFirstDay(day, selectedDaysArray.length);
-									// setSelectedDaysArray([].concat(day));
 								}}
 								onMouseEnter={() => handleChangeSelectedDays(day)}
 								onMouseUp={() => setIsMouseDown(false)}
