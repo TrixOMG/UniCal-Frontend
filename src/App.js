@@ -1,22 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 
 import EventModal from "./components/EventModal";
 import MainDaysComponent from "./components/MainDaysComponent";
-// import MainFiveDays from "./components/MainFiveDays";
-// import MainMonth from "./components/MainMonth";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import { GlobalContext, useGlobalContext } from "./context/context";
+import { useGlobalContext } from "./context/context";
 import "./index.css";
 import "./util/util";
 
-// import GlobalContext from "./context/GlobalContext";
-// import { getFiveDays, getMonth } from "./util/util";
-
 function App() {
-	// let showMainMonth = true;
-	// let showFiveDays = false;
-
 	const { showSidebar, showEventModal, monthIndex, selectedDaysArray } = useGlobalContext();
 
 	// const [currentMonth, setCurrentMonth] = useState(getMonth());

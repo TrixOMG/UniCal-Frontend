@@ -177,7 +177,7 @@ export function getProperTimespanInMain(pTimespan) {
 		});
 	});
 
-	console.log(daysMatrix);
+	// console.log(daysMatrix);
 
 	return daysMatrix;
 }

@@ -1,22 +1,48 @@
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import React from "react";
 import { useGlobalContext } from "../context/context";
+import { getProperSelectedDays } from "../util/util";
 
 const Navbar = () => {
-	const { showSidebar, setShowSidebar, monthIndex, setMonthIndex } = useGlobalContext();
-
-	// TODO: handleTimespanChange переделать под различные, выбранные пользователем временные отрезки
-
-	function handlePrevTimespanChange() {
-		setMonthIndex(monthIndex - 1);
-	}
+	const {
+		showSidebar,
+		setShowSidebar,
+		selectedDaysArray,
+		setSelectedDaysArray,
+		monthIndex,
+		setMonthIndex,
+	} = useGlobalContext();
 
 	function handleNextTimespanChange() {
-		setMonthIndex(monthIndex + 1);
+		let lastDayOfTheArray = null;
+		let newFirstDay = null;
+
+		newFirstDay = dayjs();
+		setSelectedDaysArray(getProperSelectedDays(newFirstDay, selectedDaysArray.length));
+		lastDayOfTheArray = selectedDaysArray[selectedDaysArray.length - 1];
+		newFirstDay = dayjs(
+			new Date(lastDayOfTheArray.year(), lastDayOfTheArray.month(), lastDayOfTheArray.date() + 1)
+		);
+		// console.log(newFirstDay);
+
+		setSelectedDaysArray(getProperSelectedDays(newFirstDay, selectedDaysArray.length));
+	}
+
+	function handlePrevTimespanChange() {
+		let firstDayOfTheArray = selectedDaysArray[0];
+		let newFirstDay = dayjs(
+			new Date(
+				firstDayOfTheArray.year(),
+				firstDayOfTheArray.month(),
+				firstDayOfTheArray.date() - selectedDaysArray.length
+			)
+		);
+		// console.log(newFirstDay);
+		setSelectedDaysArray(getProperSelectedDays(newFirstDay, selectedDaysArray.length));
 	}
 
 	function handleResetToday() {
-		setMonthIndex(monthIndex === dayjs().month() ? monthIndex + Math.random() : dayjs().month());
+		// setMonthIndex(monthIndex === dayjs().month() ? monthIndex + Math.random() : dayjs().month());
 	}
 
 	return (
@@ -39,7 +65,8 @@ const Navbar = () => {
 				<span className='material-icons'>chevron_right</span>
 			</button>
 			<h2 className=' ml-4 text-xl text-gray-500 font-bold'>
-				{dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY")}
+				{/* TODO: переделать под отображение нескольких месяцев в зависимости от выбранных дней */}
+				{/* {dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY")} */}
 			</h2>
 		</header>
 	);
