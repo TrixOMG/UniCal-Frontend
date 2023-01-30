@@ -23,9 +23,10 @@ const Navbar = () => {
 		newFirstDay = dayjs(
 			new Date(lastDayOfTheArray.year(), lastDayOfTheArray.month(), lastDayOfTheArray.date() + 1)
 		);
-		// console.log(newFirstDay);
 
 		setSelectedDaysArray(getProperSelectedDays(newFirstDay, selectedDaysArray.length));
+
+		// TODO: то же что и снизу
 	}
 
 	function handlePrevTimespanChange() {
@@ -37,11 +38,14 @@ const Navbar = () => {
 				firstDayOfTheArray.date() - selectedDaysArray.length
 			)
 		);
-		// console.log(newFirstDay);
 		setSelectedDaysArray(getProperSelectedDays(newFirstDay, selectedDaysArray.length));
+
+		// TODO: переключение миникалендаря если выделенные дни не влазят в видимые дни
+		// if()
 	}
 
 	function handleResetToday() {
+		// TODO: сделать ресет выделенных дней чтобы "сегодня" было в начале
 		// setMonthIndex(monthIndex === dayjs().month() ? monthIndex + Math.random() : dayjs().month());
 	}
 
