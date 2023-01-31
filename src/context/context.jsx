@@ -5,14 +5,12 @@ import { getMonth, getProperSelectedDays } from "../util/util";
 const GlobalContext = React.createContext();
 
 const GlobalContextProvider = ({ children }) => {
-	const [monthIndex, setMonthIndex] = useState(dayjs().month());
+	const [monthIndex, setMonthIndex] = useState(dayjs().month() + 1);
 	const [showSidebar, setShowSidebar] = useState(true);
 	const [showEventModal, setShowEventModal] = useState(false);
 	const [chosenDay, setChosenDay] = useState(dayjs());
 
-	const [selectedDaysArray, setSelectedDaysArray] = useState(
-		getProperSelectedDays(getMonth()[0][0], getMonth().length * getMonth()[0].length)
-	);
+	const [selectedDaysArray, setSelectedDaysArray] = useState(getProperSelectedDays([dayjs()]));
 
 	// const [isMouseDown, setIsMouseDown] = useState(false);
 

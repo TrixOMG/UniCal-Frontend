@@ -14,6 +14,8 @@ module.exports = {
 			"grid-rows-2",
 			"grid-rows-4",
 			"grid-rows-5",
+			"grid-rows-6",
+			"grid-rows-7",
 		],
 	},
 	theme: {

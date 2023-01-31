@@ -24,62 +24,23 @@ const dayjs = require("dayjs");
 // }
 
 export function getMonth(month = dayjs().month()) {
-	month = Math.floor(month);
+	month = Math.floor(month) - 1;
 	const year = dayjs().year();
-	const firstDayOfTheMonth = dayjs(new Date(year, month, 1)).day();
 
-	let currentMonthCount = 0 - firstDayOfTheMonth;
+	const firstDayOfTheMonth =
+		dayjs(new Date(year, month, 1)).day() === 0 ? 7 : dayjs(new Date(year, month, 1)).day();
 
-	const daysMatrix = new Array(5).fill([]).map(() => {
+	let currentMonthCount = 1 - firstDayOfTheMonth;
+
+	const daysMatrix = new Array(6).fill([]).map(() => {
 		return new Array(7).fill(null).map(() => {
 			currentMonthCount++;
 			return dayjs(new Date(year, month, currentMonthCount));
 		});
 	});
-	// console.log(daysMatrix);
+
 	return daysMatrix;
 }
-
-//
-//
-//
-
-// export function getUsersTimespan(pTimespan = getFiveDays(dayjs().date())) {
-// 	let daysMatrix = null;
-
-// 	const year = dayjs().year();
-// 	const month = dayjs().month();
-// 	const firstDayOfTheMonth = dayjs(new Date(year, month, 1)).day();
-
-// 	const timespanLength = pTimespan.length();
-
-// 	if (timespanLength <= 7) {
-// 		// one row
-// 		daysMatrix = new Array(timespanLength).fill(pTimespan);
-// 	} else if (timespanLength > 7 && timespanLength <= 14) {
-// 		// two rows
-// 		daysMatrix = new Array(2).fill([]).map(() => {
-// 			return new Array(7); // continue here
-// 		});
-// 	} else if (timespanLength > 14 && timespanLength <= 21) {
-// 		// three rows
-// 	} else if (timespanLength > 21 && timespanLength <= 28) {
-// 		// four rows
-// 	} else if (timespanLength > 28) {
-// 		// five rows
-// 		let currentMonthCount = 0 - firstDayOfTheMonth;
-
-// 		daysMatrix = new Array(5).fill([]).map(() => {
-// 			return new Array(7).fill(null).map(() => {
-// 				currentMonthCount++;
-// 				return dayjs(new Date(year, month, currentMonthCount));
-// 			});
-// 		});
-// 		// console.log(daysMatrix);
-// 	}
-
-// 	return daysMatrix;
-// }
 
 export function getProperSelectedDays(pSelDaysArray, pDaysArrayLength) {
 	let daysMatrix = [];
@@ -95,6 +56,7 @@ export function getProperSelectedDays(pSelDaysArray, pDaysArrayLength) {
 					new Date(pSelDaysArray.year(), pSelDaysArray.month(), pSelDaysArray.date() + index)
 				);
 			});
+		// console.log(daysMatrix);
 		return daysMatrix;
 	}
 	// запомнить здесь первый день и возвращать массив в том порядке, в каком выбрал пользователь
@@ -124,8 +86,8 @@ export function getProperSelectedDays(pSelDaysArray, pDaysArrayLength) {
 		timespanLength = 21;
 	} else if (timespanLength > 21 && timespanLength <= 28) {
 		timespanLength = 28;
-	} else if (timespanLength > 28 && timespanLength <= 35) {
-		timespanLength = 35;
+	} else if (timespanLength > 28) {
+		timespanLength = 28;
 	}
 
 	daysMatrix = Array(timespanLength)
