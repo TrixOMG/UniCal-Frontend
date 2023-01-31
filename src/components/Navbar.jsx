@@ -45,8 +45,8 @@ const Navbar = () => {
 	}
 
 	function handleResetToday() {
-		// TODO: сделать ресет выделенных дней чтобы "сегодня" было в начале
 		// setMonthIndex(monthIndex === dayjs().month() ? monthIndex + Math.random() : dayjs().month());
+		setSelectedDaysArray(getProperSelectedDays(dayjs(), selectedDaysArray.length));
 	}
 
 	return (

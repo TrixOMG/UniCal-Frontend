@@ -4,9 +4,12 @@ import { useGlobalContext } from "../context/context";
 import { getMonth, getProperSelectedDays } from "../util/util";
 
 const Calendar = () => {
+	// индекс текущего месяца
 	const [currentMonthIdx, setCurrentMonthIdx] = useState(dayjs().month());
+	// месяц для отображения
 	const [currentMonth, setCurrentMonth] = useState(getMonth());
 
+	// глобальный индекс месяца
 	const { monthIndex } = useGlobalContext();
 	const { selectedDaysArray, setSelectedDaysArray } = useGlobalContext();
 
@@ -20,6 +23,15 @@ const Calendar = () => {
 	useEffect(() => {
 		setCurrentMonth(getMonth(currentMonthIdx));
 	}, [currentMonthIdx]);
+
+	useEffect(() => {
+		// TODO: реализовать здесь переключение календаря в зависимости от выбранного промежутка
+		let pCurrentMonth = currentMonth;
+		const oneLevelCurrentMonthArray = [];
+		pCurrentMonth.map((el) => oneLevelCurrentMonthArray.concat[el]);
+		console.log(oneLevelCurrentMonthArray);
+		// if()){}else if(){}
+	});
 
 	function handlePrevMonth() {
 		setCurrentMonthIdx(currentMonthIdx - 1);
