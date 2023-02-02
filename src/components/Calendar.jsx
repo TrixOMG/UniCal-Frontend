@@ -24,14 +24,31 @@ const Calendar = () => {
 		setCurrentMonth(getMonth(currentMonthIdx));
 	}, [currentMonthIdx]);
 
-	useEffect(() => {
-		// TODO: реализовать здесь переключение календаря в зависимости от выбранного промежутка
+	// TODO: переделать
+	function handleMonthIndexChangeOnSelectedDays() {
 		let pCurrentMonth = currentMonth;
 		const oneLevelCurrentMonthArray = [];
-		pCurrentMonth.map((el) => oneLevelCurrentMonthArray.concat[el]);
-		console.log(oneLevelCurrentMonthArray);
-		// if()){}else if(){}
-	});
+
+		pCurrentMonth.map((week) => {
+			return week.map((day) => {
+				return oneLevelCurrentMonthArray.push(day.format("DD-MM-YY"));
+			});
+		});
+
+		// middle day of the selectedDays array
+		let middleDayIndex = 0;
+
+		if (selectedDaysArray.length > 1) {
+			if (selectedDaysArray.length % 2 === 0) middleDayIndex = selectedDaysArray.length / 2 - 1;
+			else middleDayIndex = Math.floor(selectedDaysArray.length / 2);
+
+			if (
+				!oneLevelCurrentMonthArray.includes(selectedDaysArray[middleDayIndex].format("DD-MM-YY"))
+			) {
+				setCurrentMonthIdx(selectedDaysArray[selectedDaysArray.length - 1].month() + 1);
+			}
+		}
+	}
 
 	function handlePrevMonth() {
 		setCurrentMonthIdx(currentMonthIdx - 1);
@@ -97,13 +114,15 @@ const Calendar = () => {
 					return day.format("DD-MM-YY");
 				});
 
+			let res = [];
+
 			if (convertedSelDArr.includes(pDay.format("DD-MM-YY"))) {
-				let res = selectedDaysArray.slice(0, selectedDaysArray.indexOf(pDay));
-				setSelectedDaysArray(getProperSelectedDays(res));
+				res = selectedDaysArray.slice(0, selectedDaysArray.indexOf(pDay));
 			} else {
-				let res = selectedDaysArray.concat(pDay);
-				setSelectedDaysArray(getProperSelectedDays(res));
+				res = selectedDaysArray.concat(pDay);
 			}
+			// console.log(res);
+			setSelectedDaysArray(getProperSelectedDays(res));
 		}
 	}
 
@@ -124,6 +143,14 @@ const Calendar = () => {
 		} else {
 			setSelectedDaysArray(getProperSelectedDays(pDay, DaysArrayLength));
 		}
+	}
+
+	function handleChronologicalSelectedDays() {
+		const chronologicalSelectedDays = selectedDaysArray.sort((a, b) => {
+			return a.isAfter(b) ? 1 : -1;
+		});
+
+		setSelectedDaysArray(chronologicalSelectedDays);
 	}
 
 	return (
@@ -161,7 +188,11 @@ const Calendar = () => {
 									handleChangeFirstDay(day, selectedDaysArray.length);
 								}}
 								onMouseEnter={() => handleChangeSelectedDays(day)}
-								onMouseUp={() => setIsMouseDown(false)}
+								onMouseUp={() => {
+									setIsMouseDown(false);
+									handleChronologicalSelectedDays();
+									handleMonthIndexChangeOnSelectedDays();
+								}}
 							>
 								<div
 									className={`text-sm ${getTodayClass(day)} hover:bg-blue-300 hover:rounded-lg p-1`}

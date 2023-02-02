@@ -113,6 +113,10 @@ export function getProperSelectedDays(pSelDaysArray, pDaysArrayLength) {
 			}
 		});
 
+	// const SortedDaysMatrix = daysMatrix.sort((a, b) => {
+	// return dayjs(a).isAfter(dayjs(b)) ? 1 : -1;
+	// });
+
 	return daysMatrix;
 }
 
@@ -143,6 +147,7 @@ export function getProperTimespanInMain(pTimespan) {
 
 	return daysMatrix;
 }
+
 //
 //
 //
