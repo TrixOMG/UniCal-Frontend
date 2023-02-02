@@ -24,9 +24,8 @@ const Calendar = () => {
 		setCurrentMonth(getMonth(currentMonthIdx));
 	}, [currentMonthIdx]);
 
-	// TODO: переделать
 	function handleMonthIndexChangeOnSelectedDays() {
-		let pCurrentMonth = currentMonth;
+		let pCurrentMonth = getMonth(currentMonthIdx);
 		const oneLevelCurrentMonthArray = [];
 
 		pCurrentMonth.map((week) => {
@@ -35,19 +34,27 @@ const Calendar = () => {
 			});
 		});
 
+		console.log(oneLevelCurrentMonthArray);
+		let pSelDaysArray = [];
+		pSelDaysArray = selectedDaysArray;
 		// middle day of the selectedDays array
 		let middleDayIndex = 0;
 
-		if (selectedDaysArray.length > 1) {
-			if (selectedDaysArray.length % 2 === 0) middleDayIndex = selectedDaysArray.length / 2 - 1;
-			else middleDayIndex = Math.floor(selectedDaysArray.length / 2);
+		if (pSelDaysArray.length % 2 === 0) middleDayIndex = pSelDaysArray.length / 2 - 1;
+		else middleDayIndex = Math.floor(pSelDaysArray.length / 2);
+		console.log(pSelDaysArray[middleDayIndex].format("DD-MM-YY"));
 
-			if (
-				!oneLevelCurrentMonthArray.includes(selectedDaysArray[middleDayIndex].format("DD-MM-YY"))
-			) {
-				setCurrentMonthIdx(selectedDaysArray[selectedDaysArray.length - 1].month() + 1);
-			}
+		console.log(
+			!oneLevelCurrentMonthArray.includes(pSelDaysArray[middleDayIndex].format("DD-MM-YY"))
+		);
+
+		if (
+			!oneLevelCurrentMonthArray.includes(pSelDaysArray[middleDayIndex].format("DD-MM-YY")) ||
+			!oneLevelCurrentMonthArray.includes(pSelDaysArray[0].format("DD-MM-YY"))
+		) {
+			setCurrentMonthIdx(currentMonthIdx + 1);
 		}
+		console.log(currentMonthIdx);
 	}
 
 	function handlePrevMonth() {
@@ -121,7 +128,7 @@ const Calendar = () => {
 			} else {
 				res = selectedDaysArray.concat(pDay);
 			}
-			// console.log(res);
+
 			setSelectedDaysArray(getProperSelectedDays(res));
 		}
 	}
