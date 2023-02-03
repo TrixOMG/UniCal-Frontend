@@ -90,6 +90,38 @@ export function getProperSelectedDays(pSelDaysArray, pDaysArrayLength) {
 		timespanLength = 28;
 	}
 
+	// переопределение первого дня выделенных дней на пн или вс
+	if (timespanLength > 7 && firstDayOfTheArray.isBefore(lastDay)) {
+		if (firstDayOfTheArray.day() === 0) {
+			firstDayOfTheArray = dayjs(
+				new Date(
+					firstDayOfTheArray.year(),
+					firstDayOfTheArray.month(),
+					firstDayOfTheArray.date() - 6
+				)
+			);
+		} else {
+			firstDayOfTheArray = dayjs(
+				new Date(
+					firstDayOfTheArray.year(),
+					firstDayOfTheArray.month(),
+					firstDayOfTheArray.date() - (firstDayOfTheArray.day() - 1)
+				)
+			);
+		}
+	} else if (timespanLength > 7 && firstDayOfTheArray.isAfter(lastDay)) {
+		// 1 2 3 4 5 6 0
+		if (firstDayOfTheArray.day() !== 0) {
+			firstDayOfTheArray = dayjs(
+				new Date(
+					firstDayOfTheArray.year(),
+					firstDayOfTheArray.month(),
+					firstDayOfTheArray.date() - firstDayOfTheArray.day() + 7
+				)
+			);
+		}
+	}
+
 	daysMatrix = Array(timespanLength)
 		.fill([])
 		.map(() => {
@@ -112,10 +144,75 @@ export function getProperSelectedDays(pSelDaysArray, pDaysArrayLength) {
 				);
 			}
 		});
+	// daysMatrix = Array(timespanLength)
+	// 	.fill([])
+	// 	.map(() => {
+	// 		index++;
+	// 		if (firstDayOfTheArray.isBefore(lastDay)) {
+	// 			// переопределение первого дня промежутка на понедельник (т.к. прямой порядок)
+	// 			if (firstDayOfTheArray.day() === 0) {
+	// 				firstDayOfTheArray = dayjs(
+	// 					new Date(
+	// 						firstDayOfTheArray.year(),
+	// 						firstDayOfTheArray.month(),
+	// 						firstDayOfTheArray.date() - 6
+	// 					)
+	// 				);
+	// 			} else {
+	// 				firstDayOfTheArray = dayjs(
+	// 					new Date(
+	// 						firstDayOfTheArray.year(),
+	// 						firstDayOfTheArray.month(),
+	// 						firstDayOfTheArray.date() - (firstDayOfTheArray.day() - 1)
+	// 					)
+	// 				);
+	// 			}
 
-	// const SortedDaysMatrix = daysMatrix.sort((a, b) => {
-	// return dayjs(a).isAfter(dayjs(b)) ? 1 : -1;
-	// });
+	// 			return dayjs(
+	// 				new Date(
+	// 					firstDayOfTheArray.year(),
+	// 					firstDayOfTheArray.month(),
+	// 					firstDayOfTheArray.date() + index
+	// 				)
+	// 			);
+	// 		} else {
+	// 			// переопределение первого дня промежутка на воскресенье (т.к. обратный порядок)
+	// 			// dayjs().day()
+	// 			firstDayOfTheArray = dayjs(
+	// 				new Date(
+	// 					firstDayOfTheArray.year(),
+	// 					firstDayOfTheArray.month(),
+	// 					firstDayOfTheArray.date() + 6
+	// 				)
+	// 			);
+
+	// 			// if (firstDayOfTheArray.day() === 0) {
+	// 			// 	firstDayOfTheArray = dayjs(
+	// 			// 		new Date(
+	// 			// 			firstDayOfTheArray.year(),
+	// 			// 			firstDayOfTheArray.month(),
+	// 			// 			firstDayOfTheArray.date() - 6
+	// 			// 		)
+	// 			// 	);
+	// 			// } else {
+	// 			// 	firstDayOfTheArray = dayjs(
+	// 			// 		new Date(
+	// 			// 			firstDayOfTheArray.year(),
+	// 			// 			firstDayOfTheArray.month(),
+	// 			// 			firstDayOfTheArray.date() - (firstDayOfTheArray.day() - 1)
+	// 			// 		)
+	// 			// 	);
+	// 			// }
+	// 			return dayjs(
+	// 				new Date(
+	// 					firstDayOfTheArray.year(),
+	// 					firstDayOfTheArray.month(),
+	// 					firstDayOfTheArray.date() - index
+	// 				)
+	// 			);
+	// 		}
+	// 	});
+	// }
 
 	return daysMatrix;
 }
