@@ -48,6 +48,21 @@ export function getProperSelectedDays(pSelDaysArray, pDaysArrayLength) {
 
 	// действия в случае когда юзер просто хочет поменять начало временного промежутка (первый день)
 	if (pDaysArrayLength) {
+		if (pDaysArrayLength > 7) {
+			if (pSelDaysArray.day() === 0) {
+				pSelDaysArray = dayjs(
+					new Date(pSelDaysArray.year(), pSelDaysArray.month(), pSelDaysArray.date() - 6)
+				);
+			} else {
+				pSelDaysArray = dayjs(
+					new Date(
+						pSelDaysArray.year(),
+						pSelDaysArray.month(),
+						pSelDaysArray.date() - (pSelDaysArray.day() - 1)
+					)
+				);
+			}
+		}
 		daysMatrix = Array(pDaysArrayLength)
 			.fill([])
 			.map(() => {
