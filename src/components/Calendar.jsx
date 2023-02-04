@@ -4,15 +4,16 @@ import { useGlobalContext } from "../context/context";
 import { getMonth, getProperSelectedDays } from "../util/util";
 
 const Calendar = () => {
-	// индекс текущего месяца
-	const [currentMonthIdx, setCurrentMonthIdx] = useState(dayjs().month());
-	// месяц для отображения
-	const [currentMonth, setCurrentMonth] = useState(getMonth());
-
 	// глобальный индекс месяца
 	const { monthIndex } = useGlobalContext();
 	const { selectedDaysArray, setSelectedDaysArray } = useGlobalContext();
 
+	// индекс текущего месяца
+	const [currentMonthIdx, setCurrentMonthIdx] = useState(dayjs().month());
+	// месяц для отображения
+	const [currentMonth, setCurrentMonth] = useState(getMonth());
+	// единичный выбранный день для сброса длины массива выделенных дней
+	const [chosenDay, setChosenDay] = useState(dayjs());
 	// трекинг зажатой клавиши мыши для определения дней
 	const [isMouseDown, setIsMouseDown] = useState(false);
 
@@ -77,6 +78,23 @@ const Calendar = () => {
 		}
 	}
 
+	// TODO: исправить определение классов
+	function getChosenDayClass(day) {
+		const sFormat = "DD-MM-YY";
+
+		if (day.format(sFormat) === chosenDay.format(sFormat)) {
+			if (day.format(sFormat) === selectedDaysArray[0].format(sFormat))
+				return " bg-blue-400 rounded-l-lg ";
+			else if (
+				day.format(sFormat) === selectedDaysArray[selectedDaysArray.length - 1].format(sFormat)
+			)
+				return " bg-blue-400 rounded-r-lg ";
+			else return " bg-blue-400 rounded-lg ";
+		} else {
+			return "";
+		}
+	}
+
 	function getSelectedDaysClass(pDay) {
 		const sFormat = "DD-MM-YY";
 		const pSelDaysArray =
@@ -136,19 +154,19 @@ const Calendar = () => {
 	function handleChangeFirstDay(pDay, DaysArrayLength) {
 		if (DaysArrayLength <= 1) {
 			setSelectedDaysArray([].concat(pDay));
+			setChosenDay(pDay);
 			return;
-		}
-
-		// нужнен хронологически корректный массив дней чтобы от него отталкиваться (от его первого дня)
-		let selDaysArray = selectedDaysArray;
-		selDaysArray = [...selDaysArray].sort((a, b) => {
-			return dayjs(a).isAfter(dayjs(b)) ? 1 : -1;
-		});
-
-		if (pDay.format("DD-MM-YY") === selDaysArray[0].format("DD-MM-YY")) {
-			setSelectedDaysArray([].concat(pDay));
-		} else {
-			setSelectedDaysArray(getProperSelectedDays(pDay, DaysArrayLength));
+		} else if (DaysArrayLength > 7) {
+			if (pDay.format("DD-MM-YY") === chosenDay.format("DD-MM-YY")) {
+				setSelectedDaysArray([].concat(chosenDay));
+			} else {
+				setChosenDay(pDay);
+				setSelectedDaysArray(getProperSelectedDays(pDay, DaysArrayLength));
+			}
+			return;
+		} else if (DaysArrayLength <= 7) {
+			setChosenDay(pDay);
+			setSelectedDaysArray(getProperSelectedDays(chosenDay, DaysArrayLength));
 		}
 	}
 
@@ -189,7 +207,7 @@ const Calendar = () => {
 						{row.map((day, idx) => (
 							<button
 								key={idx}
-								className={`w-full ${getSelectedDaysClass(day)} `}
+								className={`w-full ${getSelectedDaysClass(day)} ${getChosenDayClass(day)} `}
 								onMouseDown={() => {
 									setIsMouseDown(true);
 									handleChangeFirstDay(day, selectedDaysArray.length);
