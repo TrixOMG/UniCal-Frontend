@@ -16,6 +16,12 @@ module.exports = {
 			"grid-rows-5",
 			"grid-rows-6",
 			"grid-rows-7",
+			"bg-indigo-500",
+			"bg-red-500",
+			"bg-purple-500",
+			"bg-blue-500",
+			"bg-green-500",
+			"bg-gray-500",
 		],
 	},
 	theme: {

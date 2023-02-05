@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { useGlobalContext } from "../context/context";
 
+const labelsClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
+
 const EventModal = () => {
 	const { setShowEventModal, chosenDay } = useGlobalContext();
+
 	const [title, setTitle] = useState("");
+	const [description, setDescription] = useState("");
+	const [selectedLabel, setSelectedLabel] = useState(labelsClasses[0]);
 
 	return (
 		<div className='h-screen w-full fixed left-0 top-0 flex justify-center items-center'>
@@ -30,11 +35,42 @@ const EventModal = () => {
 						/>
 						<span className='material-icons text-gray-400'>schedule</span>
 						<p>{chosenDay.format("dddd, MMMM DD")}</p>
+						<span className='material-icons text-gray-400'>segment</span>
+						<input
+							type='text'
+							name='description'
+							placeholder='Add a Description'
+							className='pt-3 border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500'
+							value={description}
+							onChange={(e) => setDescription(e.target.value)}
+						/>
+						<span className='material-icons text-gray-400'>bookmark_border</span>
+						<div className='flex gap-x-2'>
+							{labelsClasses.map((lblClass, i) => (
+								<span
+									key={i}
+									onClick={() => setSelectedLabel(lblClass)}
+									className={`bg-${lblClass}-500 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer `}
+								>
+									{selectedLabel === lblClass && (
+										<span className='material-icons text-white text-sm'>check</span>
+									)}
+								</span>
+							))}
+						</div>
 					</div>
 				</div>
+				<footer className='flex justify-end border-t p-3 mt-5'>
+					<button
+						type='submit'
+						className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white'
+					>
+						Save
+					</button>
+				</footer>
 			</form>
 		</div>
 	);
 };
-
+// TODO: 2:04:38
 export default EventModal;
