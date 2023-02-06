@@ -11,6 +11,7 @@ const Navbar = () => {
 		setSelectedDaysArray,
 		monthIndex,
 		setMonthIndex,
+		setChosenDay,
 	} = useGlobalContext();
 
 	function handleNextTimespanChange() {
@@ -94,6 +95,7 @@ const Navbar = () => {
 				onClick={() => {
 					setSelectedDaysArray(handlePrevTimespanChange());
 					handleMonthIndexChangeOnSelectedDays(false);
+					// setChosenDay(selectedDaysArray[0]);
 				}}
 			>
 				<span className='material-icons'>chevron_left</span>
@@ -103,6 +105,7 @@ const Navbar = () => {
 				onClick={() => {
 					setSelectedDaysArray(handleNextTimespanChange());
 					handleMonthIndexChangeOnSelectedDays(true);
+					// setChosenDay(selectedDaysArray[0]);
 				}}
 			>
 				<span className='material-icons'>chevron_right</span>

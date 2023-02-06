@@ -8,9 +8,10 @@ const GlobalContextProvider = ({ children }) => {
 	const [monthIndex, setMonthIndex] = useState(dayjs().month() + 1);
 	const [showSidebar, setShowSidebar] = useState(true);
 	const [showEventModal, setShowEventModal] = useState(false);
-	const [chosenDay, setChosenDay] = useState(dayjs());
+	const [chosenDayForTask, setChosenDayForTask] = useState(dayjs());
 
 	const [selectedDaysArray, setSelectedDaysArray] = useState(getProperSelectedDays([dayjs()]));
+	const [chosenDay, setChosenDay] = useState(dayjs());
 
 	// const [isMouseDown, setIsMouseDown] = useState(false);
 
@@ -23,6 +24,8 @@ const GlobalContextProvider = ({ children }) => {
 		setShowEventModal,
 		selectedDaysArray,
 		setSelectedDaysArray,
+		chosenDayForTask,
+		setChosenDayForTask,
 		chosenDay,
 		setChosenDay,
 		// isMouseDown,

@@ -4,7 +4,7 @@ import { useGlobalContext } from "../context/context";
 const labelsClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
 
 const EventModal = () => {
-	const { setShowEventModal, chosenDay } = useGlobalContext();
+	const { setShowEventModal, chosenDayForTask } = useGlobalContext();
 
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
@@ -34,7 +34,7 @@ const EventModal = () => {
 							onChange={(e) => setTitle(e.target.value)}
 						/>
 						<span className='material-icons text-gray-400'>schedule</span>
-						<p>{chosenDay.format("dddd, MMMM DD")}</p>
+						<p>{chosenDayForTask.format("dddd, MMMM DD")}</p>
 						<span className='material-icons text-gray-400'>segment</span>
 						<input
 							type='text'

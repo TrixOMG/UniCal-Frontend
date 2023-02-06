@@ -13,7 +13,7 @@ const Calendar = () => {
 	// месяц для отображения
 	const [currentMonth, setCurrentMonth] = useState(getMonth());
 	// единичный выбранный день для сброса длины массива выделенных дней
-	const [chosenDay, setChosenDay] = useState(dayjs());
+	const { chosenDay, setChosenDay } = useGlobalContext();
 	// трекинг зажатой клавиши мыши для определения дней
 	const [isMouseDown, setIsMouseDown] = useState(false);
 

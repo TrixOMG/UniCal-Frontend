@@ -4,7 +4,7 @@ import { useGlobalContext } from "../context/context";
 
 const Day = ({ pDay, rowIdx }) => {
 	const [dayEvents, setDayEvents] = useState([]);
-	const { setShowEventModal, setChosenDay } = useGlobalContext();
+	const { setShowEventModal, setChosenDayForTask } = useGlobalContext();
 
 	function getAccentOnToday() {
 		console.table();
@@ -26,7 +26,7 @@ const Day = ({ pDay, rowIdx }) => {
 			<div
 				className='flex-1 cursor-pointer'
 				onClick={() => {
-					setChosenDay(pDay);
+					setChosenDayForTask(pDay);
 					setShowEventModal(true);
 				}}
 			></div>
