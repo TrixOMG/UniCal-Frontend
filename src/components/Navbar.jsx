@@ -20,6 +20,9 @@ const Navbar = () => {
 			new Date(lastDayOfTheArray.year(), lastDayOfTheArray.month(), lastDayOfTheArray.date() + 1)
 		);
 
+		// change single chosen day on first day of the array
+		setChosenDay(newFirstDay);
+
 		return getProperSelectedDays(newFirstDay, selectedDaysArray.length);
 		// setSelectedDaysArray(getProperSelectedDays(newFirstDay, selectedDaysArray.length));
 	}
@@ -33,13 +36,17 @@ const Navbar = () => {
 				firstDayOfTheArray.date() - selectedDaysArray.length
 			)
 		);
+		// change single chosen day on first day of the array
+		setChosenDay(newFirstDay);
+
 		return getProperSelectedDays(newFirstDay, selectedDaysArray.length);
 		// setSelectedDaysArray(getProperSelectedDays(newFirstDay, selectedDaysArray.length));
 	}
 
 	function handleResetToday() {
 		setSelectedDaysArray(getProperSelectedDays(dayjs(), selectedDaysArray.length));
-		setMonthIndex(dayjs().month());
+		setChosenDay(dayjs());
+		setMonthIndex(dayjs().month() + 1 + Math.random());
 	}
 
 	function handleMonthIndexChangeOnSelectedDays(isNext) {
@@ -52,7 +59,7 @@ const Navbar = () => {
 			});
 		});
 
-		console.log(oneLevelCurrentMonthArray);
+		// console.log(oneLevelCurrentMonthArray);
 		let pSelDaysArray = [];
 		if (isNext) pSelDaysArray = handleNextTimespanChange(selectedDaysArray);
 		else pSelDaysArray = handlePrevTimespanChange(selectedDaysArray);
@@ -61,11 +68,11 @@ const Navbar = () => {
 
 		if (pSelDaysArray.length % 2 === 0) middleDayIndex = pSelDaysArray.length / 2 - 1;
 		else middleDayIndex = Math.floor(pSelDaysArray.length / 2);
-		console.log(pSelDaysArray[middleDayIndex].format("DD-MM-YY"));
+		// console.log(pSelDaysArray[middleDayIndex].format("DD-MM-YY"));
 
-		console.log(
-			!oneLevelCurrentMonthArray.includes(pSelDaysArray[middleDayIndex].format("DD-MM-YY"))
-		);
+		// console.log(
+		// !oneLevelCurrentMonthArray.includes(pSelDaysArray[middleDayIndex].format("DD-MM-YY"))
+		// );
 
 		if (
 			!oneLevelCurrentMonthArray.includes(pSelDaysArray[middleDayIndex].format("DD-MM-YY")) ||
@@ -95,7 +102,6 @@ const Navbar = () => {
 				onClick={() => {
 					setSelectedDaysArray(handlePrevTimespanChange());
 					handleMonthIndexChangeOnSelectedDays(false);
-					// setChosenDay(selectedDaysArray[0]);
 				}}
 			>
 				<span className='material-icons'>chevron_left</span>
@@ -105,7 +111,6 @@ const Navbar = () => {
 				onClick={() => {
 					setSelectedDaysArray(handleNextTimespanChange());
 					handleMonthIndexChangeOnSelectedDays(true);
-					// setChosenDay(selectedDaysArray[0]);
 				}}
 			>
 				<span className='material-icons'>chevron_right</span>

@@ -78,18 +78,19 @@ const Calendar = () => {
 		}
 	}
 
-	// TODO: исправить определение классов
 	function getChosenDayClass(day) {
 		const sFormat = "DD-MM-YY";
-
 		if (day.format(sFormat) === chosenDay.format(sFormat)) {
-			if (day.format(sFormat) === selectedDaysArray[0].format(sFormat))
-				return " bg-blue-400 rounded-l-lg ";
-			else if (
+			if (day.format(sFormat) === selectedDaysArray[0].format(sFormat)) {
+				if (selectedDaysArray.length === 1) return " bg-blue-400 rounded-lg";
+				else return " bg-blue-400 rounded-l-lg ";
+			} else if (
 				day.format(sFormat) === selectedDaysArray[selectedDaysArray.length - 1].format(sFormat)
-			)
+			) {
 				return " bg-blue-400 rounded-r-lg ";
-			else return " bg-blue-400 rounded-lg ";
+			} else {
+				return " bg-blue-400 rounded-lg ";
+			}
 		} else {
 			return "";
 		}
@@ -214,7 +215,7 @@ const Calendar = () => {
 						{row.map((day, idx) => (
 							<button
 								key={idx}
-								className={`w-full ${getSelectedDaysClass(day)} ${getChosenDayClass(day)} `}
+								className={`w-full ${getSelectedDaysClass(day)}  `}
 								onMouseDown={() => {
 									setIsMouseDown(true);
 									handleChangeFirstDay(day, selectedDaysArray.length);
@@ -227,7 +228,9 @@ const Calendar = () => {
 								}}
 							>
 								<div
-									className={`text-sm ${getTodayClass(day)} hover:bg-blue-300 hover:rounded-lg p-1`}
+									className={`text-sm ${getTodayClass(day)} ${getChosenDayClass(
+										day
+									)} hover:bg-blue-300 hover:rounded-lg p-1`}
 								>
 									{day.format("D")}
 								</div>
