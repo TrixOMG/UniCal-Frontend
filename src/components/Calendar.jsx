@@ -151,13 +151,12 @@ const Calendar = () => {
 		}
 	}
 
-	// TODO: переделать, работает некорректно
+	// TODO: работает нормально, но нужен рефакторинг
 	function handleChangeFirstDay(pDay, DaysArrayLength) {
 		if (DaysArrayLength <= 1) {
 			setSelectedDaysArray([].concat(pDay));
 			setChosenDay(pDay);
 			console.log("<=1");
-			return;
 		} else if (DaysArrayLength > 7) {
 			if (pDay.format("DD-MM-YY") === chosenDay.format("DD-MM-YY")) {
 				setSelectedDaysArray([].concat(chosenDay));
@@ -166,11 +165,15 @@ const Calendar = () => {
 				setChosenDay(pDay);
 				setSelectedDaysArray(getProperSelectedDays(pDay, DaysArrayLength));
 			}
-			return;
 		} else if (DaysArrayLength <= 7) {
-			setChosenDay(pDay);
-			console.log("<=7");
-			setSelectedDaysArray(getProperSelectedDays(chosenDay, DaysArrayLength));
+			if (pDay.format("DD-MM-YY") === chosenDay.format("DD-MM-YY")) {
+				setSelectedDaysArray([].concat(pDay));
+				setChosenDay(pDay);
+			} else {
+				setChosenDay(pDay);
+				console.log("<=7");
+				setSelectedDaysArray(getProperSelectedDays(pDay, DaysArrayLength));
+			}
 		}
 	}
 
