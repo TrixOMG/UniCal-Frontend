@@ -1,10 +1,17 @@
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../context/context";
 
 const Day = ({ pDay, rowIdx }) => {
 	const [dayEvents, setDayEvents] = useState([]);
-	const { setShowEventModal, setChosenDayForTask } = useGlobalContext();
+	const { setShowEventModal, setChosenDayForTask, savedEvents } = useGlobalContext();
+
+	useEffect(() => {
+		const events = savedEvents.filter(
+			(evt) => dayjs(evt.day).format("DD-MM-YY") === pDay.format("DD-MM-YY")
+		);
+		setDayEvents(events);
+	}, [savedEvents, pDay]);
 
 	function getAccentOnToday() {
 		console.table();
@@ -24,12 +31,21 @@ const Day = ({ pDay, rowIdx }) => {
 				</p>
 			</header>
 			<div
-				className='flex-1 cursor-pointer'
+				className='flex-1 cursor-pointer pt-5'
 				onClick={() => {
 					setChosenDayForTask(pDay);
 					setShowEventModal(true);
 				}}
-			></div>
+			>
+				{dayEvents.map((evt, idx) => (
+					<div
+						key={idx}
+						className={`bg-${evt.label}-300 p-1 mr-3 text-gray-600 text-sm rounded-lg mb-1 truncate`}
+					>
+						{evt.title}
+					</div>
+				))}
+			</div>
 		</div>
 	);
 };

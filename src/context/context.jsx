@@ -57,6 +57,7 @@ const GlobalContextProvider = ({ children }) => {
 		chosenDay,
 		setChosenDay,
 		dispatchCalEvent,
+		savedEvents,
 		// isMouseDown,
 		// setIsMouseDown,
 	};
