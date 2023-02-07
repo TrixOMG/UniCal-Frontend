@@ -80,6 +80,9 @@ const Calendar = () => {
 
 	function getChosenDayClass(day) {
 		const sFormat = "DD-MM-YY";
+
+		if (day.format(sFormat) === dayjs().format(sFormat)) return "";
+
 		if (day.format(sFormat) === chosenDay.format(sFormat)) {
 			if (day.format(sFormat) === selectedDaysArray[0].format(sFormat)) {
 				if (selectedDaysArray.length === 1) return " bg-blue-400 rounded-lg";
