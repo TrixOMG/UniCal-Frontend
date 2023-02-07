@@ -157,11 +157,11 @@ const Calendar = () => {
 		if (DaysArrayLength <= 1) {
 			setSelectedDaysArray([].concat(pDay));
 			setChosenDay(pDay);
-			console.log("<=1");
+			// console.log("<=1");
 		} else if (DaysArrayLength > 7) {
 			if (pDay.format("DD-MM-YY") === chosenDay.format("DD-MM-YY")) {
 				setSelectedDaysArray([].concat(chosenDay));
-				console.log(">7");
+				// console.log(">7");
 			} else {
 				setChosenDay(pDay);
 				setSelectedDaysArray(getProperSelectedDays(pDay, DaysArrayLength));
@@ -172,7 +172,7 @@ const Calendar = () => {
 				setChosenDay(pDay);
 			} else {
 				setChosenDay(pDay);
-				console.log("<=7");
+				// console.log("<=7");
 				setSelectedDaysArray(getProperSelectedDays(pDay, DaysArrayLength));
 			}
 		}
