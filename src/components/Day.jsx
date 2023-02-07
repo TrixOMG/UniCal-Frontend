@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../context/context";
+import Event from "./Event";
 
 const Day = ({ pDay, rowIdx }) => {
 	const [dayEvents, setDayEvents] = useState([]);
@@ -38,12 +39,7 @@ const Day = ({ pDay, rowIdx }) => {
 				}}
 			>
 				{dayEvents.map((evt, idx) => (
-					<div
-						key={idx}
-						className={`bg-${evt.label}-300 p-1 mr-3 text-gray-600 text-sm rounded-lg mb-1 truncate`}
-					>
-						{evt.title}
-					</div>
+					<Event key={idx} pEvent={evt} />
 				))}
 			</div>
 		</div>
