@@ -1,5 +1,5 @@
 import React from "react";
-import { useGlobalContext } from "../context/context";
+// import { useGlobalContext } from "../context/context";
 
 const Event = ({ pEvent }) => {
 	// const { showEventModal, setShowEventModal } = useGlobalContext();

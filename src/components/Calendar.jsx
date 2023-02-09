@@ -5,11 +5,9 @@ import { getMonth, getProperSelectedDays } from "../util/util";
 
 const Calendar = () => {
 	// глобальный индекс месяца
-	const { monthIndex } = useGlobalContext();
+	const { monthIndex, setMonthIndex } = useGlobalContext();
 	const { selectedDaysArray, setSelectedDaysArray } = useGlobalContext();
 
-	// индекс текущего месяца
-	const [currentMonthIdx, setCurrentMonthIdx] = useState(dayjs().month());
 	// месяц для отображения
 	const [currentMonth, setCurrentMonth] = useState(getMonth());
 	// единичный выбранный день для сброса длины массива выделенных дней
@@ -18,15 +16,11 @@ const Calendar = () => {
 	const [isMouseDown, setIsMouseDown] = useState(false);
 
 	useEffect(() => {
-		setCurrentMonthIdx(monthIndex);
+		setCurrentMonth(getMonth(monthIndex));
 	}, [monthIndex]);
 
-	useEffect(() => {
-		setCurrentMonth(getMonth(currentMonthIdx));
-	}, [currentMonthIdx]);
-
 	function handleMonthIndexChangeOnSelectedDays() {
-		let pCurrentMonth = getMonth(currentMonthIdx);
+		let pCurrentMonth = getMonth(monthIndex);
 		const oneLevelCurrentMonthArray = [];
 
 		pCurrentMonth.map((week) => {
@@ -35,35 +29,36 @@ const Calendar = () => {
 			});
 		});
 
-		console.log(oneLevelCurrentMonthArray);
+		// console.log(oneLevelCurrentMonthArray);
+		// console.log(monthIndex);
 		let pSelDaysArray = [];
 		pSelDaysArray = selectedDaysArray;
+		// console.log("cal", pSelDaysArray);
 		// middle day of the selectedDays array
 		let middleDayIndex = 0;
 
 		if (pSelDaysArray.length % 2 === 0) middleDayIndex = pSelDaysArray.length / 2 - 1;
 		else middleDayIndex = Math.floor(pSelDaysArray.length / 2);
-		console.log(pSelDaysArray[middleDayIndex].format("DD-MM-YY"));
+		// console.log(pSelDaysArray[middleDayIndex].format("DD-MM-YY"));
 
-		console.log(
-			!oneLevelCurrentMonthArray.includes(pSelDaysArray[middleDayIndex].format("DD-MM-YY"))
-		);
+		// console.log(
+		// !oneLevelCurrentMonthArray.includes(pSelDaysArray[middleDayIndex].format("DD-MM-YY"))
+		// );
 
 		if (
 			!oneLevelCurrentMonthArray.includes(pSelDaysArray[middleDayIndex].format("DD-MM-YY")) ||
 			!oneLevelCurrentMonthArray.includes(pSelDaysArray[0].format("DD-MM-YY"))
 		) {
-			setCurrentMonthIdx(currentMonthIdx + 1);
+			setMonthIndex(monthIndex + 1);
 		}
-		console.log(currentMonthIdx);
 	}
 
 	function handlePrevMonth() {
-		setCurrentMonthIdx(currentMonthIdx - 1);
+		setMonthIndex(monthIndex - 1);
 	}
 
 	function handleNextMonth() {
-		setCurrentMonthIdx(currentMonthIdx + 1);
+		setMonthIndex(monthIndex + 1);
 	}
 
 	function getTodayClass(day) {
@@ -152,6 +147,7 @@ const Calendar = () => {
 			}
 
 			setSelectedDaysArray(getProperSelectedDays(res));
+			// setMonthIndex(currentMonthIdx);
 		}
 	}
 
@@ -193,7 +189,7 @@ const Calendar = () => {
 		<div className='mt-9'>
 			<header className='flex justify-between'>
 				<p className='text-gray-500 font-bold'>
-					{dayjs(new Date(dayjs().year(), currentMonthIdx - 1)).format("MMMM YYYY")}
+					{dayjs(new Date(dayjs().year(), monthIndex - 1)).format("MMMM YYYY")}
 				</p>
 				<div>
 					<button onClick={handlePrevMonth}>

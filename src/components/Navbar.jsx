@@ -59,8 +59,8 @@ const Navbar = () => {
 			});
 		});
 
-		// console.log(oneLevelCurrentMonthArray);
 		let pSelDaysArray = [];
+
 		if (isNext) pSelDaysArray = handleNextTimespanChange(selectedDaysArray);
 		else pSelDaysArray = handlePrevTimespanChange(selectedDaysArray);
 		// middle day of the selectedDays array
@@ -81,7 +81,6 @@ const Navbar = () => {
 			if (isNext) setMonthIndex(monthIndex + 1);
 			else setMonthIndex(monthIndex - 1);
 		}
-		console.log(monthIndex);
 	}
 
 	return (
