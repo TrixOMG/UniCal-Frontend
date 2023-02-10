@@ -31,6 +31,8 @@ const GlobalContextProvider = ({ children }) => {
 	const [showSidebar, setShowSidebar] = useState(true);
 	const [showEventModal, setShowEventModal] = useState(false);
 	const [chosenDayForTask, setChosenDayForTask] = useState(dayjs());
+	// для отображения меню изменения таска
+	const [selectedEvent, setSelectedEvent] = useState(null);
 
 	const [savedEvents, dispatchCalEvent] = useReducer(savedEventsReducer, [], initEvents);
 
@@ -58,6 +60,8 @@ const GlobalContextProvider = ({ children }) => {
 		setChosenDay,
 		dispatchCalEvent,
 		savedEvents,
+		selectedEvent,
+		setSelectedEvent,
 		// isMouseDown,
 		// setIsMouseDown,
 	};

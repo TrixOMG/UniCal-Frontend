@@ -4,11 +4,14 @@ import { useGlobalContext } from "../context/context";
 const labelsClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
 
 const EventModal = () => {
-	const { setShowEventModal, chosenDayForTask, dispatchCalEvent } = useGlobalContext();
+	const { setShowEventModal, chosenDayForTask, dispatchCalEvent, selectedEvent, setSelectedEvent } =
+		useGlobalContext();
 
-	const [title, setTitle] = useState("");
-	const [description, setDescription] = useState("");
-	const [selectedLabel, setSelectedLabel] = useState(labelsClasses[0]);
+	const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
+	const [description, setDescription] = useState(selectedEvent ? selectedEvent.description : "");
+	const [selectedLabel, setSelectedLabel] = useState(
+		selectedEvent ? labelsClasses.find((lbl) => lbl === selectedEvent.label) : labelsClasses[0]
+	);
 
 	function handleSubmit(e) {
 		e.preventDefault();
@@ -17,9 +20,15 @@ const EventModal = () => {
 			description,
 			label: selectedLabel,
 			day: chosenDayForTask.valueOf(),
-			id: Date.now(),
+			id: selectedEvent ? selectedEvent.id : Date.now(),
 		};
-		dispatchCalEvent({ type: "push", payload: calendarEvent });
+
+		if (selectedEvent) {
+			dispatchCalEvent({ type: "update", payload: calendarEvent });
+		} else {
+			dispatchCalEvent({ type: "push", payload: calendarEvent });
+		}
+
 		setShowEventModal(false);
 	}
 
@@ -28,11 +37,29 @@ const EventModal = () => {
 			<form className='bg-white rounded-lg shadow-2xl w-1/4'>
 				<header className='bg-gray-100 px-4 py-2 flex justify-between items-center'>
 					<span className='material-icons text-gray-400 cursor-move'>drag_handle</span>
-					<button type='button'>
-						<span className='material-icons text-gray-400' onClick={() => setShowEventModal(false)}>
-							close
-						</span>
-					</button>
+					<div>
+						{selectedEvent && (
+							<button
+								onClick={() => {
+									dispatchCalEvent({ type: "delete", payload: selectedEvent });
+									setShowEventModal(false);
+								}}
+							>
+								<span className='material-icons text-gray-400'>delete</span>
+							</button>
+						)}
+						<button type='button'>
+							<span
+								className='material-icons text-gray-400'
+								onClick={() => {
+									setShowEventModal(false);
+									setSelectedEvent(null);
+								}}
+							>
+								close
+							</span>
+						</button>
+					</div>
 				</header>
 				<div className='p-3'>
 					<div className='gird- grid-cols-1 grid-rows-5 items-end gap-y-7'>

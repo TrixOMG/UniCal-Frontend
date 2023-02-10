@@ -1,12 +1,12 @@
 import React from "react";
-// import { useGlobalContext } from "../context/context";
+import { useGlobalContext } from "../context/context";
 
 const Event = ({ pEvent }) => {
-	// const { showEventModal, setShowEventModal } = useGlobalContext();
+	const { selectedEvent, setSelectedEvent } = useGlobalContext();
 	return (
 		<div
+			onClick={() => setSelectedEvent(pEvent)}
 			className={`bg-${pEvent.label}-300 p-1 mr-3 text-gray-600 text-sm rounded-lg mb-1 truncate`}
-			// onClick={() => setShowEventModal(true)}
 		>
 			{pEvent.title}
 		</div>
