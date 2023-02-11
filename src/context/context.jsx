@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import React, { useContext, useEffect, useReducer, useState } from "react";
-import { getMonth, getProperSelectedDays } from "../util/util";
+import React, { useContext, useEffect, useMemo, useReducer, useState } from "react";
+import { getProperSelectedDays } from "../util/util";
 
 function savedEventsReducer(state, { type, payload }) {
 	switch (type) {
@@ -33,17 +33,40 @@ const GlobalContextProvider = ({ children }) => {
 	const [chosenDayForTask, setChosenDayForTask] = useState(dayjs());
 	// для отображения меню изменения таска
 	const [selectedEvent, setSelectedEvent] = useState(null);
+	// groups
+	const [groups, setGroups] = useState([]);
 
 	const [savedEvents, dispatchCalEvent] = useReducer(savedEventsReducer, [], initEvents);
+
+	const filteredEvents = useMemo(() => {
+		return savedEvents.filter((evt) =>
+			groups
+				.filter((group) => group.checked)
+				.map((group) => group.label)
+				.includes(evt.label)
+		);
+	}, [savedEvents, groups]);
 
 	useEffect(() => {
 		localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
 	}, [savedEvents]);
 
+	// groups work
+	useEffect(() => {
+		setGroups((prevGroups) => {
+			return [...new Set(savedEvents.map((evt) => evt.label))].map((label) => {
+				const currentLabel = prevGroups.find((group) => group.label === label);
+				return { label, checked: currentLabel ? currentLabel.checked : true };
+			});
+		});
+	}, [savedEvents]);
+
 	const [selectedDaysArray, setSelectedDaysArray] = useState(getProperSelectedDays([dayjs()]));
 	const [chosenDay, setChosenDay] = useState(dayjs());
 
-	// const [isMouseDown, setIsMouseDown] = useState(false);
+	function updateGroup(label) {
+		setGroups(groups.map((group) => (group.label === label.label ? label : group)));
+	}
 
 	const value = {
 		monthIndex,
@@ -62,15 +85,13 @@ const GlobalContextProvider = ({ children }) => {
 		savedEvents,
 		selectedEvent,
 		setSelectedEvent,
+		groups,
+		setGroups,
+		updateGroup,
+		filteredEvents,
 		// isMouseDown,
 		// setIsMouseDown,
 	};
-
-	// useEffect(() => {
-	// if (!showEventModal) {
-	// setSelectedEvent(null);
-	// }
-	// }, [showEventModal]);
 
 	return <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>;
 };

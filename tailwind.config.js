@@ -28,6 +28,13 @@ module.exports = {
 			"bg-blue-300",
 			"bg-green-300",
 			"bg-gray-300",
+
+			"text-indigo-400",
+			"text-red-400",
+			"text-purple-400",
+			"text-blue-400",
+			"text-green-400",
+			"text-gray-400",
 		],
 	},
 	theme: {
@@ -38,5 +45,5 @@ module.exports = {
 			},
 		},
 	},
-	plugins: [],
+	plugins: [require("@tailwindcss/forms")],
 };

@@ -5,14 +5,14 @@ import Event from "./Event";
 
 const Day = ({ pDay, rowIdx }) => {
 	const [dayEvents, setDayEvents] = useState([]);
-	const { setShowEventModal, setChosenDayForTask, savedEvents } = useGlobalContext();
+	const { setShowEventModal, setChosenDayForTask, filteredEvents } = useGlobalContext();
 
 	useEffect(() => {
-		const events = savedEvents.filter(
+		const events = filteredEvents.filter(
 			(evt) => dayjs(evt.day).format("DD-MM-YY") === pDay.format("DD-MM-YY")
 		);
 		setDayEvents(events);
-	}, [savedEvents, pDay]);
+	}, [filteredEvents, pDay]);
 
 	function getAccentOnToday() {
 		console.table();

@@ -29,21 +29,12 @@ const Calendar = () => {
 			});
 		});
 
-		// console.log(oneLevelCurrentMonthArray);
-		// console.log(monthIndex);
 		let pSelDaysArray = [];
 		pSelDaysArray = selectedDaysArray;
-		// console.log("cal", pSelDaysArray);
-		// middle day of the selectedDays array
 		let middleDayIndex = 0;
 
 		if (pSelDaysArray.length % 2 === 0) middleDayIndex = pSelDaysArray.length / 2 - 1;
 		else middleDayIndex = Math.floor(pSelDaysArray.length / 2);
-		// console.log(pSelDaysArray[middleDayIndex].format("DD-MM-YY"));
-
-		// console.log(
-		// !oneLevelCurrentMonthArray.includes(pSelDaysArray[middleDayIndex].format("DD-MM-YY"))
-		// );
 
 		if (
 			!oneLevelCurrentMonthArray.includes(pSelDaysArray[middleDayIndex].format("DD-MM-YY")) ||

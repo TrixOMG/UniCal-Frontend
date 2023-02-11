@@ -43,6 +43,7 @@ const EventModal = () => {
 								onClick={() => {
 									dispatchCalEvent({ type: "delete", payload: selectedEvent });
 									setShowEventModal(false);
+									setSelectedEvent(null);
 								}}
 							>
 								<span className='material-icons text-gray-400'>delete</span>
