@@ -83,6 +83,32 @@ const Navbar = () => {
 		}
 	}
 
+	function renderMonthAndYear() {
+		const monthOfTheFirstDay = selectedDaysArray[0].month();
+		const yearOfTheFirstDay = selectedDaysArray[0].year();
+		if (
+			selectedDaysArray[selectedDaysArray.length - 1].month() === monthOfTheFirstDay &&
+			selectedDaysArray[selectedDaysArray.length - 1].year() === yearOfTheFirstDay
+		) {
+			return selectedDaysArray[0].format("MMMM YYYY");
+		} else if (
+			selectedDaysArray[selectedDaysArray.length - 1].month() !== monthOfTheFirstDay &&
+			selectedDaysArray[selectedDaysArray.length - 1].year() === yearOfTheFirstDay
+		) {
+			return (
+				selectedDaysArray[0].format("MMM") +
+				" - " +
+				selectedDaysArray[selectedDaysArray.length - 1].format("MMM YYYY")
+			);
+		} else {
+			return (
+				selectedDaysArray[0].format("MMM YYYY") +
+				" - " +
+				selectedDaysArray[selectedDaysArray.length - 1].format("MMM YYYY")
+			);
+		}
+	}
+
 	return (
 		<header className='px-4 py-2 flex items-center align-middle border rounded-lg rounded-t-none mx-1'>
 			<div
@@ -116,6 +142,7 @@ const Navbar = () => {
 			</button>
 			<h2 className=' ml-4 text-xl text-gray-500 font-bold'>
 				{/* TODO: переделать под отображение нескольких месяцев в зависимости от выбранных дней */}
+				{renderMonthAndYear()}
 				{/* {dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY")} */}
 			</h2>
 		</header>
