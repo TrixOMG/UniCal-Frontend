@@ -15,6 +15,9 @@ const EventModal = () => {
 
 	function handleSubmit(e) {
 		e.preventDefault();
+
+		if (title.trim() === "") return;
+
 		const calendarEvent = {
 			title,
 			description,
