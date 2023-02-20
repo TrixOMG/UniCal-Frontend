@@ -96,15 +96,15 @@ const Navbar = () => {
 			selectedDaysArray[selectedDaysArray.length - 1].year() === yearOfTheFirstDay
 		) {
 			return (
-				selectedDaysArray[0].format("MMM") +
+				selectedDaysArray[0].format("MMMM") +
 				" - " +
-				selectedDaysArray[selectedDaysArray.length - 1].format("MMM YYYY")
+				selectedDaysArray[selectedDaysArray.length - 1].format("MMMM YYYY")
 			);
 		} else {
 			return (
-				selectedDaysArray[0].format("MMM YYYY") +
+				selectedDaysArray[0].format("MMMM YYYY") +
 				" - " +
-				selectedDaysArray[selectedDaysArray.length - 1].format("MMM YYYY")
+				selectedDaysArray[selectedDaysArray.length - 1].format("MMMM YYYY")
 			);
 		}
 	}

@@ -63,14 +63,14 @@ const EventModal = () => {
 					</div>
 				</header>
 				<div className='p-3'>
-					<div className='gird- grid-cols-1 grid-rows-5 items-end gap-y-7'>
+					<div className='grid grid-cols-1/5 items-end gap-y-7'>
 						<div></div>
 						<input
 							type='text'
 							name='title'
 							placeholder='Add Title'
 							required
-							className='pt-3 border-0 text-gray-600 text-xl font-semibold pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500'
+							className='pt-3 border-0 text-gray-600 text-xl font-semibold w-full pb-2 border-b-2 border-gray-200 focus:outline-none focus:border-b-blue-500'
 							value={title}
 							onChange={(e) => setTitle(e.target.value)}
 						/>
@@ -114,5 +114,5 @@ const EventModal = () => {
 		</div>
 	);
 };
-// TODO: 2:04:38
+
 export default EventModal;
