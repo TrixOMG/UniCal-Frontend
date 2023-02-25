@@ -37,6 +37,9 @@ const GlobalContextProvider = ({ children }) => {
   const [showSidebar, setShowSidebar] = useState(true);
   const [showEventModal, setShowEventModal] = useState(false);
   const [chosenDayForTask, setChosenDayForTask] = useState(dayjs());
+
+  const [wasDragging, setWasDragging] = useState(true);
+
   // для отображения меню изменения таска
   const [selectedEvent, setSelectedEvent] = useState(null);
   // groups
@@ -103,6 +106,8 @@ const GlobalContextProvider = ({ children }) => {
     setGroups,
     updateGroup,
     filteredEvents,
+    wasDragging,
+    setWasDragging,
     // isMouseDown,
     // setIsMouseDown,
   };

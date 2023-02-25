@@ -11,12 +11,8 @@ const MainDaysComponent = ({ timeSpan }) => {
     getMonth(dayjs().month())
   );
 
-  const {
-    selectedDaysArray,
-    setShowEventModal,
-    savedEvents,
-    dispatchCalEvent,
-  } = useGlobalContext();
+  const { selectedDaysArray, setWasDragging, savedEvents, dispatchCalEvent } =
+    useGlobalContext();
 
   useEffect(() => {
     if (timeSpan.length > 0)
@@ -39,6 +35,7 @@ const MainDaysComponent = ({ timeSpan }) => {
   }
 
   function handleDragEnd({ destination, source, draggableId }) {
+    setWasDragging(true);
     // console.log(data);
 
     // если таск дропнули в место куда его нельзя дропнуть
@@ -60,7 +57,6 @@ const MainDaysComponent = ({ timeSpan }) => {
       destination.index !== source.index &&
       destination.droppableId === source.droppableId
     ) {
-      console.log("тот же день но другой порядок");
       let copySavedEventsOnThisDay = [...savedEvents].filter((evt) => {
         return evt.day === parseInt(source.droppableId);
       });
@@ -90,7 +86,6 @@ const MainDaysComponent = ({ timeSpan }) => {
     // если таск дропнули в другой день
     // + тут меняется его индекс внутри дня
     if (destination.droppableId !== source.droppableId) {
-      console.log("другой день и другой порядок");
       // удалить актуал таск из сурс дня
       dispatchCalEvent({ type: "delete", payload: draggedEvent });
 
@@ -99,72 +94,21 @@ const MainDaysComponent = ({ timeSpan }) => {
         return evt.day === parseInt(destination.droppableId);
       });
 
-      console.log(copyDestDayTasks);
-      // если тасков нет, то просто добавить в актуал драг-таск
-      // if (copyDestDayTasks.length === 0) {
-      //   // console.log("===1");
-      //   dispatchCalEvent({ type: "push", payload: draggedEvent });
-      // } else {
-      //   console.log("есть другие таски");
-      // если таски есть, то вставить в нужное место драг-таск (не актуал)
       copyDestDayTasks.forEach((evt) => {
         return dispatchCalEvent({ type: "delete", payload: evt });
       });
-
-      // console.log(draggedEvent);
 
       // изменить дату внутри таска на новую (дест)
       draggedEvent.day = parseInt(destination.droppableId);
 
       // Adding to new items array location
       copyDestDayTasks.splice(destination.index, 0, draggedEvent);
-      console.log(copyDestDayTasks);
 
       // Updating actual values
       copyDestDayTasks.forEach((evt) => {
         return dispatchCalEvent({ type: "push", payload: evt });
       });
-      // }
     }
-
-    // let copySavedEventsOnThisDay = [];
-    // // изменение порядка задач внутри одного дня
-    // if (destination.droppableId === source.droppableId) {
-    //   // console.log(savedEvents[0].day, destination);
-    //   copySavedEventsOnThisDay = [...savedEvents].filter((evt) => {
-    //     return evt.day === parseInt(source.droppableId);
-    //   });
-    // }
-    // // Deleting tasks from actual values
-    // copySavedEventsOnThisDay.forEach((evt) => {
-    //   return dispatchCalEvent({ type: "delete", payload: evt });
-    // });
-
-    // let event = copySavedEventsOnThisDay.filter((evt) => {
-    //   return evt.id === parseInt(draggableId);
-    // });
-
-    // // Remove from prev items array
-    // copySavedEventsOnThisDay = copySavedEventsOnThisDay.filter((evt) => {
-    //   return evt.id !== event[0].id;
-    // });
-
-    // // Adding to new items array location
-    // copySavedEventsOnThisDay.splice(destination.index, 0, event[0]);
-
-    // // Updating actual values
-    // copySavedEventsOnThisDay.forEach((evt) => {
-    //   return dispatchCalEvent({ type: "push", payload: evt });
-    // });
-
-    // // console.log(copySavedEventsOnThisDay);
-    // // console.log(event);
-
-    // // место где меняется расположение таска
-    // // (перенос его на другой день через DND)
-    // setShowEventModal(false);
-    // draggedEvent.day = parseInt(destination.droppableId);
-    // dispatchCalEvent({ type: "update", payload: draggedEvent });
   }
 
   return (

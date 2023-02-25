@@ -5,6 +5,8 @@ import { useGlobalContext } from "../context/context";
 
 const Day = ({ pDay, rowIdx }) => {
   const [dayEvents, setDayEvents] = useState([]);
+  const { wasDragging, setWasDragging } = useGlobalContext();
+
   const { setShowEventModal, setChosenDayForTask, filteredEvents } =
     useGlobalContext();
 
@@ -26,6 +28,15 @@ const Day = ({ pDay, rowIdx }) => {
     }
   }
 
+  function handleClick() {
+    if (wasDragging) {
+      setWasDragging(false);
+      return;
+    }
+    setChosenDayForTask(pDay);
+    setShowEventModal(true);
+  }
+
   return (
     <div className='border border-gray-200 flex flex-col h-full rounded-lg'>
       <header className='flex flex-col items-center h-10'>
@@ -45,9 +56,10 @@ const Day = ({ pDay, rowIdx }) => {
           return (
             <div
               className='flex-1 cursor-pointer pt-5'
-              onClick={() => {
-                setChosenDayForTask(pDay);
-                setShowEventModal(true);
+              onMouseDown={() => {
+                handleClick();
+                // setChosenDayForTask(pDay);
+                // setShowEventModal(true);
               }}
               ref={provided.innerRef}
               {...provided.droppableProps}
@@ -63,12 +75,24 @@ const Day = ({ pDay, rowIdx }) => {
                       return (
                         <div
                           onClick={() => setSelectedEvent(evt)}
-                          className={`bg-${evt.label}-300 p-1 mx-1 text-gray-600 text-sm rounded-lg mb-1 truncate`}
+                          className={`bg-${evt.label}-300 p-1 mx-1 text-gray-600 text-sm rounded-lg mb-1 flex flex-row justify-between`}
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          {evt.title}
+                          <p className='truncate p-1'>{evt.title}</p>
+                          {/* <div>
+                            <span
+                              className='material-icons text-gray-600 cursor-pointer'
+                            >
+                              more_vert
+                            </span>
+                            <span
+                              className='material-icons text-gray-600 cursor-pointer'
+                            >
+                              edit
+                            </span> */}
+                          {/* </div> */}
                         </div>
                       );
                     }}
