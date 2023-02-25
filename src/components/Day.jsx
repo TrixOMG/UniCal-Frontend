@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useGlobalContext } from "../context/context";
-// import Event from "./Event";
 
 const Day = ({ pDay, rowIdx }) => {
   const [dayEvents, setDayEvents] = useState([]);
@@ -55,7 +54,11 @@ const Day = ({ pDay, rowIdx }) => {
             >
               {dayEvents.map((evt, idx) => {
                 return (
-                  <Draggable key={idx} index={idx} draggableId={evt.id + ""}>
+                  <Draggable
+                    key={evt.id + ""}
+                    index={idx}
+                    draggableId={evt.id + ""}
+                  >
                     {(provided) => {
                       return (
                         <div

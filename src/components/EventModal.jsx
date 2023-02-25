@@ -1,16 +1,27 @@
+import dayjs from "dayjs";
 import React, { useState } from "react";
 import { useGlobalContext } from "../context/context";
 
 const labelsClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
 
 const EventModal = () => {
-  const { setShowEventModal, chosenDayForTask, dispatchCalEvent, selectedEvent, setSelectedEvent } =
-    useGlobalContext();
+  const {
+    setShowEventModal,
+    chosenDayForTask,
+    dispatchCalEvent,
+    selectedEvent,
+    setSelectedEvent,
+    // filteredEvents,
+  } = useGlobalContext();
 
   const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
-  const [description, setDescription] = useState(selectedEvent ? selectedEvent.description : "");
+  const [description, setDescription] = useState(
+    selectedEvent ? selectedEvent.description : ""
+  );
   const [selectedLabel, setSelectedLabel] = useState(
-    selectedEvent ? labelsClasses.find((lbl) => lbl === selectedEvent.label) : labelsClasses[0]
+    selectedEvent
+      ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
+      : labelsClasses[0]
   );
 
   function handleSubmit(e) {
@@ -39,7 +50,9 @@ const EventModal = () => {
     <div className='h-screen w-full fixed left-0 top-0 flex justify-center items-center'>
       <form className='bg-white rounded-lg shadow-2xl w-1/4'>
         <header className='bg-gray-100 px-4 py-2 flex justify-between items-center'>
-          <span className='material-icons text-gray-400 cursor-move'>drag_handle</span>
+          <span className='material-icons text-gray-400 cursor-move'>
+            drag_handle
+          </span>
           <div>
             {selectedEvent && (
               <button
@@ -88,7 +101,9 @@ const EventModal = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
-            <span className='material-icons text-gray-400'>bookmark_border</span>
+            <span className='material-icons text-gray-400'>
+              bookmark_border
+            </span>
             <div className='flex gap-x-2'>
               {labelsClasses.map((lblClass, i) => (
                 <span
@@ -97,7 +112,9 @@ const EventModal = () => {
                   className={`bg-${lblClass}-500 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer `}
                 >
                   {selectedLabel === lblClass && (
-                    <span className='material-icons text-white text-sm'>check</span>
+                    <span className='material-icons text-white text-sm'>
+                      check
+                    </span>
                   )}
                 </span>
               ))}
