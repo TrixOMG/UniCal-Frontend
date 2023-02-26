@@ -5,9 +5,9 @@ import { useGlobalContext } from "../context/context";
 
 const Day = ({ pDay, rowIdx }) => {
   const [dayEvents, setDayEvents] = useState([]);
-  const { wasDragging, setWasDragging } = useGlobalContext();
+  // const [isHoveringDay, setIsHoveringDay] = useState(false);
 
-  const { setShowEventModal, setChosenDayForTask, filteredEvents } =
+  const { setShowEventModal, setChosenDayForTask, filteredEvents, isDragging } =
     useGlobalContext();
 
   const { setSelectedEvent } = useGlobalContext();
@@ -29,13 +29,28 @@ const Day = ({ pDay, rowIdx }) => {
   }
 
   function handleClick() {
-    if (wasDragging) {
-      setWasDragging(false);
-      return;
-    }
     setChosenDayForTask(pDay);
     setShowEventModal(true);
   }
+
+  // group-hover:visible
+  // function setVisibility() {
+  //   if (isHoveringDay) {
+  //     return "group-hover:visible";
+  //   } else {
+  //     return "";
+  //   }
+  // }
+  // {/* <div className='group mr-2'>
+  //   <button
+  //     className={`invisible p-1 mx-1 bg-gray-300 text-gray-600 text-sm rounded-lg mb-1 flex flex-row justify-center w-full ${setVisibility()}`}
+  //   >
+  //     <span className='material-icons text-gray-600 cursor-pointer text-sm'>
+  //       edit
+  //     </span>
+  //     New Task
+  //   </button>
+  // </div> */}
 
   return (
     <div className='border border-gray-200 flex flex-col h-full rounded-lg'>
@@ -55,11 +70,10 @@ const Day = ({ pDay, rowIdx }) => {
         {(provided) => {
           return (
             <div
-              className='flex-1 cursor-pointer pt-5'
-              onMouseDown={() => {
-                handleClick();
-                // setChosenDayForTask(pDay);
-                // setShowEventModal(true);
+              className='flex-1 pt-5 group'
+              onClick={() => {
+                setShowEventModal(true);
+                // handleClick();
               }}
               ref={provided.innerRef}
               {...provided.droppableProps}
@@ -81,18 +95,6 @@ const Day = ({ pDay, rowIdx }) => {
                           {...provided.dragHandleProps}
                         >
                           <p className='truncate p-1'>{evt.title}</p>
-                          {/* <div>
-                            <span
-                              className='material-icons text-gray-600 cursor-pointer'
-                            >
-                              more_vert
-                            </span>
-                            <span
-                              className='material-icons text-gray-600 cursor-pointer'
-                            >
-                              edit
-                            </span> */}
-                          {/* </div> */}
                         </div>
                       );
                     }}
@@ -100,6 +102,21 @@ const Day = ({ pDay, rowIdx }) => {
                 );
               })}
               {provided.placeholder}
+              <div className='mr-2'>
+                <button
+                  className={`invisible ${
+                    !isDragging && "group-hover:visible"
+                  } p-1 mx-1 bg-gray-300 text-gray-600 text-sm rounded-lg mb-1 flex flex-row justify-center w-full `}
+                  onClick={() => {
+                    handleClick();
+                  }}
+                >
+                  <span className='material-icons text-gray-600 cursor-pointer text-sm'>
+                    edit
+                  </span>
+                  New Task
+                </button>
+              </div>
             </div>
           );
         }}

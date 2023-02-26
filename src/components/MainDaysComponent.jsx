@@ -11,7 +11,9 @@ const MainDaysComponent = ({ timeSpan }) => {
     getMonth(dayjs().month())
   );
 
-  const { selectedDaysArray, setWasDragging, savedEvents, dispatchCalEvent } =
+  // const [isDragging, setIsDragging] = useState(false);
+
+  const { selectedDaysArray, savedEvents, dispatchCalEvent, setIsDragging } =
     useGlobalContext();
 
   useEffect(() => {
@@ -35,7 +37,7 @@ const MainDaysComponent = ({ timeSpan }) => {
   }
 
   function handleDragEnd({ destination, source, draggableId }) {
-    setWasDragging(true);
+    setIsDragging(false);
     // console.log(data);
 
     // если таск дропнули в место куда его нельзя дропнуть
@@ -112,7 +114,10 @@ const MainDaysComponent = ({ timeSpan }) => {
   }
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
+    <DragDropContext
+      onDragEnd={handleDragEnd}
+      onDragStart={() => setIsDragging(true)}
+    >
       <div
         className={`mx-1 flex-1 grid gap-1 ${
           selectedDaysArray.length > 0
