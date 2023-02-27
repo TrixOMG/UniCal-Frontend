@@ -1,5 +1,5 @@
 // import dayjs from "dayjs";
-import { placements } from "@popperjs/core";
+import { placements, viewport } from "@popperjs/core";
 import React, { useState } from "react";
 import { usePopper } from "react-popper";
 import { useGlobalContext } from "../context/context";
@@ -31,7 +31,22 @@ const EventModal = () => {
   const [popperElement, setPopperElement] = useState([]);
 
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: "right-start",
+    placement: "auto",
+    modifiers: [
+      {
+        name: "offset",
+        options: {
+          offset: [0, 10],
+        },
+      },
+      {
+        name: "flip",
+        options: {
+          allowedAutoPlacements: ["right-start", "left-start", "bottom"],
+          rootBoundary: "viewport",
+        },
+      },
+    ],
   });
 
   function handleSubmit(e) {

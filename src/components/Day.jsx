@@ -5,7 +5,6 @@ import { useGlobalContext } from "../context/context";
 
 const Day = ({ pDay, rowIdx }) => {
   const [dayEvents, setDayEvents] = useState([]);
-  // const [isHoveringDay, setIsHoveringDay] = useState(false);
 
   const {
     setShowEventModal,
