@@ -7,8 +7,13 @@ const Day = ({ pDay, rowIdx }) => {
   const [dayEvents, setDayEvents] = useState([]);
   // const [isHoveringDay, setIsHoveringDay] = useState(false);
 
-  const { setShowEventModal, setChosenDayForTask, filteredEvents, isDragging } =
-    useGlobalContext();
+  const {
+    setShowEventModal,
+    setChosenDayForTask,
+    filteredEvents,
+    isDragging,
+    setReferenceElement,
+  } = useGlobalContext();
 
   const { setSelectedEvent } = useGlobalContext();
 
@@ -33,25 +38,6 @@ const Day = ({ pDay, rowIdx }) => {
     setShowEventModal(true);
   }
 
-  // group-hover:visible
-  // function setVisibility() {
-  //   if (isHoveringDay) {
-  //     return "group-hover:visible";
-  //   } else {
-  //     return "";
-  //   }
-  // }
-  // {/* <div className='group mr-2'>
-  //   <button
-  //     className={`invisible p-1 mx-1 bg-gray-300 text-gray-600 text-sm rounded-lg mb-1 flex flex-row justify-center w-full ${setVisibility()}`}
-  //   >
-  //     <span className='material-icons text-gray-600 cursor-pointer text-sm'>
-  //       edit
-  //     </span>
-  //     New Task
-  //   </button>
-  // </div> */}
-
   return (
     <div className='border border-gray-200 flex flex-col h-full rounded-lg'>
       <header className='flex flex-col items-center h-10'>
@@ -71,10 +57,10 @@ const Day = ({ pDay, rowIdx }) => {
           return (
             <div
               className='flex-1 pt-5 group'
-              onClick={() => {
-                setShowEventModal(true);
-                // handleClick();
-              }}
+              // onClick={() => {
+              // setShowEventModal(true);
+              // handleClick();
+              // }}
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
@@ -88,13 +74,21 @@ const Day = ({ pDay, rowIdx }) => {
                     {(provided) => {
                       return (
                         <div
-                          onClick={() => setSelectedEvent(evt)}
-                          className={`bg-${evt.label}-300 p-1 mx-1 text-gray-600 text-sm rounded-lg mb-1 flex flex-row justify-between`}
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
+                          ref={setReferenceElement}
+                          onClick={(e) => setReferenceElement(e.target)}
                         >
-                          <p className='truncate p-1'>{evt.title}</p>
+                          <div
+                            onClick={() => {
+                              setSelectedEvent(evt);
+                              setShowEventModal(true);
+                            }}
+                            className={`bg-${evt.label}-300 p-1 mx-1 text-gray-600 text-sm rounded-lg mb-1 flex flex-row justify-between`}
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <p className='truncate p-1'>{evt.title}</p>
+                          </div>
                         </div>
                       );
                     }}

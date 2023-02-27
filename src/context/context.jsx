@@ -45,6 +45,10 @@ const GlobalContextProvider = ({ children }) => {
   // groups
   const [groups, setGroups] = useState([]);
 
+  // POPPER
+  const [referenceElement, setReferenceElement] = useState(null);
+  // const [popperElement, setPopperElement] = useState(null);
+
   const [savedEvents, dispatchCalEvent] = useReducer(
     savedEventsReducer,
     [],
@@ -108,6 +112,8 @@ const GlobalContextProvider = ({ children }) => {
     filteredEvents,
     isDragging,
     setIsDragging,
+    referenceElement,
+    setReferenceElement,
   };
 
   return (
