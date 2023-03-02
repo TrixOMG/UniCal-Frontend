@@ -75,14 +75,16 @@ const Day = ({ pDay, rowIdx }) => {
                         <div
                           onClick={(e) => {
                             setReferenceElement(e.target);
-                            // console.log(e);
+                            setSelectedEvent(evt);
+                            setShowEventModal(true);
+                            // setShowEventModal(true);
                           }}
                           ref={setReferenceElement}
                         >
                           <div
                             onClick={() => {
                               setSelectedEvent(evt);
-                              setShowEventModal(true);
+                              // setShowEventModal(true);
                               // setReferenceElement(e.target);
                             }}
                             className={`bg-${evt.label}-300 p-1 mx-1 text-gray-600 text-sm rounded-lg mb-1 flex flex-row justify-between`}

@@ -1,6 +1,6 @@
 // import dayjs from "dayjs";
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
 import { useGlobalContext } from "../context/context";
 
@@ -18,6 +18,7 @@ const EventModal = () => {
     setReferenceElement,
   } = useGlobalContext();
 
+  //////////////
   const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
   const [description, setDescription] = useState(
     selectedEvent ? selectedEvent.description : ""
@@ -27,6 +28,21 @@ const EventModal = () => {
       ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
       : labelsClasses[0]
   );
+  //////////////
+
+  useEffect(() => {
+    if (selectedEvent) {
+      setTitle(selectedEvent.title);
+      setDescription(selectedEvent.description);
+      setSelectedLabel(
+        labelsClasses.find((lbl) => lbl === selectedEvent.label)
+      );
+    } else {
+      setTitle("");
+      setDescription("");
+      setSelectedLabel(labelsClasses[0]);
+    }
+  }, [selectedEvent]);
 
   // POPPER
   const [popperElement, setPopperElement] = useState([]);
@@ -59,7 +75,7 @@ const EventModal = () => {
       title,
       description,
       label: selectedLabel,
-      day: chosenDayForTask.valueOf(),
+      day: selectedEvent ? selectedEvent.day : chosenDayForTask.valueOf(),
       id: selectedEvent ? selectedEvent.id : Date.now(),
     };
 
@@ -94,7 +110,7 @@ const EventModal = () => {
                 dispatchCalEvent({ type: "delete", payload: selectedEvent });
                 setShowEventModal(false);
                 setSelectedEvent(null);
-                // setReferenceElement(null);
+                setReferenceElement(null);
               }}
             >
               <span className='material-icons text-gray-400'>delete</span>
@@ -106,7 +122,7 @@ const EventModal = () => {
               onClick={() => {
                 setShowEventModal(false);
                 setSelectedEvent(null);
-                // setReferenceElement(null);
+                setReferenceElement(null);
               }}
             >
               close

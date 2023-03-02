@@ -9,7 +9,7 @@ import "./index.css";
 import "./util/util";
 
 function App() {
-  const { showSidebar, showEventModal, selectedDaysArray } = useGlobalContext();
+  const { showSidebar, selectedDaysArray } = useGlobalContext();
 
   // const [currentMonth, setCurrentMonth] = useState(getMonth());
   // const [currentFiveDays, setCurrentFiveDays] = useState(getFiveDays(new Date()));
