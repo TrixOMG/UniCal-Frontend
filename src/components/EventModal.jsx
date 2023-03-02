@@ -8,6 +8,7 @@ const labelsClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
 
 const EventModal = () => {
   const {
+    showEventModal,
     setShowEventModal,
     chosenDayForTask,
     dispatchCalEvent,
@@ -71,10 +72,14 @@ const EventModal = () => {
     setShowEventModal(false);
   }
 
+  function getClassShow() {
+    return showEventModal ? "visible" : "invisible";
+  }
+
   return (
     // <div className='h-screen w-full fixed left-0 top-0 flex justify-center items-center'>
     <form
-      className='bg-white rounded-xl drop-shadow-lg w-1/4'
+      className={`bg-white rounded-xl drop-shadow-lg w-1/4 ${getClassShow()}`}
       ref={setPopperElement}
       style={styles.popper}
     >
@@ -89,7 +94,7 @@ const EventModal = () => {
                 dispatchCalEvent({ type: "delete", payload: selectedEvent });
                 setShowEventModal(false);
                 setSelectedEvent(null);
-                setReferenceElement(null);
+                // setReferenceElement(null);
               }}
             >
               <span className='material-icons text-gray-400'>delete</span>
@@ -101,7 +106,7 @@ const EventModal = () => {
               onClick={() => {
                 setShowEventModal(false);
                 setSelectedEvent(null);
-                setReferenceElement(null);
+                // setReferenceElement(null);
               }}
             >
               close

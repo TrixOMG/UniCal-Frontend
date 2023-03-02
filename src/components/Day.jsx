@@ -73,13 +73,17 @@ const Day = ({ pDay, rowIdx }) => {
                     {(provided) => {
                       return (
                         <div
+                          onClick={(e) => {
+                            setReferenceElement(e.target);
+                            // console.log(e);
+                          }}
                           ref={setReferenceElement}
-                          onClick={(e) => setReferenceElement(e.target)}
                         >
                           <div
                             onClick={() => {
                               setSelectedEvent(evt);
                               setShowEventModal(true);
+                              // setReferenceElement(e.target);
                             }}
                             className={`bg-${evt.label}-300 p-1 mx-1 text-gray-600 text-sm rounded-lg mb-1 flex flex-row justify-between`}
                             ref={provided.innerRef}
@@ -100,8 +104,9 @@ const Day = ({ pDay, rowIdx }) => {
                   className={`invisible ${
                     !isDragging && "group-hover:visible"
                   } p-1 mx-1 bg-gray-300 text-gray-600 text-sm rounded-lg mb-1 flex flex-row justify-center w-full `}
-                  onClick={() => {
+                  onClick={(e) => {
                     handleClick();
+                    setReferenceElement(e.target);
                   }}
                 >
                   <span className='material-icons text-gray-600 cursor-pointer text-sm'>

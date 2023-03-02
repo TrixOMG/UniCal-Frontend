@@ -100,10 +100,8 @@ const MainDaysComponent = ({ timeSpan }) => {
         return dispatchCalEvent({ type: "delete", payload: evt });
       });
 
-      console.log(draggedEvent);
       // изменить дату внутри таска на новую (дест)
       draggedEvent.day = parseInt(destination.droppableId);
-      console.log(draggedEvent);
 
       // Adding to new items array location
       copyDestDayTasks.splice(destination.index, 0, draggedEvent);
