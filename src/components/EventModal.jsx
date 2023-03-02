@@ -1,5 +1,5 @@
 // import dayjs from "dayjs";
-import { placements, viewport } from "@popperjs/core";
+import dayjs from "dayjs";
 import React, { useState } from "react";
 import { usePopper } from "react-popper";
 import { useGlobalContext } from "../context/context";
@@ -30,7 +30,7 @@ const EventModal = () => {
   // POPPER
   const [popperElement, setPopperElement] = useState([]);
 
-  const { styles, attributes } = usePopper(referenceElement, popperElement, {
+  const { styles } = usePopper(referenceElement, popperElement, {
     placement: "auto",
     modifiers: [
       {
@@ -122,7 +122,11 @@ const EventModal = () => {
             onChange={(e) => setTitle(e.target.value)}
           />
           <span className='material-icons text-gray-400'>schedule</span>
-          <p>{chosenDayForTask.format("dddd, MMMM DD")}</p>
+          <p>
+            {selectedEvent
+              ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
+              : chosenDayForTask.format("dddd, MMMM DD")}
+          </p>
           <span className='material-icons text-gray-400'>segment</span>
           <input
             type='text'
