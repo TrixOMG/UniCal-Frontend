@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useGlobalContext } from "../context/context";
 
@@ -10,8 +10,11 @@ const Day = ({ pDay, rowIdx }) => {
     setShowEventModal,
     setChosenDayForTask,
     filteredEvents,
-    isDragging,
     setReferenceElement,
+    showFakeTask,
+    setShowFakeTask,
+    chosenDayForTask,
+    // dispatchCalEvent,
   } = useGlobalContext();
 
   const { setSelectedEvent } = useGlobalContext();
@@ -32,34 +35,47 @@ const Day = ({ pDay, rowIdx }) => {
     }
   }
 
+  const newTaskReference = useRef(null);
+
   function handleClick() {
     setChosenDayForTask(pDay);
     setShowEventModal(true);
+    setShowFakeTask(true);
+    setReferenceElement(newTaskReference.current);
   }
 
   return (
-    <div className='border border-gray-200 flex flex-col h-full rounded-lg'>
-      <header className='flex flex-col items-center h-10'>
+    <div className='border border-gray-200 flex flex-col rounded-lg'>
+      <header
+        className='flex flex-col items-center bg-gray-300 rounded-t-lg pb-1'
+        onClick={() => handleClick()}
+      >
         {rowIdx === 0 && (
           <p className='text-sm mt-1'>
             {dayjs(pDay).format("ddd").toUpperCase()}
           </p>
         )}
         <p
-          className={`text-sm mt-1 w-7 h-7 text-center p-1 ${getAccentOnToday()}`}
+          className={`text-sm w-7 h-7 text-center p-[0.2em] ${getAccentOnToday()}`}
         >
           {dayjs(pDay).date()}
         </p>
       </header>
+      <div
+        className={`${
+          pDay === chosenDayForTask && showFakeTask
+            ? "display-block visible"
+            : "absolute invisible"
+        } mt-1 mx-1 text-white text-sm rounded-lg flex flex-row justify-between border-gray-300 border-2 p-[0.15em]`}
+        ref={newTaskReference}
+      >
+        fake Task
+      </div>
       <Droppable droppableId={pDay.valueOf() + ""}>
         {(provided) => {
           return (
             <div
-              className='flex-1 pt-5 group'
-              // onClick={() => {
-              // setShowEventModal(true);
-              // handleClick();
-              // }}
+              className='flex-1 my-1 overflow-y-hidden'
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
@@ -77,22 +93,20 @@ const Day = ({ pDay, rowIdx }) => {
                             setReferenceElement(e.target);
                             setSelectedEvent(evt);
                             setShowEventModal(true);
-                            // setShowEventModal(true);
                           }}
-                          ref={setReferenceElement}
                         >
                           <div
                             onClick={() => {
                               setSelectedEvent(evt);
-                              // setShowEventModal(true);
-                              // setReferenceElement(e.target);
                             }}
-                            className={`bg-${evt.label}-300 p-1 mx-1 text-gray-600 text-sm rounded-lg mb-1 flex flex-row justify-between`}
+                            className={`bg-${evt.label}-300 mx-1 text-gray-600 text-sm rounded-lg mb-1 flex flex-row justify-between`}
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                           >
-                            <p className='truncate p-1'>{evt.title}</p>
+                            <p className='truncate p-[0.20em] hover:cursor-pointer'>
+                              {evt.title}
+                            </p>
                           </div>
                         </div>
                       );
@@ -101,22 +115,6 @@ const Day = ({ pDay, rowIdx }) => {
                 );
               })}
               {provided.placeholder}
-              <div className='mr-2'>
-                <button
-                  className={`invisible ${
-                    !isDragging && "group-hover:visible"
-                  } p-1 mx-1 bg-gray-300 text-gray-600 text-sm rounded-lg mb-1 flex flex-row justify-center w-full `}
-                  onClick={(e) => {
-                    handleClick();
-                    setReferenceElement(e.target);
-                  }}
-                >
-                  <span className='material-icons text-gray-600 cursor-pointer text-sm'>
-                    edit
-                  </span>
-                  New Task
-                </button>
-              </div>
             </div>
           );
         }}

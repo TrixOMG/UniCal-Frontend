@@ -6,7 +6,17 @@ import React, {
   useReducer,
   useState,
 } from "react";
+
 import { getProperSelectedDays } from "../util/util";
+
+export const labelsClasses = [
+  "indigo",
+  "gray",
+  "green",
+  "blue",
+  "red",
+  "purple",
+];
 
 function savedEventsReducer(state, { type, payload }) {
   switch (type) {
@@ -16,6 +26,8 @@ function savedEventsReducer(state, { type, payload }) {
       return state.map((evt) => (evt.id === payload.id ? payload : evt));
     case "delete":
       return state.filter((evt) => evt.id !== payload.id);
+    case "pushFromStart":
+      return [payload, ...state];
     default:
       throw new Error("reducerError");
   }
@@ -38,7 +50,7 @@ const GlobalContextProvider = ({ children }) => {
   const [showEventModal, setShowEventModal] = useState(false);
   const [chosenDayForTask, setChosenDayForTask] = useState(dayjs());
 
-  const [isDragging, setIsDragging] = useState(false);
+  // const [wasDragging, setWasDragging] = useState(false);
 
   // для отображения меню изменения таска
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -48,6 +60,9 @@ const GlobalContextProvider = ({ children }) => {
   // POPPER
   const [referenceElement, setReferenceElement] = useState(null);
   // const [popperElement, setPopperElement] = useState(null);
+
+  // Fake Task
+  const [showFakeTask, setShowFakeTask] = useState(true);
 
   const [savedEvents, dispatchCalEvent] = useReducer(
     savedEventsReducer,
@@ -110,10 +125,10 @@ const GlobalContextProvider = ({ children }) => {
     setGroups,
     updateGroup,
     filteredEvents,
-    isDragging,
-    setIsDragging,
     referenceElement,
     setReferenceElement,
+    showFakeTask,
+    setShowFakeTask,
   };
 
   return (

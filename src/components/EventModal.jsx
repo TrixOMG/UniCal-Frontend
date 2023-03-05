@@ -2,9 +2,9 @@
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
-import { useGlobalContext } from "../context/context";
+import { labelsClasses, useGlobalContext } from "../context/context";
 
-const labelsClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
+//const labelsClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
 
 const EventModal = () => {
   const {
@@ -16,6 +16,7 @@ const EventModal = () => {
     setSelectedEvent,
     referenceElement,
     setReferenceElement,
+    setShowFakeTask,
   } = useGlobalContext();
 
   //////////////
@@ -48,7 +49,7 @@ const EventModal = () => {
   const [popperElement, setPopperElement] = useState([]);
 
   const { styles } = usePopper(referenceElement, popperElement, {
-    placement: "auto",
+    placement: "bottom-start",
     modifiers: [
       {
         name: "offset",
@@ -66,6 +67,8 @@ const EventModal = () => {
     ],
   });
 
+  // POPPER
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -82,10 +85,16 @@ const EventModal = () => {
     if (selectedEvent) {
       dispatchCalEvent({ type: "update", payload: calendarEvent });
     } else {
-      dispatchCalEvent({ type: "push", payload: calendarEvent });
+      dispatchCalEvent({ type: "pushFromStart", payload: calendarEvent });
     }
 
     setShowEventModal(false);
+    setSelectedEvent(null);
+    setReferenceElement(null);
+    setTitle("");
+    setDescription("");
+    setSelectedLabel(labelsClasses[0]);
+    setShowFakeTask(false);
   }
 
   function getClassShow() {
@@ -123,6 +132,7 @@ const EventModal = () => {
                 setShowEventModal(false);
                 setSelectedEvent(null);
                 setReferenceElement(null);
+                setShowFakeTask(false);
               }}
             >
               close

@@ -13,8 +13,13 @@ const MainDaysComponent = ({ timeSpan }) => {
 
   // const [isDragging, setIsDragging] = useState(false);
 
-  const { selectedDaysArray, savedEvents, dispatchCalEvent, setIsDragging } =
-    useGlobalContext();
+  const {
+    selectedDaysArray,
+    savedEvents,
+    dispatchCalEvent,
+    // setChosenDayForTask,
+//    setShowEventModal,
+  } = useGlobalContext();
 
   useEffect(() => {
     if (timeSpan.length > 0)
@@ -24,22 +29,21 @@ const MainDaysComponent = ({ timeSpan }) => {
   function getDaysGridClasses() {
     let rowsClass = "grid-rows-";
     let colsClass = "grid-cols-";
+    // let templateRows = "grid-rows-";
 
     if (selectedDaysArray.length <= 7) {
       rowsClass += 1;
       colsClass += selectedDaysArray.length;
+      // templateRows += "1week";
     } else if (selectedDaysArray.length > 7) {
       rowsClass += selectedDaysArray.length / 7;
       colsClass += 7;
     }
 
-    return rowsClass + " " + colsClass + " ";
+    return rowsClass + " " + colsClass + " "; // + templateRows;
   }
 
   function handleDragEnd({ destination, source, draggableId }) {
-    setIsDragging(false);
-    // console.log(data);
-
     // если таск дропнули в место куда его нельзя дропнуть
     if (!destination) return;
 
@@ -47,8 +51,9 @@ const MainDaysComponent = ({ timeSpan }) => {
     if (
       destination.index === source.index &&
       destination.droppableId === source.droppableId
-    )
+    ) {
       return;
+    }
 
     let draggedEvent = savedEvents.find(
       (evt) => evt.id === parseInt(draggableId)
@@ -114,26 +119,25 @@ const MainDaysComponent = ({ timeSpan }) => {
   }
 
   return (
-    <DragDropContext
-      onDragEnd={handleDragEnd}
-      onDragStart={() => setIsDragging(true)}
-    >
-      <div
-        className={`mx-1 flex-1 grid gap-1 ${
-          selectedDaysArray.length > 0
-            ? getDaysGridClasses() + " "
-            : "grid-cols-7 grid-rows-5 "
-        }`}
-      >
-        {properTimespan.map((row, i) => (
-          <React.Fragment key={i}>
-            {row.map((day, idx) => (
-              <Day pDay={day} key={idx} rowIdx={i} />
-            ))}
-          </React.Fragment>
-        ))}
-      </div>
-    </DragDropContext>
+    <div className='flex flex-1 max-h-[100%]'>
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <div
+          className={`mx-1 flex-1 grid gap-1 ${
+            selectedDaysArray.length > 0
+              ? getDaysGridClasses() + " "
+              : "grid-cols-7 grid-rows-4 "
+          }`}
+        >
+          {properTimespan.map((row, i) => (
+            <React.Fragment key={i}>
+              {row.map((day, idx) => (
+                <Day pDay={day} key={idx} rowIdx={i} />
+              ))}
+            </React.Fragment>
+          ))}
+        </div>
+      </DragDropContext>
+    </div>
   );
 };
 

@@ -22,10 +22,9 @@ function App() {
     <>
       {/* {showEventModal && <EventModal />} */}
       <EventModal />
-
       <div className='App h-screen flex flex-col'>
         <Navbar />
-        <div className='flex flex-1 p-1'>
+        <div className='flex flex-1 p-1 max-h-[90%]'>
           {showSidebar && <Sidebar />}
           <MainDaysComponent timeSpan={selectedDaysArray} />
           {/* {showFiveDays && <MainFiveDays pFiveDays={currentFiveDays} />} */}

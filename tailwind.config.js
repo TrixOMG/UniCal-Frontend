@@ -15,6 +15,7 @@ module.exports = {
       "grid-cols-7",
       "grid-rows-1",
       "grid-rows-2",
+      "grid-rows-3",
       "grid-rows-4",
       "grid-rows-5",
       "grid-rows-6",
@@ -47,6 +48,12 @@ module.exports = {
       gridTemplateColumns: {
         "1/5": "1fr 5fr",
       },
+      //   gridTemplateRows: {
+      //     "1week": "max(90%)",
+      //     "2week": "max(30%) max(30%)",
+      //     "3week": "max(33%) max(33%) max(33%)",
+      //     "4week": "max(30%) max(30%) max(30%) max(30%)",
+      //   },
     },
   },
   plugins: [require("@tailwindcss/forms")],
