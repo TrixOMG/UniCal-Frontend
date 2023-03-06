@@ -4,5 +4,5 @@
 //+ TODO 4: заставить глобальный контекст работать
 
 //+ TODO: fix height of the days
-// TODO: create empty task when creating and assigning it as a ref to event modal
-// TODO: create "more" button at the bottom of a day if all tasks cannot be shown
+//+ TODO: create empty task when creating and assigning it as a ref to event modal
+//+ TODO: create "more" button at the bottom of a day if all tasks cannot be shown

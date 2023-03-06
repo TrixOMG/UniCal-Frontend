@@ -66,10 +66,10 @@ const Day = ({ pDay, rowIdx }) => {
           pDay === chosenDayForTask && showFakeTask
             ? "display-block visible"
             : "absolute invisible"
-        } mt-1 mx-1 text-white text-sm rounded-lg flex flex-row justify-between border-gray-300 border-2 p-[0.15em]`}
+        } mt-1 mx-1 text-white text-sm rounded-lg flex flex-row justify-between border-gray-300 border-2 p-[0.15em] unselectable`}
         ref={newTaskReference}
       >
-        fake Task
+        /
       </div>
       <Droppable droppableId={pDay.valueOf() + ""}>
         {(provided) => {

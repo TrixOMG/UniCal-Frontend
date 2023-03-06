@@ -1,24 +1,20 @@
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
+import { DragDropContext } from "react-beautiful-dnd";
 import { useGlobalContext } from "../context/context";
 import { getMonth, getProperTimespanInMain } from "../util/util";
 import Day from "./Day";
-
-import { DragDropContext } from "react-beautiful-dnd";
 
 const MainDaysComponent = ({ timeSpan }) => {
   const [properTimespan, setProperTimespan] = useState(
     getMonth(dayjs().month())
   );
 
-  // const [isDragging, setIsDragging] = useState(false);
-
   const {
     selectedDaysArray,
     savedEvents,
     dispatchCalEvent,
-    // setChosenDayForTask,
-//    setShowEventModal,
+    //    setShowEventModal,
   } = useGlobalContext();
 
   useEffect(() => {
@@ -29,18 +25,16 @@ const MainDaysComponent = ({ timeSpan }) => {
   function getDaysGridClasses() {
     let rowsClass = "grid-rows-";
     let colsClass = "grid-cols-";
-    // let templateRows = "grid-rows-";
 
     if (selectedDaysArray.length <= 7) {
       rowsClass += 1;
       colsClass += selectedDaysArray.length;
-      // templateRows += "1week";
     } else if (selectedDaysArray.length > 7) {
       rowsClass += selectedDaysArray.length / 7;
       colsClass += 7;
     }
 
-    return rowsClass + " " + colsClass + " "; // + templateRows;
+    return rowsClass + " " + colsClass + " ";
   }
 
   function handleDragEnd({ destination, source, draggableId }) {

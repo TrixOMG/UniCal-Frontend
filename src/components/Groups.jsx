@@ -7,8 +7,13 @@ const Groups = () => {
   const { groups, updateGroup } = useGlobalContext();
 
   return (
-    <>
-      <p className='text-gray-500 font-bold mt-10'>Groups</p>
+    <div className='border border-gray-200 mt-10 rounded-lg'>
+      <header className='flex justify-between rounded-t-lg bg-gray-300'>
+        <p className='text-gray-500 font-bold mx-1'>Groups</p>
+        <span class='material-symbols-outlined text-gray-500 cursor-pointer unselectable'>
+          add
+        </span>
+      </header>
       {groups.map(({ label: lbl, checked }, idx) => (
         <label key={idx} className='items-center mt-3 block'>
           <input
@@ -20,7 +25,7 @@ const Groups = () => {
           <span className='ml-2 text-gray-700 capitalize'>{lbl}</span>
         </label>
       ))}
-    </>
+    </div>
   );
 };
 

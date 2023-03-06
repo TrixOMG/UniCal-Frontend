@@ -104,7 +104,7 @@ const EventModal = () => {
   return (
     // <div className='h-screen w-full fixed left-0 top-0 flex justify-center items-center'>
     <form
-      className={`bg-white rounded-xl drop-shadow-lg w-1/4 ${getClassShow()}`}
+      className={`bg-white rounded-xl drop-shadow-lg w-[20em] h-[20em] ${getClassShow()}`}
       ref={setPopperElement}
       style={styles.popper}
     >
@@ -141,7 +141,7 @@ const EventModal = () => {
         </div>
       </header>
       <div className='p-3'>
-        <div className='grid grid-cols-1/5 items-end gap-y-7'>
+        <div className='grid grid-cols-1/5 items-end gap-y-3'>
           <div></div>
           <input
             type='text'
@@ -163,7 +163,7 @@ const EventModal = () => {
             type='text'
             name='description'
             placeholder='Add a Description'
-            className='pt-3 border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500'
+            className='border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
@@ -185,7 +185,7 @@ const EventModal = () => {
           </div>
         </div>
       </div>
-      <footer className='flex justify-end border-t p-3 mt-5'>
+      <footer className='flex justify-end border-t p-3 mt-3'>
         <button
           type='submit'
           onClick={handleSubmit}
