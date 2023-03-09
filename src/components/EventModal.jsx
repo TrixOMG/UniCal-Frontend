@@ -18,6 +18,8 @@ const EventModal = () => {
     referenceElement,
     setReferenceElement,
     setShowFakeTask,
+    modalPlacement,
+    dispatchGroups,
   } = useGlobalContext();
 
   //////////////
@@ -50,7 +52,7 @@ const EventModal = () => {
   const [popperElement, setPopperElement] = useState([]);
 
   const { styles } = usePopper(referenceElement, popperElement, {
-    placement: "bottom-start",
+    placement: modalPlacement, //"bottom-start",
     modifiers: [
       {
         name: "offset",
@@ -73,20 +75,32 @@ const EventModal = () => {
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (title.trim() === "") return;
+    if (modalPlacement === "bottom-start") {
+      if (title.trim() === "") return;
 
-    const calendarEvent = {
-      title,
-      description,
-      label: selectedLabel,
-      day: selectedEvent ? selectedEvent.day : chosenDayForTask.valueOf(),
-      id: selectedEvent ? selectedEvent.id : Date.now(),
-    };
+      const calendarEvent = {
+        title,
+        description,
+        label: selectedLabel,
+        day: selectedEvent ? selectedEvent.day : chosenDayForTask.valueOf(),
+        id: selectedEvent ? selectedEvent.id : Date.now(),
+      };
 
-    if (selectedEvent) {
-      dispatchCalEvent({ type: "update", payload: calendarEvent });
+      if (selectedEvent) {
+        dispatchCalEvent({ type: "update", payload: calendarEvent });
+      } else {
+        dispatchCalEvent({ type: "pushFromStart", payload: calendarEvent });
+      }
     } else {
-      dispatchCalEvent({ type: "pushFromStart", payload: calendarEvent });
+      const newGroup = {
+        title,
+        description,
+        label: selectedLabel,
+        id: Date.now(),
+        checked: true,
+      };
+
+      dispatchGroups({ type: "push", payload: newGroup });
     }
 
     setShowEventModal(false);
@@ -101,15 +115,6 @@ const EventModal = () => {
   function getClassShow() {
     return showEventModal ? "visible" : "invisible";
   }
-
-  // function setPosition(pLeft, pTop) {
-  // return "top-" + pLeft + " left-" + pTop + " ";
-  // }  bounds='body'>
-
-  // DragHandle backup
-  // {/* <span className='material-icons text-gray-400 cursor-move unselectable handle'>
-  // drag_handle
-  // </span> */}
 
   return (
     <form
@@ -154,20 +159,28 @@ const EventModal = () => {
           <input
             type='text'
             name='title'
-            placeholder='Add Title'
+            placeholder={
+              modalPlacement === "bottom-start"
+                ? "Add Title"
+                : "Add Group Title"
+            }
             required
             className='pt-3 border-0 text-gray-600 text-lg font-semibold w-full pb-2 border-b-2 border-gray-200 focus:outline-none focus:border-b-blue-500'
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <span className='material-icons text-gray-400 unselectable'>
-            schedule
-          </span>
-          <p className='pl-1 unselectable'>
-            {selectedEvent
-              ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
-              : chosenDayForTask.format("dddd, MMMM DD")}
-          </p>
+          {modalPlacement === "bottom-start" && (
+            <span className='material-icons text-gray-400 unselectable'>
+              schedule
+            </span>
+          )}
+          {modalPlacement === "bottom-start" && (
+            <p className='pl-1 unselectable'>
+              {selectedEvent
+                ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
+                : chosenDayForTask.format("dddd, MMMM DD")}
+            </p>
+          )}
           <span className='material-icons text-gray-400 unselectable'>
             segment
           </span>

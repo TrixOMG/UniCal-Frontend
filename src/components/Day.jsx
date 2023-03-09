@@ -16,7 +16,7 @@ const Day = ({ pDay, rowIdx }) => {
     chosenDayForTask,
     setSelectedDaysArray,
     setChosenDay,
-    // dispatchCalEvent,
+    setModalPlacement,
   } = useGlobalContext();
 
   const { setSelectedEvent } = useGlobalContext();
@@ -40,9 +40,10 @@ const Day = ({ pDay, rowIdx }) => {
 
   function handleClick() {
     setChosenDayForTask(pDay);
+    setReferenceElement(newTaskReference.current);
+    setModalPlacement("bottom-start");
     setShowEventModal(true);
     setShowFakeTask(true);
-    setReferenceElement(newTaskReference.current);
   }
 
   return (

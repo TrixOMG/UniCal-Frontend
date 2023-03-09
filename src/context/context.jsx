@@ -18,6 +18,29 @@ export const labelsClasses = [
   "purple",
 ];
 
+function groupsReducer(state, { type, payload }) {
+  switch (type) {
+    case "push":
+      return [...state, payload];
+    case "update":
+      return state.map((group) => (group.id === payload.id ? payload : group));
+    case "delete":
+      // change
+      return state.filter((group) => group.id !== payload.id);
+    default:
+      throw new Error("groupsReducerError");
+  }
+}
+
+function initGroups() {
+  const storageGroups = localStorage.getItem("savedGroups");
+  let parsedGroups = [];
+
+  if (storageGroups !== null) parsedGroups = JSON.parse(storageGroups);
+  else parsedGroups = [];
+  return parsedGroups;
+}
+
 function savedEventsReducer(state, { type, payload }) {
   switch (type) {
     case "push":
@@ -29,7 +52,7 @@ function savedEventsReducer(state, { type, payload }) {
     case "pushFromStart":
       return [payload, ...state];
     default:
-      throw new Error("reducerError");
+      throw new Error("eventsReducerError");
   }
 }
 
@@ -50,15 +73,17 @@ const GlobalContextProvider = ({ children }) => {
   const [showEventModal, setShowEventModal] = useState(false);
   const [chosenDayForTask, setChosenDayForTask] = useState(dayjs());
 
-  // const [wasDragging, setWasDragging] = useState(false);
-
   // для отображения меню изменения таска
   const [selectedEvent, setSelectedEvent] = useState(null);
+
   // groups
-  const [groups, setGroups] = useState([]);
-  // SmallModal
-  const [showSmallModal, setShowSmallModal] = useState(false);
-  const [smallReferenceElement, setSmallReferenceElement] = useState(null);
+  const [savedGroups, dispatchGroups] = useReducer(
+    groupsReducer,
+    [],
+    initGroups
+  );
+
+  const [modalPlacement, setModalPlacement] = useState("bottom-start");
 
   // POPPER
   const [referenceElement, setReferenceElement] = useState(null);
@@ -75,12 +100,12 @@ const GlobalContextProvider = ({ children }) => {
 
   const filteredEvents = useMemo(() => {
     return savedEvents.filter((evt) =>
-      groups
+      savedGroups
         .filter((group) => group.checked)
         .map((group) => group.groupName)
         .includes(evt.groupName)
     );
-  }, [savedEvents, groups]);
+  }, [savedEvents, savedGroups]);
 
   // Backup
 
@@ -94,14 +119,14 @@ const GlobalContextProvider = ({ children }) => {
   // }, [savedEvents, groups]);
 
   // groups work
-  useEffect(() => {
-    setGroups((prevGroups) => {
-      return [...new Set(savedEvents.map((evt) => evt.label))].map((label) => {
-        const currentLabel = prevGroups.find((group) => group.label === label);
-        return { label, checked: currentLabel ? currentLabel.checked : true };
-      });
-    });
-  }, [savedEvents]);
+  // useEffect(() => {
+  //   setGroups((prevGroups) => {
+  //     return [...new Set(savedEvents.map((evt) => evt.label))].map((label) => {
+  //       const currentLabel = prevGroups.find((group) => group.label === label);
+  //       return { label, checked: currentLabel ? currentLabel.checked : true };
+  //     });
+  //   });
+  // }, [savedEvents]);
 
   // Backup
 
@@ -118,16 +143,20 @@ const GlobalContextProvider = ({ children }) => {
     localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
   }, [savedEvents]);
 
+  useEffect(() => {
+    localStorage.setItem("savedGroups", JSON.stringify(savedGroups));
+  }, [savedGroups]);
+
   const [selectedDaysArray, setSelectedDaysArray] = useState(
     getProperSelectedDays([dayjs()])
   );
   const [chosenDay, setChosenDay] = useState(dayjs());
 
-  function updateGroup(label) {
-    setGroups(
-      groups.map((group) => (group.label === label.label ? label : group))
-    );
-  }
+  // function updateGroup(label) {
+  // setGroups(
+  // groups.map((group) => (group.label === label.label ? label : group))
+  // );
+  // }
 
   // Backup
 
@@ -154,18 +183,19 @@ const GlobalContextProvider = ({ children }) => {
     savedEvents,
     selectedEvent,
     setSelectedEvent,
-    groups,
-    setGroups,
-    updateGroup,
+    savedGroups,
+    dispatchGroups,
+    // updateGroup,
     filteredEvents,
     referenceElement,
     setReferenceElement,
     showFakeTask,
     setShowFakeTask,
-    showSmallModal,
-    setShowSmallModal,
-    smallReferenceElement,
-    setSmallReferenceElement,
+    modalPlacement,
+    setModalPlacement,
+    // setShowSmallModal,
+    // smallReferenceElement,
+    // setSmallReferenceElement,
   };
 
   return (

@@ -3,13 +3,14 @@ import { useGlobalContext } from "../context/context";
 
 const Groups = () => {
   const {
-    groups,
-    //  setGroups,
-    setShowSmallModal,
-    setSmallReferenceElement,
+    savedGroups,
+    dispatchGroups,
+    setShowEventModal,
+    setReferenceElement,
+    setModalPlacement,
   } = useGlobalContext();
 
-  const smallModalReference = useRef(null);
+  const modalReference = useRef(null);
 
   // function handleCreateGroup() {}
 
@@ -20,25 +21,40 @@ const Groups = () => {
         <span
           className='material-symbols-outlined text-gray-500 cursor-pointer unselectable'
           onClick={() => {
-            setShowSmallModal(true);
-            setSmallReferenceElement(smallModalReference.current);
+            setModalPlacement("right-start");
+            setReferenceElement(modalReference.current);
+            setShowEventModal(true);
           }}
-          ref={smallModalReference}
+          ref={modalReference}
         >
           add
         </span>
       </header>
-      {groups.map(({ label: lbl, checked }, idx) => (
-        <label key={idx} className='items-center mt-3 block'>
-          <input
-            type='checkbox'
-            // checked={checked}
-            // onChange={() => updateGroup({ label: lbl, checked: !checked })}
-            className={`form-checkbox h-5 w-5 text-${lbl}-400 rounded focus:ring-0 cursor-pointer`}
-          />
-          <span className='ml-2 text-gray-700 capitalize'>{lbl}</span>
-        </label>
-      ))}
+      {savedGroups.length > 0 &&
+        savedGroups.map(
+          ({ title, label: lbl, checked, description, id }, idx) => (
+            <label key={idx} className='items-center mt-3 block'>
+              <input
+                type='checkbox'
+                checked={checked}
+                onChange={() => {
+                  dispatchGroups({
+                    type: "update",
+                    payload: {
+                      title,
+                      description,
+                      label: lbl,
+                      id,
+                      checked: !checked,
+                    },
+                  });
+                }}
+                className={`form-checkbox h-5 w-5 text-${lbl}-400 rounded focus:ring-0 cursor-pointer`}
+              />
+              <span className='ml-2 text-gray-700 capitalize'>{title}</span>
+            </label>
+          )
+        )}
     </div>
   );
 };
