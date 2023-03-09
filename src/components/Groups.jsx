@@ -8,11 +8,17 @@ const Groups = () => {
     setShowEventModal,
     setReferenceElement,
     setModalPlacement,
+    setSelectedGroup,
   } = useGlobalContext();
 
   const modalReference = useRef(null);
 
-  // function handleCreateGroup() {}
+  function handleClick(pGroup) {
+    setSelectedGroup(pGroup);
+    setReferenceElement(modalReference.current);
+    setModalPlacement("right-start");
+    setShowEventModal(true);
+  }
 
   return (
     <div className='border border-gray-200 mt-10 rounded-lg'>
@@ -31,30 +37,36 @@ const Groups = () => {
         </span>
       </header>
       {savedGroups.length > 0 &&
-        savedGroups.map(
-          ({ title, label: lbl, checked, description, id }, idx) => (
-            <label key={idx} className='items-center mt-3 block'>
-              <input
-                type='checkbox'
-                checked={checked}
-                onChange={() => {
-                  dispatchGroups({
-                    type: "update",
-                    payload: {
-                      title,
-                      description,
-                      label: lbl,
-                      id,
-                      checked: !checked,
-                    },
-                  });
-                }}
-                className={`form-checkbox h-5 w-5 text-${lbl}-400 rounded focus:ring-0 cursor-pointer`}
-              />
-              <span className='ml-2 text-gray-700 capitalize'>{title}</span>
-            </label>
-          )
-        )}
+        savedGroups.map((group, idx) => (
+          <div
+            className='flex flex-row justify-start items-center mt-3'
+            key={idx}
+          >
+            <input
+              type='checkbox'
+              checked={group.checked}
+              onChange={() => {
+                dispatchGroups({
+                  type: "update",
+                  payload: {
+                    title: group.title,
+                    description: group.description,
+                    label: group.label,
+                    id: group.id,
+                    checked: !group.checked,
+                  },
+                });
+              }}
+              className={`form-checkbox h-5 w-5 text-${group.label}-400 rounded focus:ring-0 cursor-pointer`}
+            />
+            <span
+              className='ml-2 text-gray-700 capitalize cursor-pointer'
+              onClick={() => handleClick(group)}
+            >
+              {group.title}
+            </span>
+          </div>
+        ))}
     </div>
   );
 };

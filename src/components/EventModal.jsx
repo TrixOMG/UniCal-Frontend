@@ -20,6 +20,7 @@ const EventModal = () => {
     setShowFakeTask,
     modalPlacement,
     dispatchGroups,
+    selectedGroup,
   } = useGlobalContext();
 
   //////////////
@@ -75,9 +76,9 @@ const EventModal = () => {
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (modalPlacement === "bottom-start") {
-      if (title.trim() === "") return;
+    if (title.trim() === "") return;
 
+    if (modalPlacement === "bottom-start") {
       const calendarEvent = {
         title,
         description,
@@ -124,7 +125,7 @@ const EventModal = () => {
     >
       <header className='bg-gray-100 px-4 py-2 flex justify-end items-center'>
         <div>
-          {selectedEvent && (
+          {(selectedEvent || selectedGroup) && (
             <button
               onClick={() => {
                 dispatchCalEvent({ type: "delete", payload: selectedEvent });

@@ -83,6 +83,8 @@ const GlobalContextProvider = ({ children }) => {
     initGroups
   );
 
+  const [selectedGroup, setSelectedGroup] = useState(null);
+
   const [modalPlacement, setModalPlacement] = useState("bottom-start");
 
   // POPPER
@@ -185,7 +187,6 @@ const GlobalContextProvider = ({ children }) => {
     setSelectedEvent,
     savedGroups,
     dispatchGroups,
-    // updateGroup,
     filteredEvents,
     referenceElement,
     setReferenceElement,
@@ -193,9 +194,8 @@ const GlobalContextProvider = ({ children }) => {
     setShowFakeTask,
     modalPlacement,
     setModalPlacement,
-    // setShowSmallModal,
-    // smallReferenceElement,
-    // setSmallReferenceElement,
+    selectedGroup,
+    setSelectedGroup,
   };
 
   return (
