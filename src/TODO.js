@@ -6,3 +6,9 @@
 //+ TODO: fix height of the days
 //+ TODO: create empty task when creating and assigning it as a ref to event modal
 //+ TODO: create "more" button at the bottom of a day if all tasks cannot be shown
+
+
+// TODO: change EventModal to be multipurpose (creating events + creating groups)
+// TODO: realize Modal movement while dragging the handle
+//
+// TODO: in the late development crate hover tooltips for everything interactable button, field etc. 

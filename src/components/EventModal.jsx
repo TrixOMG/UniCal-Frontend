@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
 import { labelsClasses, useGlobalContext } from "../context/context";
+import "../index.css";
 
 //const labelsClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
 
@@ -101,17 +102,22 @@ const EventModal = () => {
     return showEventModal ? "visible" : "invisible";
   }
 
+  // function setPosition(pLeft, pTop) {
+  // return "top-" + pLeft + " left-" + pTop + " ";
+  // }  bounds='body'>
+
+  // DragHandle backup
+  // {/* <span className='material-icons text-gray-400 cursor-move unselectable handle'>
+  // drag_handle
+  // </span> */}
+
   return (
-    // <div className='h-screen w-full fixed left-0 top-0 flex justify-center items-center'>
     <form
-      className={`bg-white rounded-xl drop-shadow-lg w-[20em] h-[20em] ${getClassShow()}`}
+      className={`bg-white rounded-xl drop-shadow-lg overflow-hidden ${getClassShow()}`}
       ref={setPopperElement}
       style={styles.popper}
     >
-      <header className='bg-gray-100 px-4 py-2 flex justify-between items-center'>
-        <span className='material-icons text-gray-400 cursor-move'>
-          drag_handle
-        </span>
+      <header className='bg-gray-100 px-4 py-2 flex justify-end items-center'>
         <div>
           {selectedEvent && (
             <button
@@ -122,12 +128,14 @@ const EventModal = () => {
                 setReferenceElement(null);
               }}
             >
-              <span className='material-icons text-gray-400'>delete</span>
+              <span className='material-icons text-gray-400 unselectable'>
+                delete
+              </span>
             </button>
           )}
           <button type='button'>
             <span
-              className='material-icons text-gray-400'
+              className='material-icons text-gray-400 unselectable'
               onClick={() => {
                 setShowEventModal(false);
                 setSelectedEvent(null);
@@ -141,24 +149,28 @@ const EventModal = () => {
         </div>
       </header>
       <div className='p-3'>
-        <div className='grid grid-cols-1/5 items-end gap-y-3'>
+        <div className='grid grid-cols-1/5 items-end gap-y-5'>
           <div></div>
           <input
             type='text'
             name='title'
             placeholder='Add Title'
             required
-            className='pt-3 border-0 text-gray-600 text-xl font-semibold w-full pb-2 border-b-2 border-gray-200 focus:outline-none focus:border-b-blue-500'
+            className='pt-3 border-0 text-gray-600 text-lg font-semibold w-full pb-2 border-b-2 border-gray-200 focus:outline-none focus:border-b-blue-500'
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <span className='material-icons text-gray-400'>schedule</span>
-          <p>
+          <span className='material-icons text-gray-400 unselectable'>
+            schedule
+          </span>
+          <p className='pl-1 unselectable'>
             {selectedEvent
               ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
               : chosenDayForTask.format("dddd, MMMM DD")}
           </p>
-          <span className='material-icons text-gray-400'>segment</span>
+          <span className='material-icons text-gray-400 unselectable'>
+            segment
+          </span>
           <input
             type='text'
             name='description'
@@ -167,7 +179,9 @@ const EventModal = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <span className='material-icons text-gray-400'>bookmark_border</span>
+          <span className='material-icons text-gray-400 unselectable'>
+            bookmark_border
+          </span>
           <div className='flex gap-x-2'>
             {labelsClasses.map((lblClass, i) => (
               <span
@@ -189,13 +203,12 @@ const EventModal = () => {
         <button
           type='submit'
           onClick={handleSubmit}
-          className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white'
+          className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable'
         >
           Save
         </button>
       </footer>
     </form>
-    // </div>
   );
 };
 

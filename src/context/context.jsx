@@ -56,6 +56,9 @@ const GlobalContextProvider = ({ children }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   // groups
   const [groups, setGroups] = useState([]);
+  // SmallModal
+  const [showSmallModal, setShowSmallModal] = useState(false);
+  const [smallReferenceElement, setSmallReferenceElement] = useState(null);
 
   // POPPER
   const [referenceElement, setReferenceElement] = useState(null);
@@ -74,14 +77,21 @@ const GlobalContextProvider = ({ children }) => {
     return savedEvents.filter((evt) =>
       groups
         .filter((group) => group.checked)
-        .map((group) => group.label)
-        .includes(evt.label)
+        .map((group) => group.groupName)
+        .includes(evt.groupName)
     );
   }, [savedEvents, groups]);
 
-  useEffect(() => {
-    localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
-  }, [savedEvents]);
+  // Backup
+
+  // const filteredEvents = useMemo(() => {
+  //   return savedEvents.filter((evt) =>
+  //     groups
+  //       .filter((group) => group.checked)
+  //       .map((group) => group.label)
+  //       .includes(evt.label)
+  //   );
+  // }, [savedEvents, groups]);
 
   // groups work
   useEffect(() => {
@@ -91,6 +101,21 @@ const GlobalContextProvider = ({ children }) => {
         return { label, checked: currentLabel ? currentLabel.checked : true };
       });
     });
+  }, [savedEvents]);
+
+  // Backup
+
+  // useEffect(() => {
+  //   setGroups((prevGroups) => {
+  //     return [...new Set(savedEvents.map((evt) => evt.label))].map((label) => {
+  //       const currentLabel = prevGroups.find((group) => group.label === label);
+  //       return { label, checked: currentLabel ? currentLabel.checked : true };
+  //     });
+  //   });
+  // }, [savedEvents]);
+
+  useEffect(() => {
+    localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
   }, [savedEvents]);
 
   const [selectedDaysArray, setSelectedDaysArray] = useState(
@@ -103,6 +128,14 @@ const GlobalContextProvider = ({ children }) => {
       groups.map((group) => (group.label === label.label ? label : group))
     );
   }
+
+  // Backup
+
+  // function updateGroup(label) {
+  //     setGroups(
+  //       groups.map((group) => (group.label === label.label ? label : group))
+  //     );
+  //   }
 
   const value = {
     monthIndex,
@@ -129,6 +162,10 @@ const GlobalContextProvider = ({ children }) => {
     setReferenceElement,
     showFakeTask,
     setShowFakeTask,
+    showSmallModal,
+    setShowSmallModal,
+    smallReferenceElement,
+    setSmallReferenceElement,
   };
 
   return (

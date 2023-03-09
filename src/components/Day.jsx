@@ -14,6 +14,8 @@ const Day = ({ pDay, rowIdx }) => {
     showFakeTask,
     setShowFakeTask,
     chosenDayForTask,
+    setSelectedDaysArray,
+    setChosenDay,
     // dispatchCalEvent,
   } = useGlobalContext();
 
@@ -27,11 +29,10 @@ const Day = ({ pDay, rowIdx }) => {
   }, [filteredEvents, pDay]);
 
   function getAccentOnToday() {
-    console.table();
     if (dayjs(pDay).format("DD-MM-YY") === dayjs().format("DD-MM-YY")) {
-      return "bg-blue-600 text-white rounded-lg";
+      return "bg-blue-600 text-white rounded-lg hover:bg-blue-300";
     } else {
-      return "";
+      return "bg-gray-400 rounded-lg hover:bg-gray-200";
     }
   }
 
@@ -47,7 +48,7 @@ const Day = ({ pDay, rowIdx }) => {
   return (
     <div className='border border-gray-200 flex flex-col rounded-lg'>
       <header
-        className='flex flex-col items-center bg-gray-300 rounded-t-lg pb-1'
+        className='flex flex-col items-center bg-gray-300 rounded-t-lg pb-1 cursor-pointer'
         onClick={() => handleClick()}
       >
         {rowIdx === 0 && (
@@ -57,6 +58,11 @@ const Day = ({ pDay, rowIdx }) => {
         )}
         <p
           className={`text-sm w-7 h-7 text-center p-[0.2em] ${getAccentOnToday()}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelectedDaysArray([pDay]);
+            setChosenDay(pDay);
+          }}
         >
           {dayjs(pDay).date()}
         </p>
