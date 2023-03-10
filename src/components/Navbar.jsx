@@ -157,9 +157,7 @@ const Navbar = () => {
         <span className='material-icons'>chevron_right</span>
       </button>
       <h2 className=' ml-4 text-xl text-gray-500 font-bold'>
-        {/* TODO: переделать под отображение нескольких месяцев в зависимости от выбранных дней */}
         {renderMonthAndYear()}
-        {/* {dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY")} */}
       </h2>
     </header>
   );

@@ -1,6 +1,6 @@
 // import dayjs from "dayjs";
 import dayjs from "dayjs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { usePopper } from "react-popper";
 import { labelsClasses, useGlobalContext } from "../context/context";
 import "../index.css";
@@ -37,6 +37,9 @@ const EventModal = () => {
   );
   //////////////
 
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [chosenGroupForTask, setChosenGroupForTask] = useState(savedGroups[0]);
+
   useEffect(() => {
     if (selectedEvent) {
       setTitle(selectedEvent.title);
@@ -44,12 +47,16 @@ const EventModal = () => {
       setSelectedLabel(
         labelsClasses.find((lbl) => lbl === selectedEvent.label)
       );
+      setChosenGroupForTask(
+        savedGroups.find((group) => group.id === selectedEvent.groupId)
+      );
     } else {
       setTitle("");
       setDescription("");
       setSelectedLabel(labelsClasses[0]);
+      setChosenGroupForTask(savedGroups[0]);
     }
-  }, [selectedEvent]);
+  }, [selectedEvent, savedGroups]);
 
   useEffect(() => {
     if (selectedGroup) {
@@ -65,8 +72,12 @@ const EventModal = () => {
     }
   }, [selectedGroup]);
 
+  useEffect(() => {
+    setChosenGroupForTask(savedGroups[0]);
+  }, [savedGroups]);
+
   // POPPER
-  const [popperElement, setPopperElement] = useState([]);
+  const [popperElement, setPopperElement] = useState(null);
 
   const { styles } = usePopper(referenceElement, popperElement, {
     placement: modalPlacement, //"bottom-start",
@@ -89,6 +100,37 @@ const EventModal = () => {
 
   // POPPER
 
+  // POPPER for dropdown
+
+  const [dropdownPopperRefElement, setDropdownPopperRefElement] =
+    useState(null);
+  const [dropdownPopperElement, setDropdownPopperElement] = useState(null);
+
+  const { styles: dpdStyles } = usePopper(
+    dropdownPopperRefElement,
+    dropdownPopperElement,
+    {
+      placement: "bottom-start", //"bottom-start",
+      modifiers: [
+        {
+          name: "offset",
+          options: {
+            offset: [0, 4],
+          },
+        },
+        {
+          name: "flip",
+          options: {
+            allowedAutoPlacements: ["right-start", "left-start", "bottom"],
+            rootBoundary: "viewport",
+          },
+        },
+      ],
+    }
+  );
+
+  // POPPER for dropdown
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -101,8 +143,7 @@ const EventModal = () => {
         label: selectedLabel,
         day: selectedEvent ? selectedEvent.day : chosenDayForTask.valueOf(),
         id: selectedEvent ? selectedEvent.id : Date.now(),
-        // TODO: Check
-        groupId: selectedEvent ? selectedEvent.groupId : savedGroups[0].id,
+        groupId: chosenGroupForTask.id,
       };
 
       if (selectedEvent) {
@@ -202,7 +243,7 @@ const EventModal = () => {
         </div>
       </header>
       <div className='p-3'>
-        <div className='grid grid-cols-1/5 items-end gap-y-5'>
+        <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle'>
           <div></div>
           <input
             type='text'
@@ -229,7 +270,7 @@ const EventModal = () => {
                 : chosenDayForTask.format("dddd, MMMM DD")}
             </p>
           )}
-          <span className='material-icons text-gray-400 unselectable'>
+          <span className='material-icons text-gray-400 unselectable py-2'>
             segment
           </span>
           <input
@@ -241,19 +282,58 @@ const EventModal = () => {
             onChange={(e) => setDescription(e.target.value)}
           />
           {modalPlacement === "bottom-start" && (
-            <span className='material-icons text-gray-400 unselectable'>
+            <span className='material-icons text-gray-400 unselectable py-1'>
               list_alt
             </span>
           )}
-          {modalPlacement === "bottom-start" &&
-            {
-              /* TODO: DropdownList 
-              <p className='pl-1 unselectable'>
-              {selectedEvent
-                ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
-                : chosenDayForTask.format("dddd, MMMM DD")}
-            </p> */
-            }}
+          {modalPlacement === "bottom-start" && (
+            <div className='w-full'>
+              <header
+                className='w-full cursor-pointer border border-gray-300 rounded-lg p-1'
+                ref={setDropdownPopperRefElement}
+                onClick={() => {
+                  setShowDropdown(true);
+                }}
+              >
+                <button
+                  className='flex flex-row bg-white gap-2 justify-start align-middle'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowDropdown(false);
+                  }}
+                >
+                  <span
+                    className={`bg-${chosenGroupForTask.label}-500 w-6 h-6 rounded-lg flex items-center justify-center cursor-pointer `}
+                  ></span>
+                  {chosenGroupForTask.title}
+                </button>
+              </header>
+              {showDropdown && (
+                <div
+                  className='absolute flex flex-col justify-items-start w-[77%] border border-gray-300 rounded-lg overflow-hidden bg-white'
+                  ref={setDropdownPopperElement}
+                  style={dpdStyles.popper}
+                >
+                  {savedGroups.map((group, idx) => (
+                    <button
+                      className='flex flex-row bg-white gap-2 p-1 justify-start align-middle'
+                      key={idx}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setChosenGroupForTask(group);
+                        setShowDropdown(false);
+                      }}
+                    >
+                      <span
+                        className={`bg-${group.label}-500 w-6 h-6 rounded-lg flex items-center justify-center cursor-pointer`}
+                      ></span>
+                      {group.title}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
           <span className='material-icons text-gray-400 unselectable'>
             bookmark_border
           </span>
