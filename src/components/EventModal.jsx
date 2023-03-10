@@ -85,13 +85,18 @@ const EventModal = () => {
       {
         name: "offset",
         options: {
-          offset: [0, 10],
+          offset: [0, 5],
         },
       },
       {
         name: "flip",
         options: {
-          allowedAutoPlacements: ["right-start", "left-start", "bottom"],
+          fallbackPlacements: [
+            "right-start",
+            "left-start",
+            "bottom-start",
+            "top-start",
+          ],
           rootBoundary: "viewport",
         },
       },
@@ -270,16 +275,18 @@ const EventModal = () => {
                 : chosenDayForTask.format("dddd, MMMM DD")}
             </p>
           )}
-          <span className='material-icons text-gray-400 unselectable py-2'>
+          <span className='material-icons text-gray-400 unselectable pb-7'>
             segment
           </span>
-          <input
+          <textarea
             type='text'
             name='description'
             placeholder='Add a Description'
-            className='border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500'
+            className='border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500 resize-none'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            maxLength='100'
+            rows={2}
           />
           {modalPlacement === "bottom-start" && (
             <span className='material-icons text-gray-400 unselectable py-1'>
