@@ -7,7 +7,7 @@
 //+ TODO: create empty task when creating and assigning it as a ref to event modal
 //+ TODO: create "more" button at the bottom of a day if all tasks cannot be shown
 
-// TODO: change EventModal to be multipurpose (creating events + creating groups)
+//+ TODO: change EventModal to be multipurpose (creating events + creating groups)
 // // TODO: realize Modal movement while dragging the handle
 //
 // TODO: in the late development crate hover tooltips for everything interactable button, field etc.
@@ -21,3 +21,8 @@
 // +2) add feature to add task to group (dropdown with existing groups)
 
 // }
+
+// TODO: checkboxes in the tasks with colors of groups tasks are in,
+// TODO: bg-color of tasks - their own, if not chosen - color of group tasks are in
+// TODO: + state of the tasks (done or not)
+// TODO: + event modal functionality to get task done/undone
