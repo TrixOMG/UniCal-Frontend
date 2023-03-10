@@ -11,3 +11,13 @@
 // // TODO: realize Modal movement while dragging the handle
 //
 // TODO: in the late development crate hover tooltips for everything interactable button, field etc.
+
+// 10.03.23
+//+ TODO: fix bug with positioning
+// TODO: complete work with groups
+// {
+
+// +1) add 1 default group when there is no groups
+// ~2) add feature to add task to group (dropdown with existing groups)
+
+// }

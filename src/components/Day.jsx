@@ -63,6 +63,7 @@ const Day = ({ pDay, rowIdx }) => {
             e.stopPropagation();
             setSelectedDaysArray([pDay]);
             setChosenDay(pDay);
+            setModalPlacement("bottom-start");
           }}
         >
           {dayjs(pDay).date()}
@@ -99,6 +100,7 @@ const Day = ({ pDay, rowIdx }) => {
                           onClick={(e) => {
                             setReferenceElement(e.target);
                             setSelectedEvent(evt);
+                            setModalPlacement("bottom-start");
                             setShowEventModal(true);
                           }}
                         >

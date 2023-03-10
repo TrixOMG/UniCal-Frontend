@@ -21,6 +21,8 @@ const EventModal = () => {
     modalPlacement,
     dispatchGroups,
     selectedGroup,
+    setSelectedGroup,
+    savedGroups,
   } = useGlobalContext();
 
   //////////////
@@ -48,6 +50,20 @@ const EventModal = () => {
       setSelectedLabel(labelsClasses[0]);
     }
   }, [selectedEvent]);
+
+  useEffect(() => {
+    if (selectedGroup) {
+      setTitle(selectedGroup.title);
+      setDescription(selectedGroup.description);
+      setSelectedLabel(
+        labelsClasses.find((lbl) => lbl === selectedGroup.label)
+      );
+    } else {
+      setTitle("");
+      setDescription("");
+      setSelectedLabel(labelsClasses[0]);
+    }
+  }, [selectedGroup]);
 
   // POPPER
   const [popperElement, setPopperElement] = useState([]);
@@ -85,6 +101,8 @@ const EventModal = () => {
         label: selectedLabel,
         day: selectedEvent ? selectedEvent.day : chosenDayForTask.valueOf(),
         id: selectedEvent ? selectedEvent.id : Date.now(),
+        // TODO: Check
+        groupId: selectedEvent ? selectedEvent.groupId : savedGroups[0].id,
       };
 
       if (selectedEvent) {
@@ -97,11 +115,15 @@ const EventModal = () => {
         title,
         description,
         label: selectedLabel,
-        id: Date.now(),
+        id: selectedGroup ? selectedGroup.id : Date.now(),
         checked: true,
       };
 
-      dispatchGroups({ type: "push", payload: newGroup });
+      if (selectedGroup) {
+        dispatchGroups({ type: "update", payload: newGroup });
+      } else {
+        dispatchGroups({ type: "push", payload: newGroup });
+      }
     }
 
     setShowEventModal(false);
@@ -117,6 +139,33 @@ const EventModal = () => {
     return showEventModal ? "visible" : "invisible";
   }
 
+  function handleDelete(e) {
+    e.preventDefault();
+
+    if (modalPlacement !== "bottom-start") {
+      if (savedGroups.length > 1) {
+        dispatchGroups({ type: "delete", payload: selectedGroup });
+
+        setShowEventModal(false);
+        setSelectedEvent(null);
+        setSelectedGroup(null);
+        setReferenceElement(null);
+      } else {
+        // TODO: make a hint 'At least one group is required'
+        return;
+      }
+    } else {
+      dispatchCalEvent({
+        type: "delete",
+        payload: selectedEvent,
+      });
+      setShowEventModal(false);
+      setSelectedEvent(null);
+      setSelectedGroup(null);
+      setReferenceElement(null);
+    }
+  }
+
   return (
     <form
       className={`bg-white rounded-xl drop-shadow-lg overflow-hidden ${getClassShow()}`}
@@ -127,11 +176,8 @@ const EventModal = () => {
         <div>
           {(selectedEvent || selectedGroup) && (
             <button
-              onClick={() => {
-                dispatchCalEvent({ type: "delete", payload: selectedEvent });
-                setShowEventModal(false);
-                setSelectedEvent(null);
-                setReferenceElement(null);
+              onClick={(e) => {
+                handleDelete(e);
               }}
             >
               <span className='material-icons text-gray-400 unselectable'>
@@ -144,6 +190,7 @@ const EventModal = () => {
               className='material-icons text-gray-400 unselectable'
               onClick={() => {
                 setShowEventModal(false);
+                setSelectedGroup(null);
                 setSelectedEvent(null);
                 setReferenceElement(null);
                 setShowFakeTask(false);
@@ -193,6 +240,20 @@ const EventModal = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
+          {modalPlacement === "bottom-start" && (
+            <span className='material-icons text-gray-400 unselectable'>
+              list_alt
+            </span>
+          )}
+          {modalPlacement === "bottom-start" &&
+            {
+              /* TODO: DropdownList 
+              <p className='pl-1 unselectable'>
+              {selectedEvent
+                ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
+                : chosenDayForTask.format("dddd, MMMM DD")}
+            </p> */
+            }}
           <span className='material-icons text-gray-400 unselectable'>
             bookmark_border
           </span>

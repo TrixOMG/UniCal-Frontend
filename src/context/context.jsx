@@ -34,10 +34,19 @@ function groupsReducer(state, { type, payload }) {
 
 function initGroups() {
   const storageGroups = localStorage.getItem("savedGroups");
-  let parsedGroups = [];
+  let parsedGroups = null;
 
   if (storageGroups !== null) parsedGroups = JSON.parse(storageGroups);
-  else parsedGroups = [];
+  else
+    parsedGroups = [
+      {
+        title: "Your Default Group",
+        id: Date.now(),
+        description: "Your Default Group's Description",
+        checked: true,
+        label: labelsClasses[0],
+      },
+    ];
   return parsedGroups;
 }
 
@@ -104,8 +113,8 @@ const GlobalContextProvider = ({ children }) => {
     return savedEvents.filter((evt) =>
       savedGroups
         .filter((group) => group.checked)
-        .map((group) => group.groupName)
-        .includes(evt.groupName)
+        .map((group) => group.id)
+        .includes(evt.groupId)
     );
   }, [savedEvents, savedGroups]);
 
