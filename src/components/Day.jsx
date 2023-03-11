@@ -7,7 +7,8 @@ const Day = ({ pDay, rowIdx }) => {
   const [dayEvents, setDayEvents] = useState([]);
 
   const {
-    setShowEventModal,
+    //setShowEventModal,
+    changeShowEventModal,
     setChosenDayForTask,
     filteredEvents,
     setReferenceElement,
@@ -42,7 +43,7 @@ const Day = ({ pDay, rowIdx }) => {
     setChosenDayForTask(pDay);
     setReferenceElement(newTaskReference.current);
     setModalPlacement("bottom-start");
-    setShowEventModal(true);
+    changeShowEventModal(true);
     setShowFakeTask(true);
   }
 
@@ -101,7 +102,7 @@ const Day = ({ pDay, rowIdx }) => {
                             setReferenceElement(e.target);
                             setSelectedEvent(evt);
                             setModalPlacement("bottom-start");
-                            setShowEventModal(true);
+                            changeShowEventModal(true);
                           }}
                         >
                           <div

@@ -10,7 +10,8 @@
 //+ TODO: change EventModal to be multipurpose (creating events + creating groups)
 // // TODO: realize Modal movement while dragging the handle
 //
-// TODO: in the late development crate hover tooltips for everything interactable button, field etc.
+// TODO: in the late development create hover tooltips for everything interactable button, field etc.
+// TODO: in the late development use FramerMotion to animate everything
 
 // 10.03.23
 //+ TODO: fix bug with positioning
@@ -26,3 +27,5 @@
 // TODO: bg-color of tasks - their own, if not chosen - color of group tasks are in
 // TODO: + state of the tasks (done or not)
 // TODO: + event modal functionality to get task done/undone
+//
+// TODO: click away feature to close modals

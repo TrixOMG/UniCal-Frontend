@@ -9,8 +9,9 @@ import "../index.css";
 
 const EventModal = () => {
   const {
-    showEventModal,
-    setShowEventModal,
+    show,
+    changeShowEventModal,
+    ref,
     chosenDayForTask,
     dispatchCalEvent,
     selectedEvent,
@@ -37,8 +38,16 @@ const EventModal = () => {
   );
   //////////////
 
+  //////
+  //////
+
   const [showDropdown, setShowDropdown] = useState(false);
   const [chosenGroupForTask, setChosenGroupForTask] = useState(savedGroups[0]);
+
+  //update showing fake task with new click outside hook
+  useEffect(() => {
+    setShowFakeTask(show);
+  }, [show]);
 
   useEffect(() => {
     if (selectedEvent) {
@@ -172,7 +181,7 @@ const EventModal = () => {
       }
     }
 
-    setShowEventModal(false);
+    changeShowEventModal(false);
     setSelectedEvent(null);
     setReferenceElement(null);
     setTitle("");
@@ -182,7 +191,7 @@ const EventModal = () => {
   }
 
   function getClassShow() {
-    return showEventModal ? "visible" : "invisible";
+    return show ? "visible" : "invisible"; //showEventModal ? "visible" : "invisible";
   }
 
   function handleDelete(e) {
@@ -192,7 +201,7 @@ const EventModal = () => {
       if (savedGroups.length > 1) {
         dispatchGroups({ type: "delete", payload: selectedGroup });
 
-        setShowEventModal(false);
+        changeShowEventModal(false);
         setSelectedEvent(null);
         setSelectedGroup(null);
         setReferenceElement(null);
@@ -205,7 +214,7 @@ const EventModal = () => {
         type: "delete",
         payload: selectedEvent,
       });
-      setShowEventModal(false);
+      changeShowEventModal(false);
       setSelectedEvent(null);
       setSelectedGroup(null);
       setReferenceElement(null);
@@ -213,164 +222,166 @@ const EventModal = () => {
   }
 
   return (
-    <form
-      className={`bg-white rounded-xl drop-shadow-lg overflow-hidden ${getClassShow()}`}
-      ref={setPopperElement}
-      style={styles.popper}
-    >
-      <header className='bg-gray-100 px-4 py-2 flex justify-end items-center'>
-        <div>
-          {(selectedEvent || selectedGroup) && (
-            <button
-              onClick={(e) => {
-                handleDelete(e);
-              }}
-            >
-              <span className='material-icons text-gray-400 unselectable'>
-                delete
-              </span>
-            </button>
-          )}
-          <button type='button'>
-            <span
-              className='material-icons text-gray-400 unselectable'
-              onClick={() => {
-                setShowEventModal(false);
-                setSelectedGroup(null);
-                setSelectedEvent(null);
-                setReferenceElement(null);
-                setShowFakeTask(false);
-              }}
-            >
-              close
-            </span>
-          </button>
-        </div>
-      </header>
-      <div className='p-3'>
-        <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle'>
-          <div></div>
-          <input
-            type='text'
-            name='title'
-            placeholder={
-              modalPlacement === "bottom-start"
-                ? "Add Title"
-                : "Add Group Title"
-            }
-            required
-            className='pt-3 border-0 text-gray-600 text-lg font-semibold w-full pb-2 border-b-2 border-gray-200 focus:outline-none focus:border-b-blue-500'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          {modalPlacement === "bottom-start" && (
-            <span className='material-icons text-gray-400 unselectable'>
-              schedule
-            </span>
-          )}
-          {modalPlacement === "bottom-start" && (
-            <p className='pl-1 unselectable'>
-              {selectedEvent
-                ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
-                : chosenDayForTask.format("dddd, MMMM DD")}
-            </p>
-          )}
-          <span className='material-icons text-gray-400 unselectable pb-7'>
-            segment
-          </span>
-          <textarea
-            type='text'
-            name='description'
-            placeholder='Add a Description'
-            className='border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500 resize-none'
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            maxLength='100'
-            rows={2}
-          />
-          {modalPlacement === "bottom-start" && (
-            <span className='material-icons text-gray-400 unselectable py-1'>
-              list_alt
-            </span>
-          )}
-          {modalPlacement === "bottom-start" && (
-            <div className='w-full'>
-              <header
-                className='w-full cursor-pointer border border-gray-300 rounded-lg p-1'
-                ref={setDropdownPopperRefElement}
-                onClick={() => {
-                  setShowDropdown(true);
+    <div ref={ref}>
+      <form
+        className={`bg-white rounded-xl drop-shadow-lg overflow-hidden ${getClassShow()}`}
+        ref={setPopperElement}
+        style={styles.popper}
+      >
+        <header className="bg-gray-100 px-4 py-2 flex justify-end items-center">
+          <div>
+            {(selectedEvent || selectedGroup) && (
+              <button
+                onClick={(e) => {
+                  handleDelete(e);
                 }}
               >
-                <button
-                  className='flex flex-row bg-white gap-2 justify-start align-middle'
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setShowDropdown(false);
+                <span className="material-icons text-gray-400 unselectable">
+                  delete
+                </span>
+              </button>
+            )}
+            <button type="button">
+              <span
+                className="material-icons text-gray-400 unselectable"
+                onClick={() => {
+                  changeShowEventModal(false);
+                  setSelectedGroup(null);
+                  setSelectedEvent(null);
+                  setReferenceElement(null);
+                  setShowFakeTask(false);
+                }}
+              >
+                close
+              </span>
+            </button>
+          </div>
+        </header>
+        <div className="p-3">
+          <div className="grid grid-cols-1/5 items-end gap-y-5 align-middle">
+            <div></div>
+            <input
+              type="text"
+              name="title"
+              placeholder={
+                modalPlacement === "bottom-start"
+                  ? "Add Title"
+                  : "Add Group Title"
+              }
+              required
+              className="pt-3 border-0 text-gray-600 text-lg font-semibold w-full pb-2 border-b-2 border-gray-200 focus:outline-none focus:border-b-blue-500"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            {modalPlacement === "bottom-start" && (
+              <span className="material-icons text-gray-400 unselectable">
+                schedule
+              </span>
+            )}
+            {modalPlacement === "bottom-start" && (
+              <p className="pl-1 unselectable">
+                {selectedEvent
+                  ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
+                  : chosenDayForTask.format("dddd, MMMM DD")}
+              </p>
+            )}
+            <span className="material-icons text-gray-400 unselectable pb-7">
+              segment
+            </span>
+            <textarea
+              type="text"
+              name="description"
+              placeholder="Add a Description"
+              className="border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500 resize-none"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              maxLength="100"
+              rows={2}
+            />
+            {modalPlacement === "bottom-start" && (
+              <span className="material-icons text-gray-400 unselectable py-1">
+                list_alt
+              </span>
+            )}
+            {modalPlacement === "bottom-start" && (
+              <div className="w-full">
+                <header
+                  className="w-full cursor-pointer border border-gray-300 rounded-lg p-1"
+                  ref={setDropdownPopperRefElement}
+                  onClick={() => {
+                    setShowDropdown(true);
                   }}
                 >
-                  <span
-                    className={`bg-${chosenGroupForTask.label}-500 w-6 h-6 rounded-lg flex items-center justify-center cursor-pointer `}
-                  ></span>
-                  {chosenGroupForTask.title}
-                </button>
-              </header>
-              {showDropdown && (
-                <div
-                  className='absolute flex flex-col justify-items-start w-[77%] border border-gray-300 rounded-lg overflow-hidden bg-white'
-                  ref={setDropdownPopperElement}
-                  style={dpdStyles.popper}
-                >
-                  {savedGroups.map((group, idx) => (
-                    <button
-                      className='flex flex-row bg-white gap-2 p-1 justify-start align-middle'
-                      key={idx}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setChosenGroupForTask(group);
-                        setShowDropdown(false);
-                      }}
-                    >
-                      <span
-                        className={`bg-${group.label}-500 w-6 h-6 rounded-lg flex items-center justify-center cursor-pointer`}
-                      ></span>
-                      {group.title}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-          <span className='material-icons text-gray-400 unselectable'>
-            bookmark_border
-          </span>
-          <div className='flex gap-x-2'>
-            {labelsClasses.map((lblClass, i) => (
-              <span
-                key={i}
-                onClick={() => setSelectedLabel(lblClass)}
-                className={`bg-${lblClass}-500 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer `}
-              >
-                {selectedLabel === lblClass && (
-                  <span className='material-icons text-white text-sm'>
-                    check
-                  </span>
+                  <button
+                    className="flex flex-row bg-white gap-2 justify-start align-middle"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setShowDropdown(false);
+                    }}
+                  >
+                    <span
+                      className={`bg-${chosenGroupForTask.label}-500 w-6 h-6 rounded-lg flex items-center justify-center cursor-pointer `}
+                    ></span>
+                    {chosenGroupForTask.title}
+                  </button>
+                </header>
+                {showDropdown && (
+                  <div
+                    className="absolute flex flex-col justify-items-start w-[77%] border border-gray-300 rounded-lg overflow-hidden bg-white"
+                    ref={setDropdownPopperElement}
+                    style={dpdStyles.popper}
+                  >
+                    {savedGroups.map((group, idx) => (
+                      <button
+                        className="flex flex-row bg-white gap-2 p-1 justify-start align-middle"
+                        key={idx}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setChosenGroupForTask(group);
+                          setShowDropdown(false);
+                        }}
+                      >
+                        <span
+                          className={`bg-${group.label}-500 w-6 h-6 rounded-lg flex items-center justify-center cursor-pointer`}
+                        ></span>
+                        {group.title}
+                      </button>
+                    ))}
+                  </div>
                 )}
-              </span>
-            ))}
+              </div>
+            )}
+            <span className="material-icons text-gray-400 unselectable">
+              bookmark_border
+            </span>
+            <div className="flex gap-x-2">
+              {labelsClasses.map((lblClass, i) => (
+                <span
+                  key={i}
+                  onClick={() => setSelectedLabel(lblClass)}
+                  className={`bg-${lblClass}-500 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer `}
+                >
+                  {selectedLabel === lblClass && (
+                    <span className="material-icons text-white text-sm">
+                      check
+                    </span>
+                  )}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-      <footer className='flex justify-end border-t p-3 mt-3'>
-        <button
-          type='submit'
-          onClick={handleSubmit}
-          className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable'
-        >
-          Save
-        </button>
-      </footer>
-    </form>
+        <footer className="flex justify-end border-t p-3 mt-3">
+          <button
+            type="submit"
+            onClick={handleSubmit}
+            className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable"
+          >
+            Save
+          </button>
+        </footer>
+      </form>
+    </div>
   );
 };
 

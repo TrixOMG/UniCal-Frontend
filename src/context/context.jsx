@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useMemo,
   useReducer,
+  useRef,
   useState,
 } from "react";
 
@@ -17,6 +18,27 @@ export const labelsClasses = [
   "red",
   "purple",
 ];
+
+// Custom hook (closing on click outside component functionality)
+//////////////////////////////
+export const useOutsideAlerter = (initialValue) => {
+  const ref = useRef(null);
+  const [show, setShow] = useState(initialValue);
+
+  const handleClickOutside = (event) => {
+    if (ref.current && !ref.current.contains(event.target)) setShow(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, [ref]);
+
+  return { show, setShow, ref };
+};
+/////////////////////////////
 
 function groupsReducer(state, { type, payload }) {
   switch (type) {
@@ -79,7 +101,9 @@ const GlobalContext = React.createContext();
 const GlobalContextProvider = ({ children }) => {
   const [monthIndex, setMonthIndex] = useState(dayjs().month() + 1);
   const [showSidebar, setShowSidebar] = useState(true);
-  const [showEventModal, setShowEventModal] = useState(false);
+  //  const [showEventModal, setShowEventModal] = useState(false);
+  const { show, setShow, ref } = useOutsideAlerter(false);
+  //
   const [chosenDayForTask, setChosenDayForTask] = useState(dayjs());
 
   // для отображения меню изменения таска
@@ -176,14 +200,23 @@ const GlobalContextProvider = ({ children }) => {
   //       groups.map((group) => (group.label === label.label ? label : group))
   //     );
   //   }
+  //
+
+  function changeShowEventModal() {
+    setShow((visible) => !visible);
+  }
 
   const value = {
     monthIndex,
     setMonthIndex,
     showSidebar,
     setShowSidebar,
-    showEventModal,
-    setShowEventModal,
+    // showEventModal,
+    // setShowEventModal,
+    show,
+    setShow,
+    ref, //for hiding event modal on click outside
+    changeShowEventModal,
     selectedDaysArray,
     setSelectedDaysArray,
     chosenDayForTask,

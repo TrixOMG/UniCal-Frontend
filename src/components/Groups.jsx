@@ -39,7 +39,7 @@ const Groups = () => {
       {savedGroups.length > 0 &&
         savedGroups.map((group, idx) => (
           <div
-            className='flex flex-row justify-start items-center mt-3'
+            className='flex flex-row justify-start items-center mt-3 ml-1'
             key={idx}
           >
             <input
