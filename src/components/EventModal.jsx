@@ -9,9 +9,9 @@ import "../index.css";
 
 const EventModal = () => {
   const {
-    show,
+    showEventModal,
     changeShowEventModal,
-    ref,
+    modalRef,
     chosenDayForTask,
     dispatchCalEvent,
     selectedEvent,
@@ -45,10 +45,24 @@ const EventModal = () => {
   const [chosenGroupForTask, setChosenGroupForTask] = useState(savedGroups[0]);
 
   //update showing fake task with new click outside hook
-  useEffect(() => {
-    setShowFakeTask(show);
-  }, [show]);
 
+  useEffect(() => {
+    //    if (showEventModal === false) handleClose();
+    if (selectedEvent) return;
+    if (modalPlacement !== "bottom-start") return;
+    setShowFakeTask(showEventModal);
+  }, [showEventModal, selectedEvent, setShowFakeTask, modalPlacement]);
+
+  useEffect(() => {
+    if (showEventModal === false) {
+      setSelectedGroup(null);
+      setSelectedEvent(null);
+      setReferenceElement(null);
+      setShowFakeTask(false);
+    }
+  });
+
+  //////
   useEffect(() => {
     if (selectedEvent) {
       setTitle(selectedEvent.title);
@@ -191,7 +205,7 @@ const EventModal = () => {
   }
 
   function getClassShow() {
-    return show ? "visible" : "invisible"; //showEventModal ? "visible" : "invisible";
+    return showEventModal ? "visible" : "invisible"; //showEventModal ? "visible" : "invisible";
   }
 
   function handleDelete(e) {
@@ -221,8 +235,16 @@ const EventModal = () => {
     }
   }
 
+  //  function handleClose() {
+  //   changeShowEventModal(false);
+  //  setSelectedGroup(null);
+  // setSelectedEvent(null);
+  //setReferenceElement(null);
+  //setShowFakeTask(false);
+  // }
+
   return (
-    <div ref={ref}>
+    <div ref={modalRef}>
       <form
         className={`bg-white rounded-xl drop-shadow-lg overflow-hidden ${getClassShow()}`}
         ref={setPopperElement}
@@ -246,10 +268,11 @@ const EventModal = () => {
                 className="material-icons text-gray-400 unselectable"
                 onClick={() => {
                   changeShowEventModal(false);
-                  setSelectedGroup(null);
-                  setSelectedEvent(null);
-                  setReferenceElement(null);
-                  setShowFakeTask(false);
+                  //changeShowEventModal(false);
+                  //setSelectedGroup(null);
+                  //setSelectedEvent(null);
+                  //setReferenceElement(null);
+                  //setShowFakeTask(false);
                 }}
               >
                 close

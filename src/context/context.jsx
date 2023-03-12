@@ -102,7 +102,7 @@ const GlobalContextProvider = ({ children }) => {
   const [monthIndex, setMonthIndex] = useState(dayjs().month() + 1);
   const [showSidebar, setShowSidebar] = useState(true);
   //  const [showEventModal, setShowEventModal] = useState(false);
-  const { show, setShow, ref } = useOutsideAlerter(false);
+  const { show: showEventModal, setShow: setShowEventModal, ref: modalRef } = useOutsideAlerter(false);
   //
   const [chosenDayForTask, setChosenDayForTask] = useState(dayjs());
 
@@ -203,7 +203,7 @@ const GlobalContextProvider = ({ children }) => {
   //
 
   function changeShowEventModal() {
-    setShow((visible) => !visible);
+    setShowEventModal((visible) => !visible);
   }
 
   const value = {
@@ -213,9 +213,9 @@ const GlobalContextProvider = ({ children }) => {
     setShowSidebar,
     // showEventModal,
     // setShowEventModal,
-    show,
-    setShow,
-    ref, //for hiding event modal on click outside
+    showEventModal,
+    setShowEventModal,
+    modalRef, //for hiding event modal on click outside
     changeShowEventModal,
     selectedDaysArray,
     setSelectedDaysArray,

@@ -28,4 +28,4 @@
 // TODO: + state of the tasks (done or not)
 // TODO: + event modal functionality to get task done/undone
 //
-// TODO: click away feature to close modals
+//+ TODO: click away feature to close modals

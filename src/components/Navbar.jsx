@@ -125,7 +125,7 @@ const Navbar = () => {
   return (
     <header className='px-4 py-2 flex items-center align-middle border rounded-lg rounded-t-none mx-1 h-[10%]'>
       <div
-        className='material-symbols-outlined px-1 py-1 cursor-pointer w-8 h-8 block'
+        className='material-symbols-outlined px-1 py-1 cursor-pointer w-8 h-8 block unselectable'
         onClick={() => setShowSidebar(!showSidebar)}
       >
         menu

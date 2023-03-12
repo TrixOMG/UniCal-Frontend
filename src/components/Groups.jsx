@@ -5,7 +5,8 @@ const Groups = () => {
   const {
     savedGroups,
     dispatchGroups,
-    setShowEventModal,
+    showEventModal,
+    changeShowEventModal,
     setReferenceElement,
     setModalPlacement,
     setSelectedGroup,
@@ -13,23 +14,30 @@ const Groups = () => {
 
   const modalReference = useRef(null);
 
-  function handleClick(pGroup) {
-    setSelectedGroup(pGroup);
-    setReferenceElement(modalReference.current);
+  function handleGroupClick(pGroup) {
+      setSelectedGroup(pGroup);
+      setReferenceElement(modalReference.current);
+      setModalPlacement("right-start");
+      changeShowEventModal(true);
+  }
+
+  function handleAddClick() {
     setModalPlacement("right-start");
-    setShowEventModal(true);
+    setReferenceElement(modalReference.current);
+    changeShowEventModal(true);
   }
 
   return (
-    <div className='border border-gray-200 mt-10 rounded-lg'>
-      <header className='flex justify-between rounded-t-lg bg-gray-300'>
-        <p className='text-gray-500 font-bold mx-1'>Groups</p>
+    <div className="border border-gray-200 mt-10 rounded-lg">
+      <header className="flex justify-between rounded-t-lg bg-gray-300">
+        <p className="text-gray-500 font-bold mx-1">Groups</p>
         <span
-          className='material-symbols-outlined text-gray-500 cursor-pointer unselectable'
+          className="material-symbols-outlined text-gray-500 cursor-pointer unselectable"
           onClick={() => {
-            setModalPlacement("right-start");
-            setReferenceElement(modalReference.current);
-            setShowEventModal(true);
+            handleAddClick();
+            //setModalPlacement("right-start");
+            //setReferenceElement(modalReference.current);
+            //changeShowEventModal(true);
           }}
           ref={modalReference}
         >
@@ -39,11 +47,11 @@ const Groups = () => {
       {savedGroups.length > 0 &&
         savedGroups.map((group, idx) => (
           <div
-            className='flex flex-row justify-start items-center mt-3 ml-1'
+            className="flex flex-row justify-start items-center mt-3 ml-1"
             key={idx}
           >
             <input
-              type='checkbox'
+              type="checkbox"
               checked={group.checked}
               onChange={() => {
                 dispatchGroups({
@@ -60,8 +68,8 @@ const Groups = () => {
               className={`form-checkbox h-5 w-5 text-${group.label}-400 rounded focus:ring-0 cursor-pointer`}
             />
             <span
-              className='ml-2 text-gray-700 capitalize cursor-pointer'
-              onClick={() => handleClick(group)}
+              className="ml-2 text-gray-700 capitalize cursor-pointer"
+              onClick={() => handleGroupClick(group)}
             >
               {group.title}
             </span>
