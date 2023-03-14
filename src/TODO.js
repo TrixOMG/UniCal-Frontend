@@ -27,5 +27,7 @@
 // TODO: bg-color of tasks - their own, if not chosen - color of group tasks are in
 // TODO: + state of the tasks (done or not)
 // TODO: + event modal functionality to get task done/undone
+// TODO: create OptionsPopup component and options button in Navbar
+// TODO: create Tooltip component and reuse it where needed
 //
 //+ TODO: click away feature to close modals

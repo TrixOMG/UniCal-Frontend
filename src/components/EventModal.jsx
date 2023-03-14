@@ -1,6 +1,6 @@
 // import dayjs from "dayjs";
 import dayjs from "dayjs";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
 import { labelsClasses, useGlobalContext } from "../context/context";
 import "../index.css";
@@ -24,30 +24,40 @@ const EventModal = () => {
     selectedGroup,
     setSelectedGroup,
     savedGroups,
+    //removed from modal
+    modalTitle,
+    setModalTitle,
+    modalDescription,
+    setModalDescription,
+    selectedLabel,
+    setSelectedLabel,
+    showDropdown,
+    setShowDropdown,
+    chosenGroupForTask,
+    setChosenGroupForTask,
   } = useGlobalContext();
 
   //////////////
-  const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
-  const [description, setDescription] = useState(
-    selectedEvent ? selectedEvent.description : ""
-  );
-  const [selectedLabel, setSelectedLabel] = useState(
-    selectedEvent
-      ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
-      : labelsClasses[0]
-  );
+  // const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
+  // const [description, setDescription] = useState(
+  //   selectedEvent ? selectedEvent.description : ""
+  // );
+  // const [selectedLabel, setSelectedLabel] = useState(
+  //   selectedEvent
+  //     ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
+  //     : labelsClasses[0]
+  // );
   //////////////
 
   //////
   //////
 
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [chosenGroupForTask, setChosenGroupForTask] = useState(savedGroups[0]);
+  // const [showDropdown, setShowDropdown] = useState(false);
+  // const [chosenGroupForTask, setChosenGroupForTask] = useState(savedGroups[0]);
 
   //update showing fake task with new click outside hook
 
   useEffect(() => {
-    //    if (showEventModal === false) handleClose();
     if (selectedEvent) return;
     if (modalPlacement !== "bottom-start") return;
     setShowFakeTask(showEventModal);
@@ -55,49 +65,47 @@ const EventModal = () => {
 
   useEffect(() => {
     if (showEventModal === false) {
-      setSelectedGroup(null);
       setSelectedEvent(null);
       setReferenceElement(null);
       setShowFakeTask(false);
+      //setSelectedGroup(savedGroups[0]);
+      //setSelectedLabel(labelsClasses[0]);
     }
   });
 
-  //////
-  useEffect(() => {
-    if (selectedEvent) {
-      setTitle(selectedEvent.title);
-      setDescription(selectedEvent.description);
-      setSelectedLabel(
-        labelsClasses.find((lbl) => lbl === selectedEvent.label)
-      );
-      setChosenGroupForTask(
-        savedGroups.find((group) => group.id === selectedEvent.groupId)
-      );
-    } else {
-      setTitle("");
-      setDescription("");
-      setSelectedLabel(labelsClasses[0]);
-      setChosenGroupForTask(savedGroups[0]);
-    }
-  }, [selectedEvent, savedGroups]);
+  // useEffect(() => {
+  //   if (selectedEvent) {
+  //     setModalTitle(selectedEvent.title);
+  //     setModalDescription(selectedEvent.description);
+  //     setSelectedLabel(
+  //       labelsClasses.find((lbl) => lbl === selectedEvent.label)
+  //     );
+  //     setChosenGroupForTask(
+  //       savedGroups.find((group) => group.id === selectedEvent.groupId)
+  //     );
+  //   } else {
+  //     setModalTitle("");
+  //     setModalDescription("");
+  //     setSelectedLabel(labelsClasses[0]);
+  //     setChosenGroupForTask(savedGroups[0]);
+  //   }
 
-  useEffect(() => {
-    if (selectedGroup) {
-      setTitle(selectedGroup.title);
-      setDescription(selectedGroup.description);
-      setSelectedLabel(
-        labelsClasses.find((lbl) => lbl === selectedGroup.label)
-      );
-    } else {
-      setTitle("");
-      setDescription("");
-      setSelectedLabel(labelsClasses[0]);
-    }
-  }, [selectedGroup]);
+  //   if (selectedGroup) {
+  //     setModalTitle(selectedGroup.title);
+  //     setModalDescription(selectedGroup.description);
+  //     setSelectedLabel(
+  //       labelsClasses.find((lbl) => lbl === selectedGroup.label)
+  //     );
+  //   } else {
+  //     setModalTitle("");
+  //     setModalDescription("");
+  //     setSelectedLabel(labelsClasses[0]);
+  //   }
+  // });
 
-  useEffect(() => {
-    setChosenGroupForTask(savedGroups[0]);
-  }, [savedGroups]);
+  // useEffect(() => {
+  //   setChosenGroupForTask(savedGroups[0]);
+  // }, [savedGroups]);
 
   // POPPER
   const [popperElement, setPopperElement] = useState(null);
@@ -162,12 +170,12 @@ const EventModal = () => {
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (title.trim() === "") return;
+    if (modalTitle.trim() === "") return;
 
     if (modalPlacement === "bottom-start") {
       const calendarEvent = {
-        title,
-        description,
+        modalTitle,
+        modalDescription,
         label: selectedLabel,
         day: selectedEvent ? selectedEvent.day : chosenDayForTask.valueOf(),
         id: selectedEvent ? selectedEvent.id : Date.now(),
@@ -181,8 +189,8 @@ const EventModal = () => {
       }
     } else {
       const newGroup = {
-        title,
-        description,
+        modalTitle,
+        modalDescription,
         label: selectedLabel,
         id: selectedGroup ? selectedGroup.id : Date.now(),
         checked: true,
@@ -198,8 +206,8 @@ const EventModal = () => {
     changeShowEventModal(false);
     setSelectedEvent(null);
     setReferenceElement(null);
-    setTitle("");
-    setDescription("");
+    setModalTitle("");
+    setModalDescription("");
     setSelectedLabel(labelsClasses[0]);
     setShowFakeTask(false);
   }
@@ -235,14 +243,6 @@ const EventModal = () => {
     }
   }
 
-  //  function handleClose() {
-  //   changeShowEventModal(false);
-  //  setSelectedGroup(null);
-  // setSelectedEvent(null);
-  //setReferenceElement(null);
-  //setShowFakeTask(false);
-  // }
-
   return (
     <div ref={modalRef}>
       <form
@@ -250,7 +250,7 @@ const EventModal = () => {
         ref={setPopperElement}
         style={styles.popper}
       >
-        <header className="bg-gray-100 px-4 py-2 flex justify-end items-center">
+        <header className='bg-gray-100 px-4 py-2 flex justify-end items-center'>
           <div>
             {(selectedEvent || selectedGroup) && (
               <button
@@ -258,14 +258,14 @@ const EventModal = () => {
                   handleDelete(e);
                 }}
               >
-                <span className="material-icons text-gray-400 unselectable">
+                <span className='material-icons text-gray-400 unselectable'>
                   delete
                 </span>
               </button>
             )}
-            <button type="button">
+            <button type='button'>
               <span
-                className="material-icons text-gray-400 unselectable"
+                className='material-icons text-gray-400 unselectable'
                 onClick={() => {
                   changeShowEventModal(false);
                   //changeShowEventModal(false);
@@ -280,63 +280,63 @@ const EventModal = () => {
             </button>
           </div>
         </header>
-        <div className="p-3">
-          <div className="grid grid-cols-1/5 items-end gap-y-5 align-middle">
+        <div className='p-3'>
+          <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle'>
             <div></div>
             <input
-              type="text"
-              name="title"
+              type='text'
+              name='title'
               placeholder={
                 modalPlacement === "bottom-start"
                   ? "Add Title"
                   : "Add Group Title"
               }
               required
-              className="pt-3 border-0 text-gray-600 text-lg font-semibold w-full pb-2 border-b-2 border-gray-200 focus:outline-none focus:border-b-blue-500"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              className='pt-3 border-0 text-gray-600 text-lg font-semibold w-full pb-2 border-b-2 border-gray-200 focus:outline-none focus:border-b-blue-500'
+              value={modalTitle}
+              onChange={(e) => setModalTitle(e.target.value)}
             />
             {modalPlacement === "bottom-start" && (
-              <span className="material-icons text-gray-400 unselectable">
+              <span className='material-icons text-gray-400 unselectable'>
                 schedule
               </span>
             )}
             {modalPlacement === "bottom-start" && (
-              <p className="pl-1 unselectable">
+              <p className='pl-1 unselectable'>
                 {selectedEvent
                   ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
                   : chosenDayForTask.format("dddd, MMMM DD")}
               </p>
             )}
-            <span className="material-icons text-gray-400 unselectable pb-7">
+            <span className='material-icons text-gray-400 unselectable pb-7'>
               segment
             </span>
             <textarea
-              type="text"
-              name="description"
-              placeholder="Add a Description"
-              className="border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500 resize-none"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              maxLength="100"
+              type='text'
+              name='description'
+              placeholder='Add a Description'
+              className='border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500 resize-none'
+              value={modalDescription}
+              onChange={(e) => setModalDescription(e.target.value)}
+              maxLength='100'
               rows={2}
             />
             {modalPlacement === "bottom-start" && (
-              <span className="material-icons text-gray-400 unselectable py-1">
+              <span className='material-icons text-gray-400 unselectable py-1'>
                 list_alt
               </span>
             )}
             {modalPlacement === "bottom-start" && (
-              <div className="w-full">
+              <div className='w-full'>
                 <header
-                  className="w-full cursor-pointer border border-gray-300 rounded-lg p-1"
+                  className='w-full cursor-pointer border border-gray-300 rounded-lg p-1'
                   ref={setDropdownPopperRefElement}
                   onClick={() => {
                     setShowDropdown(true);
                   }}
                 >
                   <button
-                    className="flex flex-row bg-white gap-2 justify-start align-middle"
+                    className='flex flex-row bg-white gap-2 justify-start align-middle'
                     onClick={(e) => {
                       e.preventDefault();
                       setShowDropdown(false);
@@ -350,13 +350,13 @@ const EventModal = () => {
                 </header>
                 {showDropdown && (
                   <div
-                    className="absolute flex flex-col justify-items-start w-[77%] border border-gray-300 rounded-lg overflow-hidden bg-white"
+                    className='absolute flex flex-col justify-items-start w-[77%] border border-gray-300 rounded-lg overflow-hidden bg-white'
                     ref={setDropdownPopperElement}
                     style={dpdStyles.popper}
                   >
                     {savedGroups.map((group, idx) => (
                       <button
-                        className="flex flex-row bg-white gap-2 p-1 justify-start align-middle"
+                        className='flex flex-row bg-white gap-2 p-1 justify-start align-middle'
                         key={idx}
                         onClick={(e) => {
                           e.preventDefault();
@@ -374,10 +374,10 @@ const EventModal = () => {
                 )}
               </div>
             )}
-            <span className="material-icons text-gray-400 unselectable">
+            <span className='material-icons text-gray-400 unselectable'>
               bookmark_border
             </span>
-            <div className="flex gap-x-2">
+            <div className='flex gap-x-2'>
               {labelsClasses.map((lblClass, i) => (
                 <span
                   key={i}
@@ -385,7 +385,7 @@ const EventModal = () => {
                   className={`bg-${lblClass}-500 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer `}
                 >
                   {selectedLabel === lblClass && (
-                    <span className="material-icons text-white text-sm">
+                    <span className='material-icons text-white text-sm'>
                       check
                     </span>
                   )}
@@ -394,11 +394,11 @@ const EventModal = () => {
             </div>
           </div>
         </div>
-        <footer className="flex justify-end border-t p-3 mt-3">
+        <footer className='flex justify-end border-t p-3 mt-3'>
           <button
-            type="submit"
+            type='submit'
             onClick={handleSubmit}
-            className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable"
+            className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable'
           >
             Save
           </button>

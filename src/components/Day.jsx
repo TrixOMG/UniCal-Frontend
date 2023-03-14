@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import React, { useEffect, useRef, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { useGlobalContext } from "../context/context";
+import { labelsClasses, useGlobalContext } from "../context/context";
 
 const Day = ({ pDay, rowIdx }) => {
   const [dayEvents, setDayEvents] = useState([]);
@@ -18,6 +18,13 @@ const Day = ({ pDay, rowIdx }) => {
     setSelectedDaysArray,
     setChosenDay,
     setModalPlacement,
+    // modal
+    setModalTitle,
+    setModalDescription,
+    setSelectedLabel,
+    setChosenGroupForTask,
+    savedGroups,
+    // modal
   } = useGlobalContext();
 
   const { setSelectedEvent } = useGlobalContext();
@@ -39,19 +46,31 @@ const Day = ({ pDay, rowIdx }) => {
 
   const newTaskReference = useRef(null);
 
-  function handleClick() {
+  function handleAddEventClick() {
     setChosenDayForTask(pDay);
     setReferenceElement(newTaskReference.current);
     setModalPlacement("bottom-start");
+    setModalTitle("");
+    setModalDescription("");
+    setModalTitle("");
+    setSelectedLabel(labelsClasses[0]);
+    setChosenGroupForTask(savedGroups[0]);
     changeShowEventModal(true);
     setShowFakeTask(true);
+  }
+
+  function handleOnEventClick(pEvent) {
+    setSelectedEvent(pEvent);
+    setModalPlacement("bottom-start");
+    changeShowEventModal(true);
+    setSelectedEvent(pEvent);
   }
 
   return (
     <div className='border border-gray-200 flex flex-col rounded-lg'>
       <header
         className='flex flex-col items-center bg-gray-300 rounded-t-lg pb-1 cursor-pointer'
-        onClick={() => handleClick()}
+        onClick={() => handleAddEventClick()}
       >
         {rowIdx === 0 && (
           <p className='text-sm mt-1'>
@@ -100,15 +119,17 @@ const Day = ({ pDay, rowIdx }) => {
                         <div
                           onClick={(e) => {
                             setReferenceElement(e.target);
-                            setSelectedEvent(evt);
-                            setModalPlacement("bottom-start");
-                            changeShowEventModal(true);
+                            handleOnEventClick(evt);
+                            // setSelectedEvent(evt);
+                            // setModalPlacement("bottom-start");
+                            // changeShowEventModal(true);
+                            // setSelectedEvent(evt);
                           }}
                         >
                           <div
-                            onClick={() => {
-                              setSelectedEvent(evt);
-                            }}
+                            // onClick={() => {
+                            // setSelectedEvent(evt);
+                            // }}
                             className={`bg-${evt.label}-300 mx-1 text-gray-600 text-sm rounded-lg mb-1 flex flex-row justify-between`}
                             ref={provided.innerRef}
                             {...provided.draggableProps}

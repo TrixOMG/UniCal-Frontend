@@ -102,7 +102,11 @@ const GlobalContextProvider = ({ children }) => {
   const [monthIndex, setMonthIndex] = useState(dayjs().month() + 1);
   const [showSidebar, setShowSidebar] = useState(true);
   //  const [showEventModal, setShowEventModal] = useState(false);
-  const { show: showEventModal, setShow: setShowEventModal, ref: modalRef } = useOutsideAlerter(false);
+  const {
+    show: showEventModal,
+    setShow: setShowEventModal,
+    ref: modalRef,
+  } = useOutsideAlerter(false);
   //
   const [chosenDayForTask, setChosenDayForTask] = useState(dayjs());
 
@@ -142,38 +146,6 @@ const GlobalContextProvider = ({ children }) => {
     );
   }, [savedEvents, savedGroups]);
 
-  // Backup
-
-  // const filteredEvents = useMemo(() => {
-  //   return savedEvents.filter((evt) =>
-  //     groups
-  //       .filter((group) => group.checked)
-  //       .map((group) => group.label)
-  //       .includes(evt.label)
-  //   );
-  // }, [savedEvents, groups]);
-
-  // groups work
-  // useEffect(() => {
-  //   setGroups((prevGroups) => {
-  //     return [...new Set(savedEvents.map((evt) => evt.label))].map((label) => {
-  //       const currentLabel = prevGroups.find((group) => group.label === label);
-  //       return { label, checked: currentLabel ? currentLabel.checked : true };
-  //     });
-  //   });
-  // }, [savedEvents]);
-
-  // Backup
-
-  // useEffect(() => {
-  //   setGroups((prevGroups) => {
-  //     return [...new Set(savedEvents.map((evt) => evt.label))].map((label) => {
-  //       const currentLabel = prevGroups.find((group) => group.label === label);
-  //       return { label, checked: currentLabel ? currentLabel.checked : true };
-  //     });
-  //   });
-  // }, [savedEvents]);
-
   useEffect(() => {
     localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
   }, [savedEvents]);
@@ -187,26 +159,42 @@ const GlobalContextProvider = ({ children }) => {
   );
   const [chosenDay, setChosenDay] = useState(dayjs());
 
-  // function updateGroup(label) {
-  // setGroups(
-  // groups.map((group) => (group.label === label.label ? label : group))
-  // );
-  // }
-
-  // Backup
-
-  // function updateGroup(label) {
-  //     setGroups(
-  //       groups.map((group) => (group.label === label.label ? label : group))
-  //     );
-  //   }
-  //
+  // Everything for modal START
 
   function changeShowEventModal() {
     setShowEventModal((visible) => !visible);
   }
 
+  const [modalTitle, setModalTitle] = useState(
+    selectedEvent ? selectedEvent.title : ""
+  );
+  const [modalDescription, setModalDescription] = useState(
+    selectedEvent ? selectedEvent.description : ""
+  );
+  const [selectedLabel, setSelectedLabel] = useState(
+    selectedEvent
+      ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
+      : labelsClasses[0]
+  );
+
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [chosenGroupForTask, setChosenGroupForTask] = useState(savedGroups[0]);
+
+  // Everything for modal END
+
   const value = {
+    // modal
+    modalTitle,
+    setModalTitle,
+    modalDescription,
+    setModalDescription,
+    selectedLabel,
+    setSelectedLabel,
+    showDropdown,
+    setShowDropdown,
+    chosenGroupForTask,
+    setChosenGroupForTask,
+    // modal
     monthIndex,
     setMonthIndex,
     showSidebar,
