@@ -29,6 +29,8 @@
 // TODO: + event modal functionality to get task done/undone
 // TODO: create OptionsPopup component and options button in Navbar
 // TODO: create Tooltip component and reuse it where needed
+
+// TODO: hovering alert box right under navbar to show alerts and sync with server
 //
 //+ TODO: click away feature to close modals
 

@@ -1,4 +1,3 @@
-// import dayjs from "dayjs";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
@@ -39,26 +38,7 @@ const EventModal = () => {
     // modal multipurpose
   } = useGlobalContext();
 
-  //////////////
-  // const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
-  // const [description, setDescription] = useState(
-  //   selectedEvent ? selectedEvent.description : ""
-  // );
-  // const [selectedLabel, setSelectedLabel] = useState(
-  //   selectedEvent
-  //     ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
-  //     : labelsClasses[0]
-  // );
-  //////////////
-
-  //////
-  //////
-
-  // const [showDropdown, setShowDropdown] = useState(false);
-  // const [chosenGroupForTask, setChosenGroupForTask] = useState(savedGroups[0]);
-
   //update showing fake task with new click outside hook
-
   useEffect(() => {
     if (selectedObjectForModal === "add-event") setShowFakeTask(showEventModal);
   }, [showEventModal, setShowFakeTask, selectedObjectForModal]);
@@ -69,40 +49,6 @@ const EventModal = () => {
       setShowFakeTask(false);
     }
   });
-
-  // useEffect(() => {
-  //   if (selectedEvent) {
-  //     setModalTitle(selectedEvent.title);
-  //     setModalDescription(selectedEvent.description);
-  //     setSelectedLabel(
-  //       labelsClasses.find((lbl) => lbl === selectedEvent.label)
-  //     );
-  //     setChosenGroupForTask(
-  //       savedGroups.find((group) => group.id === selectedEvent.groupId)
-  //     );
-  //   } else {
-  //     setModalTitle("");
-  //     setModalDescription("");
-  //     setSelectedLabel(labelsClasses[0]);
-  //     setChosenGroupForTask(savedGroups[0]);
-  //   }
-
-  //   if (selectedGroup) {
-  //     setModalTitle(selectedGroup.title);
-  //     setModalDescription(selectedGroup.description);
-  //     setSelectedLabel(
-  //       labelsClasses.find((lbl) => lbl === selectedGroup.label)
-  //     );
-  //   } else {
-  //     setModalTitle("");
-  //     setModalDescription("");
-  //     setSelectedLabel(labelsClasses[0]);
-  //   }
-  // });
-
-  // useEffect(() => {
-  //   setChosenGroupForTask(savedGroups[0]);
-  // }, [savedGroups]);
 
   // POPPER
   const [popperElement, setPopperElement] = useState(null);

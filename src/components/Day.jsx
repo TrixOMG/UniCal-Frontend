@@ -8,6 +8,9 @@ const Day = ({ pDay, rowIdx }) => {
 
   const {
     //setShowEventModal,
+    // tooltip
+    setTooltipRefElement,
+    // tooltip
     changeShowEventModal,
     setChosenDayForTask,
     filteredEvents,
@@ -72,6 +75,7 @@ const Day = ({ pDay, rowIdx }) => {
       <header
         className='flex flex-col items-center bg-gray-300 rounded-t-lg pb-1 cursor-pointer'
         onClick={() => handleAddEventClick()}
+        onMouseEnter={(e) => setTooltipRefElement(e.target)}
       >
         {rowIdx === 0 && (
           <p className='text-sm mt-1'>

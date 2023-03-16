@@ -99,6 +99,11 @@ function initEvents() {
 const GlobalContext = React.createContext();
 
 const GlobalContextProvider = ({ children }) => {
+  // tooltip
+  const [tooltipTitle, setTooltipTitle] = useState("");
+  const [tooltipRefElement, setTooltipRefElement] = useState(null);
+  // tooltip
+
   const [monthIndex, setMonthIndex] = useState(dayjs().month() + 1);
 
   const [showSidebar, setShowSidebar] = useState(true);
@@ -171,8 +176,16 @@ const GlobalContextProvider = ({ children }) => {
   // Everything for modal END
 
   const value = {
+    //tooltip
+    tooltipTitle,
+    setTooltipTitle,
+    tooltipRefElement,
+    setTooltipRefElement,
+    //tooltip
+
     monthIndex,
     setMonthIndex,
+
     // modal multipurpose
     selectedObjectForModal,
     setSelectedObjectForModal,
