@@ -5,24 +5,23 @@ const Groups = () => {
   const {
     savedGroups,
     dispatchGroups,
-    //showEventModal,
     changeShowEventModal,
     setReferenceElement,
-    setModalPlacement,
     setSelectedGroup,
     // modal
     setModalTitle,
     setModalDescription,
     setSelectedLabel,
+    setSelectedObjectForModal,
     // modal
   } = useGlobalContext();
 
   const modalReference = useRef(null);
 
   function handleGroupClick(pGroup) {
+    setSelectedObjectForModal("group");
     setSelectedGroup(pGroup);
     setReferenceElement(modalReference.current);
-    setModalPlacement("right-start");
     setModalTitle(pGroup.title);
     setModalDescription(pGroup.description);
     setSelectedLabel(pGroup.label);
@@ -30,10 +29,10 @@ const Groups = () => {
   }
 
   function handleAddClick() {
-    setModalPlacement("right-start");
+    setSelectedObjectForModal("add-group");
     setReferenceElement(modalReference.current);
-    setModalDescription('');
-    setModalTitle('');
+    setModalDescription("");
+    setModalTitle("");
     setSelectedLabel(labelsClasses[0]);
     changeShowEventModal(true);
   }
@@ -46,9 +45,6 @@ const Groups = () => {
           className='material-symbols-outlined text-gray-500 cursor-pointer unselectable'
           onClick={() => {
             handleAddClick();
-            //setModalPlacement("right-start");
-            //setReferenceElement(modalReference.current);
-            //changeShowEventModal(true);
           }}
           ref={modalReference}
         >

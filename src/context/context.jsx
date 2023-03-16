@@ -122,8 +122,6 @@ const GlobalContextProvider = ({ children }) => {
 
   const [selectedGroup, setSelectedGroup] = useState(null);
 
-  const [modalPlacement, setModalPlacement] = useState("bottom-start");
-
   // POPPER
   const [referenceElement, setReferenceElement] = useState(null);
   // const [popperElement, setPopperElement] = useState(null);
@@ -180,9 +178,15 @@ const GlobalContextProvider = ({ children }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [chosenGroupForTask, setChosenGroupForTask] = useState(savedGroups[0]);
 
+  const [selectedObjectForModal, setSelectedObjectForModal] = useState("");
+
   // Everything for modal END
 
   const value = {
+    // modal multipurpose
+    selectedObjectForModal,
+    setSelectedObjectForModal,
+    // modal multipurpose
     // modal
     modalTitle,
     setModalTitle,
@@ -222,8 +226,6 @@ const GlobalContextProvider = ({ children }) => {
     setReferenceElement,
     showFakeTask,
     setShowFakeTask,
-    modalPlacement,
-    setModalPlacement,
     selectedGroup,
     setSelectedGroup,
   };

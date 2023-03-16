@@ -19,7 +19,6 @@ const EventModal = () => {
     referenceElement,
     setReferenceElement,
     setShowFakeTask,
-    modalPlacement,
     dispatchGroups,
     selectedGroup,
     setSelectedGroup,
@@ -35,6 +34,9 @@ const EventModal = () => {
     setShowDropdown,
     chosenGroupForTask,
     setChosenGroupForTask,
+    // modal multipurpose
+    selectedObjectForModal,
+    // modal multipurpose
   } = useGlobalContext();
 
   //////////////
@@ -58,10 +60,8 @@ const EventModal = () => {
   //update showing fake task with new click outside hook
 
   useEffect(() => {
-    if (selectedEvent) return;
-    if (modalPlacement !== "bottom-start") return;
-    setShowFakeTask(showEventModal);
-  }, [showEventModal, selectedEvent, setShowFakeTask, modalPlacement]);
+    if (selectedObjectForModal === "add-event") setShowFakeTask(showEventModal);
+  }, [showEventModal, setShowFakeTask, selectedObjectForModal]);
 
   useEffect(() => {
     if (showEventModal === false) {
@@ -111,7 +111,7 @@ const EventModal = () => {
   const [popperElement, setPopperElement] = useState(null);
 
   const { styles } = usePopper(referenceElement, popperElement, {
-    placement: modalPlacement, //"bottom-start",
+    placement: "bottom-start",
     modifiers: [
       {
         name: "offset",
@@ -157,7 +157,12 @@ const EventModal = () => {
         {
           name: "flip",
           options: {
-            allowedAutoPlacements: ["right-start", "left-start", "bottom"],
+            fallbackPlacements: [
+              "right-start",
+              "left-start",
+              "bottom-start",
+              "top-start",
+            ],
             rootBoundary: "viewport",
           },
         },
@@ -172,7 +177,10 @@ const EventModal = () => {
 
     if (modalTitle.trim() === "") return;
 
-    if (modalPlacement === "bottom-start") {
+    if (
+      selectedObjectForModal === "add-event" ||
+      selectedObjectForModal === "event"
+    ) {
       const calendarEvent = {
         modalTitle,
         modalDescription,
@@ -219,7 +227,7 @@ const EventModal = () => {
   function handleDelete(e) {
     e.preventDefault();
 
-    if (modalPlacement !== "bottom-start") {
+    if (selectedObjectForModal === "group") {
       if (savedGroups.length > 1) {
         dispatchGroups({ type: "delete", payload: selectedGroup });
 
@@ -231,7 +239,7 @@ const EventModal = () => {
         // TODO: make a hint 'At least one group is required'
         return;
       }
-    } else {
+    } else if (selectedObjectForModal === "event") {
       dispatchCalEvent({
         type: "delete",
         payload: selectedEvent,
@@ -252,7 +260,8 @@ const EventModal = () => {
       >
         <header className='bg-gray-100 px-4 py-2 flex justify-end items-center'>
           <div>
-            {(selectedEvent || selectedGroup) && (
+            {(selectedObjectForModal === "group" ||
+              selectedObjectForModal === "event") && (
               <button
                 onClick={(e) => {
                   handleDelete(e);
@@ -287,7 +296,7 @@ const EventModal = () => {
               type='text'
               name='title'
               placeholder={
-                modalPlacement === "bottom-start"
+                selectedObjectForModal === "add-event"
                   ? "Add Title"
                   : "Add Group Title"
               }
@@ -296,12 +305,14 @@ const EventModal = () => {
               value={modalTitle}
               onChange={(e) => setModalTitle(e.target.value)}
             />
-            {modalPlacement === "bottom-start" && (
+            {(selectedObjectForModal === "event" ||
+              selectedObjectForModal === "add-event") && (
               <span className='material-icons text-gray-400 unselectable'>
                 schedule
               </span>
             )}
-            {modalPlacement === "bottom-start" && (
+            {(selectedObjectForModal === "event" ||
+              selectedObjectForModal === "add-event") && (
               <p className='pl-1 unselectable'>
                 {selectedEvent
                   ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
@@ -321,12 +332,14 @@ const EventModal = () => {
               maxLength='100'
               rows={2}
             />
-            {modalPlacement === "bottom-start" && (
+            {(selectedObjectForModal === "event" ||
+              selectedObjectForModal === "add-event") && (
               <span className='material-icons text-gray-400 unselectable py-1'>
                 list_alt
               </span>
             )}
-            {modalPlacement === "bottom-start" && (
+            {(selectedObjectForModal === "event" ||
+              selectedObjectForModal === "add-event") && (
               <div className='w-full'>
                 <header
                   className='w-full cursor-pointer border border-gray-300 rounded-lg p-1'

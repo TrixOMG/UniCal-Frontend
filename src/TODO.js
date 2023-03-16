@@ -31,3 +31,6 @@
 // TODO: create Tooltip component and reuse it where needed
 //
 //+ TODO: click away feature to close modals
+
+// 16.03.23
+// TODO: selectedObjectForModal for changing modal
