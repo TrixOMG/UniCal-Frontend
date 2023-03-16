@@ -65,11 +65,8 @@ const EventModal = () => {
 
   useEffect(() => {
     if (showEventModal === false) {
-      setSelectedEvent(null);
       setReferenceElement(null);
       setShowFakeTask(false);
-      //setSelectedGroup(savedGroups[0]);
-      //setSelectedLabel(labelsClasses[0]);
     }
   });
 
@@ -245,7 +242,6 @@ const EventModal = () => {
         payload: selectedEvent,
       });
       changeShowEventModal(false);
-      setSelectedEvent(null);
       setSelectedGroup(null);
       setReferenceElement(null);
     }

@@ -100,8 +100,9 @@ const GlobalContext = React.createContext();
 
 const GlobalContextProvider = ({ children }) => {
   const [monthIndex, setMonthIndex] = useState(dayjs().month() + 1);
+
   const [showSidebar, setShowSidebar] = useState(true);
-  //  const [showEventModal, setShowEventModal] = useState(false);
+
   const {
     show: showEventModal,
     setShow: setShowEventModal,
@@ -110,17 +111,12 @@ const GlobalContextProvider = ({ children }) => {
   //
   const [chosenDayForTask, setChosenDayForTask] = useState(dayjs());
 
-  // для отображения меню изменения таска
-  const [selectedEvent, setSelectedEvent] = useState(null);
-
   // groups
   const [savedGroups, dispatchGroups] = useReducer(
     groupsReducer,
     [],
     initGroups
   );
-
-  const [selectedGroup, setSelectedGroup] = useState(null);
 
   // POPPER
   const [referenceElement, setReferenceElement] = useState(null);
@@ -163,17 +159,9 @@ const GlobalContextProvider = ({ children }) => {
     setShowEventModal((visible) => !visible);
   }
 
-  const [modalTitle, setModalTitle] = useState(
-    selectedEvent ? selectedEvent.title : ""
-  );
-  const [modalDescription, setModalDescription] = useState(
-    selectedEvent ? selectedEvent.description : ""
-  );
-  const [selectedLabel, setSelectedLabel] = useState(
-    selectedEvent
-      ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
-      : labelsClasses[0]
-  );
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalDescription, setModalDescription] = useState("");
+  const [selectedLabel, setSelectedLabel] = useState(labelsClasses[0]);
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [chosenGroupForTask, setChosenGroupForTask] = useState(savedGroups[0]);
@@ -183,10 +171,13 @@ const GlobalContextProvider = ({ children }) => {
   // Everything for modal END
 
   const value = {
+    monthIndex,
+    setMonthIndex,
     // modal multipurpose
     selectedObjectForModal,
     setSelectedObjectForModal,
     // modal multipurpose
+
     // modal
     modalTitle,
     setModalTitle,
@@ -199,12 +190,9 @@ const GlobalContextProvider = ({ children }) => {
     chosenGroupForTask,
     setChosenGroupForTask,
     // modal
-    monthIndex,
-    setMonthIndex,
+
     showSidebar,
     setShowSidebar,
-    // showEventModal,
-    // setShowEventModal,
     showEventModal,
     setShowEventModal,
     modalRef, //for hiding event modal on click outside
@@ -217,8 +205,6 @@ const GlobalContextProvider = ({ children }) => {
     setChosenDay,
     dispatchCalEvent,
     savedEvents,
-    selectedEvent,
-    setSelectedEvent,
     savedGroups,
     dispatchGroups,
     filteredEvents,
@@ -226,8 +212,6 @@ const GlobalContextProvider = ({ children }) => {
     setReferenceElement,
     showFakeTask,
     setShowFakeTask,
-    selectedGroup,
-    setSelectedGroup,
   };
 
   return (

@@ -4,6 +4,7 @@ import EventModal from "./components/EventModal";
 import MainDaysComponent from "./components/MainDaysComponent";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import Tooltip from "./components/Tooltip";
 import { useGlobalContext } from "./context/context";
 import "./index.css";
 import "./util/util";
@@ -13,6 +14,7 @@ function App() {
 
   return (
     <>
+      <Tooltip />
       <EventModal />
       <div className='App h-screen flex flex-col'>
         <Navbar />

@@ -27,8 +27,6 @@ const Day = ({ pDay, rowIdx }) => {
     // modal
   } = useGlobalContext();
 
-  const { setSelectedEvent } = useGlobalContext();
-
   useEffect(() => {
     const events = filteredEvents.filter(
       (evt) => dayjs(evt.day).format("DD-MM-YY") === pDay.format("DD-MM-YY")
@@ -47,7 +45,6 @@ const Day = ({ pDay, rowIdx }) => {
   const newTaskReference = useRef(null);
 
   function handleAddEventClick() {
-    setSelectedObjectForModal("add-event");
     setChosenDayForTask(pDay);
     setReferenceElement(newTaskReference.current);
     setSelectedObjectForModal("add-event");
@@ -61,7 +58,6 @@ const Day = ({ pDay, rowIdx }) => {
 
   function handleOnEventClick(pEvent) {
     setSelectedObjectForModal("event");
-    setSelectedEvent(pEvent);
     setModalTitle(pEvent.title);
     setModalDescription(pEvent.description);
     setSelectedLabel(pEvent.label);
@@ -69,7 +65,6 @@ const Day = ({ pDay, rowIdx }) => {
       savedGroups.find((group) => group.id === pEvent.groupId)
     );
     changeShowEventModal(true);
-    setSelectedEvent(pEvent);
   }
 
   return (
@@ -89,7 +84,6 @@ const Day = ({ pDay, rowIdx }) => {
             e.stopPropagation();
             setSelectedDaysArray([pDay]);
             setChosenDay(pDay);
-            // setModalPlacement("bottom-start");
           }}
         >
           {dayjs(pDay).date()}
