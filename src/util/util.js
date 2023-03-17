@@ -24,240 +24,250 @@ const dayjs = require("dayjs");
 // }
 
 export function getMonth(month = dayjs().month()) {
-	month = Math.floor(month) - 1;
-	const year = dayjs().year();
+  month = Math.floor(month) - 1;
+  const year = dayjs().year();
 
-	const firstDayOfTheMonth =
-		dayjs(new Date(year, month, 1)).day() === 0 ? 7 : dayjs(new Date(year, month, 1)).day();
+  const firstDayOfTheMonth =
+    dayjs(new Date(year, month, 1)).day() === 0
+      ? 7
+      : dayjs(new Date(year, month, 1)).day();
 
-	let currentMonthCount = 1 - firstDayOfTheMonth;
+  let currentMonthCount = 1 - firstDayOfTheMonth;
 
-	const daysMatrix = new Array(6).fill([]).map(() => {
-		return new Array(7).fill(null).map(() => {
-			currentMonthCount++;
-			return dayjs(new Date(year, month, currentMonthCount));
-		});
-	});
+  const daysMatrix = new Array(6).fill([]).map(() => {
+    return new Array(7).fill(null).map(() => {
+      currentMonthCount++;
+      return dayjs(new Date(year, month, currentMonthCount));
+    });
+  });
 
-	return daysMatrix;
+  return daysMatrix;
 }
 
 export function getProperSelectedDays(pSelDaysArray, pDaysArrayLength) {
-	let daysMatrix = [];
-	let index = -1;
+  let daysMatrix = [];
+  let index = -1;
 
-	// действия в случае когда юзер просто хочет поменять начало временного промежутка (первый день)
-	if (pDaysArrayLength) {
-		if (pDaysArrayLength > 7) {
-			if (pSelDaysArray.day() === 0) {
-				pSelDaysArray = dayjs(
-					new Date(pSelDaysArray.year(), pSelDaysArray.month(), pSelDaysArray.date() - 6)
-				);
-			} else {
-				pSelDaysArray = dayjs(
-					new Date(
-						pSelDaysArray.year(),
-						pSelDaysArray.month(),
-						pSelDaysArray.date() - (pSelDaysArray.day() - 1)
-					)
-				);
-			}
-		}
-		daysMatrix = Array(pDaysArrayLength)
-			.fill([])
-			.map(() => {
-				index++;
-				return dayjs(
-					new Date(pSelDaysArray.year(), pSelDaysArray.month(), pSelDaysArray.date() + index)
-				);
-			});
-		// console.log(daysMatrix);
-		return daysMatrix;
-	}
-	// запомнить здесь первый день и возвращать массив в том порядке, в каком выбрал пользователь
-	// то есть он может быть и в обратном порядке(не в хронологическом), т.к. сейчас нам это не важно
-	// при этом выбранный пользователем день будет всегда первым в массиве
+  // действия в случае когда юзер просто хочет поменять начало временного промежутка (первый день)
+  if (pDaysArrayLength) {
+    if (pDaysArrayLength > 7) {
+      if (pSelDaysArray.day() === 0) {
+        pSelDaysArray = dayjs(
+          new Date(
+            pSelDaysArray.year(),
+            pSelDaysArray.month(),
+            pSelDaysArray.date() - 6
+          )
+        );
+      } else {
+        pSelDaysArray = dayjs(
+          new Date(
+            pSelDaysArray.year(),
+            pSelDaysArray.month(),
+            pSelDaysArray.date() - (pSelDaysArray.day() - 1)
+          )
+        );
+      }
+    }
+    daysMatrix = Array(pDaysArrayLength)
+      .fill([])
+      .map(() => {
+        index++;
+        return dayjs(
+          new Date(
+            pSelDaysArray.year(),
+            pSelDaysArray.month(),
+            pSelDaysArray.date() + index
+          )
+        );
+      });
+    // console.log(daysMatrix);
+    return daysMatrix;
+  }
+  // запомнить здесь первый день и возвращать массив в том порядке, в каком выбрал пользователь
+  // то есть он может быть и в обратном порядке(не в хронологическом), т.к. сейчас нам это не важно
+  // при этом выбранный пользователем день будет всегда первым в массиве
 
-	let firstDayOfTheArray = pSelDaysArray[0];
+  let firstDayOfTheArray = pSelDaysArray[0];
 
-	let setOfDays = new Set(pSelDaysArray);
-	let daysArray = [...setOfDays];
+  let setOfDays = new Set(pSelDaysArray);
+  let daysArray = [...setOfDays];
 
-	// let sortedDays = [...setOfDays].sort((a, b) => {
-	// return dayjs(a).isAfter(dayjs(b)) ? 1 : -1;
-	// });
+  // let sortedDays = [...setOfDays].sort((a, b) => {
+  // return dayjs(a).isAfter(dayjs(b)) ? 1 : -1;
+  // });
 
-	let lastDay = daysArray[daysArray.length - 1];
+  let lastDay = daysArray[daysArray.length - 1];
 
-	// промежуток между первым и последним днём, нужнен для определения скольки дней возвращать
-	let timespanLength = firstDayOfTheArray.isBefore(lastDay)
-		? lastDay.diff(firstDayOfTheArray, "day") + 1
-		: firstDayOfTheArray.diff(lastDay, "day") + 1;
+  // промежуток между первым и последним днём, нужнен для определения скольки дней возвращать
+  let timespanLength = firstDayOfTheArray.isBefore(lastDay)
+    ? lastDay.diff(firstDayOfTheArray, "day") + 1
+    : firstDayOfTheArray.diff(lastDay, "day") + 1;
 
-	if (timespanLength <= 7) {
-	} else if (timespanLength > 7 && timespanLength <= 14) {
-		timespanLength = 14;
-	} else if (timespanLength > 14 && timespanLength <= 21) {
-		timespanLength = 21;
-	} else if (timespanLength > 21 && timespanLength <= 28) {
-		timespanLength = 28;
-	} else if (timespanLength > 28) {
-		timespanLength = 28;
-	}
+  if (timespanLength <= 7) {
+  } else if (timespanLength > 7 && timespanLength <= 14) {
+    timespanLength = 14;
+  } else if (timespanLength > 14 && timespanLength <= 21) {
+    timespanLength = 21;
+  } else if (timespanLength > 21 && timespanLength <= 28) {
+    timespanLength = 28;
+  } else if (timespanLength > 28) {
+    timespanLength = 28;
+  }
 
-	// переопределение первого дня выделенных дней на пн или вс
-	if (timespanLength > 7 && firstDayOfTheArray.isBefore(lastDay)) {
-		if (firstDayOfTheArray.day() === 0) {
-			firstDayOfTheArray = dayjs(
-				new Date(
-					firstDayOfTheArray.year(),
-					firstDayOfTheArray.month(),
-					firstDayOfTheArray.date() - 6
-				)
-			);
-		} else {
-			firstDayOfTheArray = dayjs(
-				new Date(
-					firstDayOfTheArray.year(),
-					firstDayOfTheArray.month(),
-					firstDayOfTheArray.date() - (firstDayOfTheArray.day() - 1)
-				)
-			);
-		}
-	} else if (timespanLength > 7 && firstDayOfTheArray.isAfter(lastDay)) {
-		// 1 2 3 4 5 6 0
-		if (firstDayOfTheArray.day() !== 0) {
-			firstDayOfTheArray = dayjs(
-				new Date(
-					firstDayOfTheArray.year(),
-					firstDayOfTheArray.month(),
-					firstDayOfTheArray.date() - firstDayOfTheArray.day() + 7
-				)
-			);
-		}
-	}
+  // переопределение первого дня выделенных дней на пн или вс
+  if (timespanLength > 7 && firstDayOfTheArray.isBefore(lastDay)) {
+    if (firstDayOfTheArray.day() === 0) {
+      firstDayOfTheArray = dayjs(
+        new Date(
+          firstDayOfTheArray.year(),
+          firstDayOfTheArray.month(),
+          firstDayOfTheArray.date() - 6
+        )
+      );
+    } else {
+      firstDayOfTheArray = dayjs(
+        new Date(
+          firstDayOfTheArray.year(),
+          firstDayOfTheArray.month(),
+          firstDayOfTheArray.date() - (firstDayOfTheArray.day() - 1)
+        )
+      );
+    }
+  } else if (timespanLength > 7 && firstDayOfTheArray.isAfter(lastDay)) {
+    // 1 2 3 4 5 6 0
+    if (firstDayOfTheArray.day() !== 0) {
+      firstDayOfTheArray = dayjs(
+        new Date(
+          firstDayOfTheArray.year(),
+          firstDayOfTheArray.month(),
+          firstDayOfTheArray.date() - firstDayOfTheArray.day() + 7
+        )
+      );
+    }
+  }
 
-	daysMatrix = Array(timespanLength)
-		.fill([])
-		.map(() => {
-			index++;
-			if (firstDayOfTheArray.isBefore(lastDay)) {
-				return dayjs(
-					new Date(
-						firstDayOfTheArray.year(),
-						firstDayOfTheArray.month(),
-						firstDayOfTheArray.date() + index
-					)
-				);
-			} else {
-				return dayjs(
-					new Date(
-						firstDayOfTheArray.year(),
-						firstDayOfTheArray.month(),
-						firstDayOfTheArray.date() - index
-					)
-				);
-			}
-		});
-	// daysMatrix = Array(timespanLength)
-	// 	.fill([])
-	// 	.map(() => {
-	// 		index++;
-	// 		if (firstDayOfTheArray.isBefore(lastDay)) {
-	// 			// переопределение первого дня промежутка на понедельник (т.к. прямой порядок)
-	// 			if (firstDayOfTheArray.day() === 0) {
-	// 				firstDayOfTheArray = dayjs(
-	// 					new Date(
-	// 						firstDayOfTheArray.year(),
-	// 						firstDayOfTheArray.month(),
-	// 						firstDayOfTheArray.date() - 6
-	// 					)
-	// 				);
-	// 			} else {
-	// 				firstDayOfTheArray = dayjs(
-	// 					new Date(
-	// 						firstDayOfTheArray.year(),
-	// 						firstDayOfTheArray.month(),
-	// 						firstDayOfTheArray.date() - (firstDayOfTheArray.day() - 1)
-	// 					)
-	// 				);
-	// 			}
+  daysMatrix = Array(timespanLength)
+    .fill([])
+    .map(() => {
+      index++;
+      if (firstDayOfTheArray.isBefore(lastDay)) {
+        return dayjs(
+          new Date(
+            firstDayOfTheArray.year(),
+            firstDayOfTheArray.month(),
+            firstDayOfTheArray.date() + index
+          )
+        );
+      } else {
+        return dayjs(
+          new Date(
+            firstDayOfTheArray.year(),
+            firstDayOfTheArray.month(),
+            firstDayOfTheArray.date() - index
+          )
+        );
+      }
+    });
+  // daysMatrix = Array(timespanLength)
+  // 	.fill([])
+  // 	.map(() => {
+  // 		index++;
+  // 		if (firstDayOfTheArray.isBefore(lastDay)) {
+  // 			// переопределение первого дня промежутка на понедельник (т.к. прямой порядок)
+  // 			if (firstDayOfTheArray.day() === 0) {
+  // 				firstDayOfTheArray = dayjs(
+  // 					new Date(
+  // 						firstDayOfTheArray.year(),
+  // 						firstDayOfTheArray.month(),
+  // 						firstDayOfTheArray.date() - 6
+  // 					)
+  // 				);
+  // 			} else {
+  // 				firstDayOfTheArray = dayjs(
+  // 					new Date(
+  // 						firstDayOfTheArray.year(),
+  // 						firstDayOfTheArray.month(),
+  // 						firstDayOfTheArray.date() - (firstDayOfTheArray.day() - 1)
+  // 					)
+  // 				);
+  // 			}
 
-	// 			return dayjs(
-	// 				new Date(
-	// 					firstDayOfTheArray.year(),
-	// 					firstDayOfTheArray.month(),
-	// 					firstDayOfTheArray.date() + index
-	// 				)
-	// 			);
-	// 		} else {
-	// 			// переопределение первого дня промежутка на воскресенье (т.к. обратный порядок)
-	// 			// dayjs().day()
-	// 			firstDayOfTheArray = dayjs(
-	// 				new Date(
-	// 					firstDayOfTheArray.year(),
-	// 					firstDayOfTheArray.month(),
-	// 					firstDayOfTheArray.date() + 6
-	// 				)
-	// 			);
+  // 			return dayjs(
+  // 				new Date(
+  // 					firstDayOfTheArray.year(),
+  // 					firstDayOfTheArray.month(),
+  // 					firstDayOfTheArray.date() + index
+  // 				)
+  // 			);
+  // 		} else {
+  // 			// переопределение первого дня промежутка на воскресенье (т.к. обратный порядок)
+  // 			// dayjs().day()
+  // 			firstDayOfTheArray = dayjs(
+  // 				new Date(
+  // 					firstDayOfTheArray.year(),
+  // 					firstDayOfTheArray.month(),
+  // 					firstDayOfTheArray.date() + 6
+  // 				)
+  // 			);
 
-	// 			// if (firstDayOfTheArray.day() === 0) {
-	// 			// 	firstDayOfTheArray = dayjs(
-	// 			// 		new Date(
-	// 			// 			firstDayOfTheArray.year(),
-	// 			// 			firstDayOfTheArray.month(),
-	// 			// 			firstDayOfTheArray.date() - 6
-	// 			// 		)
-	// 			// 	);
-	// 			// } else {
-	// 			// 	firstDayOfTheArray = dayjs(
-	// 			// 		new Date(
-	// 			// 			firstDayOfTheArray.year(),
-	// 			// 			firstDayOfTheArray.month(),
-	// 			// 			firstDayOfTheArray.date() - (firstDayOfTheArray.day() - 1)
-	// 			// 		)
-	// 			// 	);
-	// 			// }
-	// 			return dayjs(
-	// 				new Date(
-	// 					firstDayOfTheArray.year(),
-	// 					firstDayOfTheArray.month(),
-	// 					firstDayOfTheArray.date() - index
-	// 				)
-	// 			);
-	// 		}
-	// 	});
-	// }
+  // 			// if (firstDayOfTheArray.day() === 0) {
+  // 			// 	firstDayOfTheArray = dayjs(
+  // 			// 		new Date(
+  // 			// 			firstDayOfTheArray.year(),
+  // 			// 			firstDayOfTheArray.month(),
+  // 			// 			firstDayOfTheArray.date() - 6
+  // 			// 		)
+  // 			// 	);
+  // 			// } else {
+  // 			// 	firstDayOfTheArray = dayjs(
+  // 			// 		new Date(
+  // 			// 			firstDayOfTheArray.year(),
+  // 			// 			firstDayOfTheArray.month(),
+  // 			// 			firstDayOfTheArray.date() - (firstDayOfTheArray.day() - 1)
+  // 			// 		)
+  // 			// 	);
+  // 			// }
+  // 			return dayjs(
+  // 				new Date(
+  // 					firstDayOfTheArray.year(),
+  // 					firstDayOfTheArray.month(),
+  // 					firstDayOfTheArray.date() - index
+  // 				)
+  // 			);
+  // 		}
+  // 	});
+  // }
 
-	return daysMatrix;
+  return daysMatrix;
 }
 
 export function getProperTimespanInMain(pTimespan) {
-	pTimespan = [...pTimespan].sort((a, b) => {
-		return dayjs(a).isAfter(dayjs(b)) ? 1 : -1;
-	});
+  pTimespan = [...pTimespan].sort((a, b) => {
+    return dayjs(a).isAfter(dayjs(b)) ? 1 : -1;
+  });
 
-	let rows = 0;
-	let cols = 7;
+  let rows = 0;
+  let cols = 7;
 
-	if (pTimespan.length <= 7) {
-		rows = 1;
-		cols = pTimespan.length;
-	} else if (pTimespan.length > 7) {
-		rows = pTimespan.length / 7;
-	}
+  if (pTimespan.length <= 7) {
+    rows = 1;
+    cols = pTimespan.length;
+  } else if (pTimespan.length > 7) {
+    rows = pTimespan.length / 7;
+  }
 
-	let index = -1;
-	const daysMatrix = new Array(rows).fill([]).map(() => {
-		return new Array(cols).fill(null).map(() => {
-			index++;
-			return pTimespan[index];
-		});
-	});
+  let index = -1;
+  const daysMatrix = new Array(rows).fill([]).map(() => {
+    return new Array(cols).fill(null).map(() => {
+      index++;
+      return pTimespan[index];
+    });
+  });
 
-	// console.log(daysMatrix);
+  // console.log(daysMatrix);
 
-	return daysMatrix;
+  return daysMatrix;
 }
 
 //

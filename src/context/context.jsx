@@ -102,6 +102,7 @@ const GlobalContextProvider = ({ children }) => {
   // tooltip
   const [tooltipTitle, setTooltipTitle] = useState("");
   const [tooltipRefElement, setTooltipRefElement] = useState(null);
+  const [showTooltip, setShowTooltip] = useState(false);
   // tooltip
 
   const [monthIndex, setMonthIndex] = useState(dayjs().month() + 1);
@@ -181,6 +182,8 @@ const GlobalContextProvider = ({ children }) => {
     setTooltipTitle,
     tooltipRefElement,
     setTooltipRefElement,
+    showTooltip,
+    setShowTooltip,
     //tooltip
 
     monthIndex,

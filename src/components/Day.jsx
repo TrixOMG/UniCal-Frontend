@@ -10,6 +10,8 @@ const Day = ({ pDay, rowIdx }) => {
     //setShowEventModal,
     // tooltip
     setTooltipRefElement,
+    setTooltipTitle,
+    setShowTooltip,
     // tooltip
     changeShowEventModal,
     setChosenDayForTask,
@@ -70,12 +72,25 @@ const Day = ({ pDay, rowIdx }) => {
     changeShowEventModal(true);
   }
 
+  // let tooltipTimeout = useRef(null);
+
+  function handleTooltipShow(e, pTitle) {
+    setTooltipRefElement(e.target);
+    setTooltipTitle(pTitle);
+    setShowTooltip(true);
+  }
+
+  function handleTooltipHide() {
+    setShowTooltip(false);
+  }
+
   return (
-    <div className='border border-gray-200 flex flex-col rounded-lg'>
+    <div className='border border-gray-200 flex flex-col rounded-lg overflow-hidden'>
       <header
-        className='flex flex-col items-center bg-gray-300 rounded-t-lg pb-1 cursor-pointer'
+        className='flex flex-col items-center bg-gray-300 pb-1 cursor-pointer'
         onClick={() => handleAddEventClick()}
-        onMouseEnter={(e) => setTooltipRefElement(e.target)}
+        onMouseEnter={(e) => handleTooltipShow(e, "Create New Task")}
+        onMouseOut={() => handleTooltipHide()}
       >
         {rowIdx === 0 && (
           <p className='text-sm mt-1'>
@@ -89,6 +104,8 @@ const Day = ({ pDay, rowIdx }) => {
             setSelectedDaysArray([pDay]);
             setChosenDay(pDay);
           }}
+          onMouseEnter={(e) => handleTooltipShow(e, "Go to Day")}
+          onMouseOut={(e) => handleTooltipHide()}
         >
           {dayjs(pDay).date()}
         </p>

@@ -36,6 +36,11 @@ const EventModal = () => {
     // modal multipurpose
     selectedObjectForModal,
     // modal multipurpose
+
+    //tooltip
+    setTooltipTitle,
+    setTooltipRefElement,
+    // tooltip
   } = useGlobalContext();
 
   //update showing fake task with new click outside hook
@@ -54,7 +59,7 @@ const EventModal = () => {
   const [popperElement, setPopperElement] = useState(null);
 
   const { styles } = usePopper(referenceElement, popperElement, {
-    placement: "bottom-start",
+    placement: "right-start",
     modifiers: [
       {
         name: "offset",

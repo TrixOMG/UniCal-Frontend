@@ -1,14 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
 import { useGlobalContext } from "../context/context";
 import "../index.css";
 
 const Tooltip = () => {
-  const { tooltipTitle, tooltipRefElement } = useGlobalContext();
+  const { tooltipTitle, tooltipRefElement, showTooltip } = useGlobalContext();
   const [popperElement, setPopperElement] = useState(null);
 
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    let timer = setTimeout(() => setShow(true), 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [showTooltip]);
+
   const { styles } = usePopper(tooltipRefElement, popperElement, {
-    placement: "top",
+    placement: "bottom",
     modifiers: [
       {
         name: "offset",
@@ -32,12 +42,16 @@ const Tooltip = () => {
   });
 
   return (
-    <div
-      className='unselectable w-10 h-10 bg-black absolute p-1'
-      ref={setPopperElement}
-      style={styles.popper}
-    >
-      <p className=''>{tooltipTitle}</p>
+    <div>
+      {show && (
+        <div
+          className='unselectable bg-white absolute p-1 border-gray-300 rounded-lg border'
+          ref={setPopperElement}
+          style={styles.popper}
+        >
+          <p className='text-sm'>{tooltipTitle}</p>
+        </div>
+      )}
     </div>
   );
 };

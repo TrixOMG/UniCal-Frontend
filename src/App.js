@@ -10,15 +10,15 @@ import "./index.css";
 import "./util/util";
 
 function App() {
-  const { showSidebar, selectedDaysArray } = useGlobalContext();
+  const { showSidebar, selectedDaysArray, showTooltip } = useGlobalContext();
 
   return (
     <>
-      <Tooltip />
+      {showTooltip && <Tooltip />}
       <EventModal />
       <div className='App h-screen flex flex-col'>
         <Navbar />
-        <div className='flex flex-1 p-1 max-h-[90%]'>
+        <div className='flex flex-1 p-1 max-h-[92%]'>
           {showSidebar && <Sidebar />}
           <MainDaysComponent timeSpan={selectedDaysArray} />
         </div>
