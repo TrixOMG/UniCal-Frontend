@@ -123,15 +123,15 @@ const EventModal = () => {
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (modalTitle.trim() === "") return;
+    // if (modalTitle.trim() === "") return;
 
     if (
       selectedObjectForModal === "add-event" ||
       selectedObjectForModal === "event"
     ) {
       const calendarEvent = {
-        modalTitle,
-        modalDescription,
+        title: modalTitle,
+        description: modalDescription,
         label: selectedLabel,
         day: selectedEvent ? selectedEvent.day : chosenDayForTask.valueOf(),
         id: selectedEvent ? selectedEvent.id : Date.now(),
@@ -145,8 +145,8 @@ const EventModal = () => {
       }
     } else {
       const newGroup = {
-        modalTitle,
-        modalDescription,
+        title: modalTitle,
+        description: modalDescription,
         label: selectedLabel,
         id: selectedGroup ? selectedGroup.id : Date.now(),
         checked: true,
@@ -160,7 +160,7 @@ const EventModal = () => {
     }
 
     changeShowEventModal(false);
-    setSelectedEvent(null);
+    // setSelectedEvent(null);
     setReferenceElement(null);
     setModalTitle("");
     setModalDescription("");
@@ -209,11 +209,7 @@ const EventModal = () => {
           <div>
             {(selectedObjectForModal === "group" ||
               selectedObjectForModal === "event") && (
-              <button
-                onClick={(e) => {
-                  handleDelete(e);
-                }}
-              >
+              <button onClick={(e) => handleDelete(e)}>
                 <span className='material-icons text-gray-400 unselectable'>
                   delete
                 </span>
@@ -222,14 +218,7 @@ const EventModal = () => {
             <button type='button'>
               <span
                 className='material-icons text-gray-400 unselectable'
-                onClick={() => {
-                  changeShowEventModal(false);
-                  //changeShowEventModal(false);
-                  //setSelectedGroup(null);
-                  //setSelectedEvent(null);
-                  //setReferenceElement(null);
-                  //setShowFakeTask(false);
-                }}
+                onClick={() => changeShowEventModal(false)}
               >
                 close
               </span>

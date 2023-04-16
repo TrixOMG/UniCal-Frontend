@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 import EventModal from "./components/EventModal";
 import MainDaysComponent from "./components/MainDaysComponent";

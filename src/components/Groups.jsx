@@ -7,7 +7,7 @@ const Groups = () => {
     dispatchGroups,
     changeShowEventModal,
     setReferenceElement,
-    setSelectedGroup,
+    //setSelectedGroup,
     // modal
     setModalTitle,
     setModalDescription,
@@ -20,7 +20,7 @@ const Groups = () => {
 
   function handleGroupClick(pGroup) {
     setSelectedObjectForModal("group");
-    setSelectedGroup(pGroup);
+    //setSelectedGroup(pGroup);
     setReferenceElement(modalReference.current);
     setModalTitle(pGroup.title);
     setModalDescription(pGroup.description);

@@ -115,13 +115,7 @@ const MainDaysComponent = ({ timeSpan }) => {
   return (
     <div className='flex flex-1 max-h-[100%]'>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div
-          className={`mx-1 flex-1 grid gap-1 ${
-            selectedDaysArray.length > 0
-              ? getDaysGridClasses() + " "
-              : "grid-cols-7 grid-rows-4 "
-          }`}
-        >
+        <div className={`mx-1 flex-1 grid gap-1 ${getDaysGridClasses()}`}>
           {properTimespan.map((row, i) => (
             <React.Fragment key={i}>
               {row.map((day, idx) => (

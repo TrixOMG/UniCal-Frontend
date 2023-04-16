@@ -30,6 +30,7 @@ const Day = ({ pDay, rowIdx }) => {
     savedGroups,
     setSelectedObjectForModal,
     // modal
+    //setSelectedEvent,
   } = useGlobalContext();
 
   useEffect(() => {
@@ -141,7 +142,7 @@ const Day = ({ pDay, rowIdx }) => {
                           onClick={(e) => {
                             setReferenceElement(e.target);
                             handleOnEventClick(evt);
-                            // setSelectedEvent(evt);
+                            //setSelectedEvent(evt);
                             // setModalPlacement("bottom-start");
                             // changeShowEventModal(true);
                             // setSelectedEvent(evt);
