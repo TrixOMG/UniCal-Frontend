@@ -5,36 +5,27 @@ const Groups = () => {
   const {
     savedGroups,
     dispatchGroups,
-    changeShowEventModal,
-    setReferenceElement,
+    changeShowGroupModal,
+    //showGroupModal,
+    //groupModalRef,
+    setGroupReferenceElement,
     setSelectedGroup,
-    // modal
-    setModalTitle,
-    setModalDescription,
-    setSelectedLabel,
-    setSelectedObjectForModal,
-    // modal
+    setSelectedGroupLabel,
   } = useGlobalContext();
 
   const modalReference = useRef(null);
 
   function handleGroupClick(pGroup) {
-    setSelectedObjectForModal("group");
     setSelectedGroup(pGroup);
-    setReferenceElement(modalReference.current);
-    setModalTitle(pGroup.title);
-    setModalDescription(pGroup.description);
-    setSelectedLabel(pGroup.label);
-    changeShowEventModal(true);
+    setGroupReferenceElement(modalReference.current);
+    changeShowGroupModal(true);
   }
 
   function handleAddClick() {
-    setSelectedObjectForModal("add-group");
-    setReferenceElement(modalReference.current);
-    setModalDescription("");
-    setModalTitle("");
-    setSelectedLabel(labelsClasses[0]);
-    changeShowEventModal(true);
+    setGroupReferenceElement(modalReference.current);
+    setSelectedGroup(null);
+    setSelectedGroupLabel(labelsClasses[0]);
+    changeShowGroupModal(true);
   }
 
   return (

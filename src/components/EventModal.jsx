@@ -1,11 +1,8 @@
-// import dayjs from "dayjs";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
 import { labelsClasses, useGlobalContext } from "../context/context";
 import "../index.css";
-
-//const labelsClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
 
 const EventModal = () => {
   const {
@@ -14,98 +11,52 @@ const EventModal = () => {
     modalRef,
     chosenDayForTask,
     dispatchCalEvent,
+    referenceElement,
+    setShowFakeTask,
+    savedGroups,
     selectedEvent,
     setSelectedEvent,
-    referenceElement,
-    setReferenceElement,
-    setShowFakeTask,
-    dispatchGroups,
-    selectedGroup,
-    setSelectedGroup,
-    savedGroups,
-    //removed from modal
-    modalTitle,
-    setModalTitle,
-    modalDescription,
-    setModalDescription,
-    selectedLabel,
-    setSelectedLabel,
-    showDropdown,
-    setShowDropdown,
-    chosenGroupForTask,
-    setChosenGroupForTask,
-    // modal multipurpose
-    selectedObjectForModal,
-    // modal multipurpose
   } = useGlobalContext();
 
-  //////////////
-  // const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
-  // const [description, setDescription] = useState(
-  //   selectedEvent ? selectedEvent.description : ""
-  // );
-  // const [selectedLabel, setSelectedLabel] = useState(
-  //   selectedEvent
-  //     ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
-  //     : labelsClasses[0]
-  // );
-  //////////////
+  const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
+  const [description, setDescription] = useState(
+    selectedEvent ? selectedEvent.description : ""
+  );
+  const [selectedLabel, setSelectedLabel] = useState(
+    selectedEvent
+      ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
+      : labelsClasses[0]
+  );
+  const [chosenGroupForTask, setChosenGroupForTask] = useState(
+    selectedEvent
+      ? savedGroups.find((group) => group.id === selectedEvent.groupId)
+      : savedGroups[0]
+  );
 
-  //////
-  //////
-
-  // const [showDropdown, setShowDropdown] = useState(false);
-  // const [chosenGroupForTask, setChosenGroupForTask] = useState(savedGroups[0]);
-
-  //update showing fake task with new click outside hook
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
-    if (selectedObjectForModal === "add-event") setShowFakeTask(showEventModal);
-  }, [showEventModal, setShowFakeTask, selectedObjectForModal]);
+    if (selectedEvent) {
+      setTitle(selectedEvent.title);
+      setDescription(selectedEvent.description);
+      setSelectedLabel(selectedEvent.label);
+      setChosenGroupForTask(
+        savedGroups.find((group) => group.id === selectedEvent.groupId)
+      );
+    } else {
+      setTitle("");
+      setDescription("");
+      setSelectedLabel(labelsClasses[0]);
+      setChosenGroupForTask(savedGroups[0]);
+      // setShowFakeTask(true);
+    }
+  }, [selectedEvent, savedGroups]);
 
   useEffect(() => {
     if (showEventModal === false) {
-      setSelectedEvent(null);
-      setReferenceElement(null);
       setShowFakeTask(false);
-      //setSelectedGroup(savedGroups[0]);
-      //setSelectedLabel(labelsClasses[0]);
     }
-  });
-
-  // useEffect(() => {
-  //   if (selectedEvent) {
-  //     setModalTitle(selectedEvent.title);
-  //     setModalDescription(selectedEvent.description);
-  //     setSelectedLabel(
-  //       labelsClasses.find((lbl) => lbl === selectedEvent.label)
-  //     );
-  //     setChosenGroupForTask(
-  //       savedGroups.find((group) => group.id === selectedEvent.groupId)
-  //     );
-  //   } else {
-  //     setModalTitle("");
-  //     setModalDescription("");
-  //     setSelectedLabel(labelsClasses[0]);
-  //     setChosenGroupForTask(savedGroups[0]);
-  //   }
-
-  //   if (selectedGroup) {
-  //     setModalTitle(selectedGroup.title);
-  //     setModalDescription(selectedGroup.description);
-  //     setSelectedLabel(
-  //       labelsClasses.find((lbl) => lbl === selectedGroup.label)
-  //     );
-  //   } else {
-  //     setModalTitle("");
-  //     setModalDescription("");
-  //     setSelectedLabel(labelsClasses[0]);
-  //   }
-  // });
-
-  // useEffect(() => {
-  //   setChosenGroupForTask(savedGroups[0]);
-  // }, [savedGroups]);
+  }, [setShowFakeTask, showEventModal]);
 
   // POPPER
   const [popperElement, setPopperElement] = useState(null);
@@ -172,83 +123,60 @@ const EventModal = () => {
 
   // POPPER for dropdown
 
+  function getClassShow() {
+    //if (!showEventModal) setShowFakeTask(false);
+    return showEventModal ? "visible" : "invisible";
+  }
+
+  function setModalDefaults() {
+    changeShowEventModal(false);
+    setSelectedEvent(null);
+    setSelectedLabel(labelsClasses[0]);
+    setChosenGroupForTask(savedGroups[0]);
+    setShowFakeTask(false);
+    setShowDropdown(false);
+    //appearance
+    setTitle("");
+    setDescription("");
+    setChosenGroupForTask(savedGroups[0]);
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (modalTitle.trim() === "") return;
+    if (title.trim() === "") return;
 
-    if (
-      selectedObjectForModal === "add-event" ||
-      selectedObjectForModal === "event"
-    ) {
-      const calendarEvent = {
-        modalTitle,
-        modalDescription,
-        label: selectedLabel,
-        day: selectedEvent ? selectedEvent.day : chosenDayForTask.valueOf(),
-        id: selectedEvent ? selectedEvent.id : Date.now(),
-        groupId: chosenGroupForTask.id,
-      };
+    const newTask = {
+      title: title,
+      description: description,
+      label: selectedLabel,
+      day: selectedEvent ? selectedEvent.day : chosenDayForTask.valueOf(),
+      id: selectedEvent ? selectedEvent.id : Date.now(),
+      groupId: chosenGroupForTask.id,
+    };
 
-      if (selectedEvent) {
-        dispatchCalEvent({ type: "update", payload: calendarEvent });
-      } else {
-        dispatchCalEvent({ type: "pushFromStart", payload: calendarEvent });
-      }
+    if (selectedEvent) {
+      dispatchCalEvent({ type: "update", payload: newTask });
     } else {
-      const newGroup = {
-        modalTitle,
-        modalDescription,
-        label: selectedLabel,
-        id: selectedGroup ? selectedGroup.id : Date.now(),
-        checked: true,
-      };
-
-      if (selectedGroup) {
-        dispatchGroups({ type: "update", payload: newGroup });
-      } else {
-        dispatchGroups({ type: "push", payload: newGroup });
-      }
+      dispatchCalEvent({ type: "pushFromStart", payload: newTask });
     }
 
-    changeShowEventModal(false);
-    setSelectedEvent(null);
-    setReferenceElement(null);
-    setModalTitle("");
-    setModalDescription("");
-    setSelectedLabel(labelsClasses[0]);
-    setShowFakeTask(false);
-  }
-
-  function getClassShow() {
-    return showEventModal ? "visible" : "invisible"; //showEventModal ? "visible" : "invisible";
+    setModalDefaults();
   }
 
   function handleDelete(e) {
     e.preventDefault();
 
-    if (selectedObjectForModal === "group") {
-      if (savedGroups.length > 1) {
-        dispatchGroups({ type: "delete", payload: selectedGroup });
+    dispatchCalEvent({
+      type: "delete",
+      payload: selectedEvent,
+    });
 
-        changeShowEventModal(false);
-        setSelectedEvent(null);
-        setSelectedGroup(null);
-        setReferenceElement(null);
-      } else {
-        // TODO: make a hint 'At least one group is required'
-        return;
-      }
-    } else if (selectedObjectForModal === "event") {
-      dispatchCalEvent({
-        type: "delete",
-        payload: selectedEvent,
-      });
-      changeShowEventModal(false);
-      setSelectedEvent(null);
-      setSelectedGroup(null);
-      setReferenceElement(null);
-    }
+    setModalDefaults();
+  }
+
+  function handleClose() {
+    setModalDefaults();
   }
 
   return (
@@ -260,8 +188,7 @@ const EventModal = () => {
       >
         <header className='bg-gray-100 px-4 py-2 flex justify-end items-center'>
           <div>
-            {(selectedObjectForModal === "group" ||
-              selectedObjectForModal === "event") && (
+            {selectedEvent && (
               <button
                 onClick={(e) => {
                   handleDelete(e);
@@ -275,14 +202,7 @@ const EventModal = () => {
             <button type='button'>
               <span
                 className='material-icons text-gray-400 unselectable'
-                onClick={() => {
-                  changeShowEventModal(false);
-                  //changeShowEventModal(false);
-                  //setSelectedGroup(null);
-                  //setSelectedEvent(null);
-                  //setReferenceElement(null);
-                  //setShowFakeTask(false);
-                }}
+                onClick={() => handleClose()}
               >
                 close
               </span>
@@ -295,30 +215,20 @@ const EventModal = () => {
             <input
               type='text'
               name='title'
-              placeholder={
-                selectedObjectForModal === "add-event"
-                  ? "Add Title"
-                  : "Add Group Title"
-              }
+              placeholder='Add Title'
               required
               className='pt-3 border-0 text-gray-600 text-lg font-semibold w-full pb-2 border-b-2 border-gray-200 focus:outline-none focus:border-b-blue-500'
-              value={modalTitle}
-              onChange={(e) => setModalTitle(e.target.value)}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
-            {(selectedObjectForModal === "event" ||
-              selectedObjectForModal === "add-event") && (
-              <span className='material-icons text-gray-400 unselectable'>
-                schedule
-              </span>
-            )}
-            {(selectedObjectForModal === "event" ||
-              selectedObjectForModal === "add-event") && (
-              <p className='pl-1 unselectable'>
-                {selectedEvent
-                  ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
-                  : chosenDayForTask.format("dddd, MMMM DD")}
-              </p>
-            )}
+            <span className='material-icons text-gray-400 unselectable'>
+              schedule
+            </span>
+            <p className='pl-1 unselectable'>
+              {selectedEvent
+                ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
+                : chosenDayForTask.format("dddd, MMMM DD")}
+            </p>
             <span className='material-icons text-gray-400 unselectable pb-7'>
               segment
             </span>
@@ -327,66 +237,60 @@ const EventModal = () => {
               name='description'
               placeholder='Add a Description'
               className='border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500 resize-none'
-              value={modalDescription}
-              onChange={(e) => setModalDescription(e.target.value)}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               maxLength='100'
               rows={2}
             />
-            {(selectedObjectForModal === "event" ||
-              selectedObjectForModal === "add-event") && (
-              <span className='material-icons text-gray-400 unselectable py-1'>
-                list_alt
-              </span>
-            )}
-            {(selectedObjectForModal === "event" ||
-              selectedObjectForModal === "add-event") && (
-              <div className='w-full'>
-                <header
-                  className='w-full cursor-pointer border border-gray-300 rounded-lg p-1'
-                  ref={setDropdownPopperRefElement}
-                  onClick={() => {
-                    setShowDropdown(true);
+            <span className='material-icons text-gray-400 unselectable py-1'>
+              list_alt
+            </span>
+            <div className='w-full'>
+              <header
+                className='w-full cursor-pointer border border-gray-300 rounded-lg p-1'
+                ref={setDropdownPopperRefElement}
+                onClick={() => {
+                  setShowDropdown(true);
+                }}
+              >
+                <button
+                  className='flex flex-row bg-white gap-2 justify-start align-middle'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowDropdown(false);
                   }}
                 >
-                  <button
-                    className='flex flex-row bg-white gap-2 justify-start align-middle'
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setShowDropdown(false);
-                    }}
-                  >
-                    <span
-                      className={`bg-${chosenGroupForTask.label}-500 w-6 h-6 rounded-lg flex items-center justify-center cursor-pointer `}
-                    ></span>
-                    {chosenGroupForTask.title}
-                  </button>
-                </header>
-                {showDropdown && (
-                  <div
-                    className='absolute flex flex-col justify-items-start w-[77%] border border-gray-300 rounded-lg overflow-hidden bg-white'
-                    ref={setDropdownPopperElement}
-                    style={dpdStyles.popper}
-                  >
-                    {savedGroups.map((group, idx) => (
-                      <button
-                        className='flex flex-row bg-white gap-2 p-1 justify-start align-middle'
-                        key={idx}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setChosenGroupForTask(group);
-                          setShowDropdown(false);
-                        }}
-                      >
-                        <span
-                          className={`bg-${group.label}-500 w-6 h-6 rounded-lg flex items-center justify-center cursor-pointer`}
-                        ></span>
-                        {group.title}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
+                  <span
+                    className={`bg-${chosenGroupForTask.label}-500 w-6 h-6 rounded-lg flex items-center justify-center cursor-pointer `}
+                  ></span>
+                  {chosenGroupForTask.title}
+                </button>
+              </header>
+              {showDropdown && (
+                <div
+                  className='absolute flex flex-col justify-items-start w-[77%] border border-gray-300 rounded-lg overflow-hidden bg-white'
+                  ref={setDropdownPopperElement}
+                  style={dpdStyles.popper}
+                >
+                  {savedGroups.map((group, idx) => (
+                    <button
+                      className='flex flex-row bg-white gap-2 p-1 justify-start align-middle'
+                      key={idx}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setChosenGroupForTask(group);
+                        setShowDropdown(false);
+                      }}
+                    >
+                      <span
+                        className={`bg-${group.label}-500 w-6 h-6 rounded-lg flex items-center justify-center cursor-pointer`}
+                      ></span>
+                      {group.title}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             <span className='material-icons text-gray-400 unselectable'>
               bookmark_border
             </span>

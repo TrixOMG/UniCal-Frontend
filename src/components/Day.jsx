@@ -1,13 +1,13 @@
 import dayjs from "dayjs";
 import React, { useEffect, useRef, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { labelsClasses, useGlobalContext } from "../context/context";
+import { useGlobalContext } from "../context/context";
 
 const Day = ({ pDay, rowIdx }) => {
   const [dayEvents, setDayEvents] = useState([]);
 
   const {
-    //setShowEventModal,
+    setSelectedEvent,
     changeShowEventModal,
     setChosenDayForTask,
     filteredEvents,
@@ -17,17 +17,7 @@ const Day = ({ pDay, rowIdx }) => {
     chosenDayForTask,
     setSelectedDaysArray,
     setChosenDay,
-    // modal
-    setModalTitle,
-    setModalDescription,
-    setSelectedLabel,
-    setChosenGroupForTask,
-    savedGroups,
-    setSelectedObjectForModal,
-    // modal
   } = useGlobalContext();
-
-  const { setSelectedEvent } = useGlobalContext();
 
   useEffect(() => {
     const events = filteredEvents.filter(
@@ -47,29 +37,16 @@ const Day = ({ pDay, rowIdx }) => {
   const newTaskReference = useRef(null);
 
   function handleAddEventClick() {
-    setSelectedObjectForModal("add-event");
+    setSelectedEvent(null);
     setChosenDayForTask(pDay);
     setReferenceElement(newTaskReference.current);
-    setSelectedObjectForModal("add-event");
-    setModalTitle("");
-    setModalDescription("");
-    setSelectedLabel(labelsClasses[0]);
-    setChosenGroupForTask(savedGroups[0]);
     changeShowEventModal(true);
     setShowFakeTask(true);
   }
 
   function handleOnEventClick(pEvent) {
-    setSelectedObjectForModal("event");
     setSelectedEvent(pEvent);
-    setModalTitle(pEvent.title);
-    setModalDescription(pEvent.description);
-    setSelectedLabel(pEvent.label);
-    setChosenGroupForTask(
-      savedGroups.find((group) => group.id === pEvent.groupId)
-    );
     changeShowEventModal(true);
-    setSelectedEvent(pEvent);
   }
 
   return (

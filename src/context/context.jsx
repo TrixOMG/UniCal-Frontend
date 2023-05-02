@@ -99,19 +99,34 @@ function initEvents() {
 const GlobalContext = React.createContext();
 
 const GlobalContextProvider = ({ children }) => {
+  // tooltip
+  const [tooltipTitle, setTooltipTitle] = useState("");
+  const [tooltipRefElement, setTooltipRefElement] = useState(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+  // tooltip
+
   const [monthIndex, setMonthIndex] = useState(dayjs().month() + 1);
+
   const [showSidebar, setShowSidebar] = useState(true);
-  //  const [showEventModal, setShowEventModal] = useState(false);
+
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
+  const [selectedGroup, setSelectedGroup] = useState(null);
+
   const {
     show: showEventModal,
     setShow: setShowEventModal,
     ref: modalRef,
   } = useOutsideAlerter(false);
+
+  const {
+    show: showGroupModal,
+    setShow: changeShowGroupModal,
+    ref: groupModalRef,
+  } = useOutsideAlerter(false);
+
   //
   const [chosenDayForTask, setChosenDayForTask] = useState(dayjs());
-
-  // для отображения меню изменения таска
-  const [selectedEvent, setSelectedEvent] = useState(null);
 
   // groups
   const [savedGroups, dispatchGroups] = useReducer(
@@ -120,10 +135,9 @@ const GlobalContextProvider = ({ children }) => {
     initGroups
   );
 
-  const [selectedGroup, setSelectedGroup] = useState(null);
-
   // POPPER
   const [referenceElement, setReferenceElement] = useState(null);
+  const [groupReferenceElement, setGroupReferenceElement] = useState(null);
   // const [popperElement, setPopperElement] = useState(null);
 
   // Fake Task
@@ -163,48 +177,59 @@ const GlobalContextProvider = ({ children }) => {
     setShowEventModal((visible) => !visible);
   }
 
-  const [modalTitle, setModalTitle] = useState(
-    selectedEvent ? selectedEvent.title : ""
-  );
-  const [modalDescription, setModalDescription] = useState(
-    selectedEvent ? selectedEvent.description : ""
-  );
-  const [selectedLabel, setSelectedLabel] = useState(
-    selectedEvent
-      ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
-      : labelsClasses[0]
-  );
+  //const [modalObject, setModalObject] = useState({});
 
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [chosenGroupForTask, setChosenGroupForTask] = useState(savedGroups[0]);
+  //objectName: 'task',
+  //  title: '',
+  //  description: '',
+  //  label: labelsClasses[0],
+  //  group: savedGroups[0],
 
-  const [selectedObjectForModal, setSelectedObjectForModal] = useState("");
+  //const [modalTitle, setModalTitle] = useState("");
+  //const [modalDescription, setModalDescription] = useState("");
+  //const [selectedLabel, setSelectedLabel] = useState(labelsClasses[0]);
+
+  //const [showDropdown, setShowDropdown] = useState(false);
+  //const [chosenGroupForTask, setChosenGroupForTask] = useState(savedGroups[0]);
+
+  //const [selectedObjectForModal, setSelectedObjectForModal] = useState("");
 
   // Everything for modal END
 
+  const [selectedGroupLabel, setSelectedGroupLabel] = useState(
+    labelsClasses[0]
+  );
+
   const value = {
-    // modal multipurpose
-    selectedObjectForModal,
-    setSelectedObjectForModal,
-    // modal multipurpose
-    // modal
-    modalTitle,
-    setModalTitle,
-    modalDescription,
-    setModalDescription,
-    selectedLabel,
-    setSelectedLabel,
-    showDropdown,
-    setShowDropdown,
-    chosenGroupForTask,
-    setChosenGroupForTask,
-    // modal
+    //tooltip
+    tooltipTitle,
+    setTooltipTitle,
+    tooltipRefElement,
+    setTooltipRefElement,
+    showTooltip,
+    setShowTooltip,
+    //tooltip
+
+    //group modal
+    showGroupModal,
+    changeShowGroupModal,
+    groupModalRef,
+    groupReferenceElement,
+    setGroupReferenceElement,
+    selectedGroupLabel,
+    setSelectedGroupLabel,
+    //group modal
+
     monthIndex,
     setMonthIndex,
+
+    selectedEvent,
+    setSelectedEvent,
+    selectedGroup,
+    setSelectedGroup,
+
     showSidebar,
     setShowSidebar,
-    // showEventModal,
-    // setShowEventModal,
     showEventModal,
     setShowEventModal,
     modalRef, //for hiding event modal on click outside
@@ -217,8 +242,6 @@ const GlobalContextProvider = ({ children }) => {
     setChosenDay,
     dispatchCalEvent,
     savedEvents,
-    selectedEvent,
-    setSelectedEvent,
     savedGroups,
     dispatchGroups,
     filteredEvents,
@@ -226,8 +249,6 @@ const GlobalContextProvider = ({ children }) => {
     setReferenceElement,
     showFakeTask,
     setShowFakeTask,
-    selectedGroup,
-    setSelectedGroup,
   };
 
   return (
