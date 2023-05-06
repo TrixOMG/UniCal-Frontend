@@ -153,6 +153,7 @@ const EventModal = () => {
       day: selectedEvent ? selectedEvent.day : chosenDayForTask.valueOf(),
       id: selectedEvent ? selectedEvent.id : Date.now(),
       groupId: chosenGroupForTask.id,
+      done: selectedEvent ? selectedEvent.done : false,
     };
 
     if (selectedEvent) {

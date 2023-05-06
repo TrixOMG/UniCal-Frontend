@@ -27,6 +27,7 @@ module.exports = {
       "bg-green-500",
       "bg-gray-500",
       "bg-red-500",
+
       "bg-indigo-300",
       "bg-red-300",
       "bg-purple-300",
@@ -37,11 +38,18 @@ module.exports = {
       "bg-red-400",
 
       "text-indigo-400",
-      "text-red-400",
       "text-purple-400",
       "text-blue-400",
       "text-green-400",
       "text-gray-400",
+      "text-red-400",
+
+      "bg-indigo-400",
+      "bg-purple-400",
+      "bg-blue-400",
+      "bg-green-400",
+      "bg-gray-400",
+      "bg-red-400",
     ],
   },
   theme: {

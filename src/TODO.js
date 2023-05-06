@@ -23,14 +23,19 @@
 
 // }
 
-// TODO: checkboxes in the tasks with colors of groups tasks are in,
-// TODO: bg-color of tasks - their own, if not chosen - color of group tasks are in
-// TODO: + state of the tasks (done or not)
+// 06.05.23
+//+ TODO: checkboxes in the tasks with colors of groups tasks are in,
+//+ TODO: + state of the tasks (done or not)
+
+
 // TODO: + event modal functionality to get task done/undone
+// TODO: fix bug when deleting group with tasks in it
+
+//redundant TODO: bg-color of tasks - their own, if not chosen - color of group tasks are in
 // TODO: create OptionsPopup component and options button in Navbar
 // TODO: create Tooltip component and reuse it where needed
 //
 //+ TODO: click away feature to close modals
 
 // 16.03.23
-// TODO: selectedObjectForModal for changing modal
+//redundant TODO: selectedObjectForModal for changing modal
