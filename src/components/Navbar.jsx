@@ -123,40 +123,40 @@ const Navbar = () => {
   }
 
   return (
-    <header className='px-4 py-2 flex items-center align-middle border rounded-lg rounded-t-none mx-1 h-[10%]'>
+    <header className="px-4 py-2 flex items-center align-middle border rounded-lg rounded-t-none mx-1 h-[10%]">
       <div
-        className='material-symbols-outlined px-1 py-1 cursor-pointer w-8 h-8 block unselectable'
+        className="material-symbols-outlined px-1 py-1 cursor-pointer w-8 h-8 block unselectable"
         onClick={() => setShowSidebar(!showSidebar)}
       >
         menu
       </div>
-      <div className='UniCal_Logo mr-1 w-12 h-12'></div>
-      <h1 className='mr-10 text-xl text-gray-500 font-bold'>UniCal</h1>
+      <div className="UniCal_Logo mr-1 w-12 h-12"></div>
+      <h1 className="mr-10 text-xl text-gray-500 font-bold">UniCal</h1>
       <button
-        className='border rounded py-2 px-4 mr-5'
+        className="border rounded py-2 px-4 mr-5"
         onClick={handleResetToday}
       >
         Today
       </button>
       <button
-        className='px-1 py-1 cursor-pointer w-8 h-8 block'
+        className="px-1 py-1 cursor-pointer w-8 h-8 block"
         onClick={() => {
           setSelectedDaysArray(handlePrevTimespanChange());
           handleMonthIndexChangeOnSelectedDays(false);
         }}
       >
-        <span className='material-icons'>chevron_left</span>
+        <span className="material-icons">chevron_left</span>
       </button>
       <button
-        className='px-1 py-1 cursor-pointer w-8 h-8 block'
+        className="px-1 py-1 cursor-pointer w-8 h-8 block"
         onClick={() => {
           setSelectedDaysArray(handleNextTimespanChange());
           handleMonthIndexChangeOnSelectedDays(true);
         }}
       >
-        <span className='material-icons'>chevron_right</span>
+        <span className="material-icons">chevron_right</span>
       </button>
-      <h2 className=' ml-4 text-xl text-gray-500 font-bold'>
+      <h2 className=" ml-4 text-xl text-gray-500 font-bold">
         {renderMonthAndYear()}
       </h2>
     </header>

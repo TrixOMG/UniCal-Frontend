@@ -70,13 +70,13 @@ const Day = ({ pDay, rowIdx }) => {
   }
 
   return (
-    <div className='border border-gray-200 flex flex-col rounded-lg'>
+    <div className="border border-gray-200 flex flex-col rounded-lg">
       <header
-        className='flex flex-col items-center bg-gray-300 rounded-t-lg pb-1 cursor-pointer'
+        className="flex flex-col items-center bg-gray-300 rounded-t-lg pb-1 cursor-pointer"
         onClick={() => handleAddEventClick()}
       >
         {rowIdx === 0 && (
-          <p className='text-sm mt-1'>
+          <p className="text-sm mt-1">
             {dayjs(pDay).format("ddd").toUpperCase()}
           </p>
         )}
@@ -106,7 +106,7 @@ const Day = ({ pDay, rowIdx }) => {
         {(provided) => {
           return (
             <div
-              className='flex-1 my-1 overflow-y-hidden'
+              className="flex-1 my-1 overflow-y-hidden"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
@@ -136,15 +136,21 @@ const Day = ({ pDay, rowIdx }) => {
                             {...provided.dragHandleProps}
                           >
                             <input
-                              type='checkbox'
+                              type="checkbox"
                               checked={evt.done}
                               onChange={() => handleTaskDone(evt)}
                               className={`form-checkbox h-4 w-4 mx-1 text-${
                                 savedGroups.find((gr) => gr.id === evt.groupId)
-                                  .label
+                                  ? savedGroups.find(
+                                      (gr) => gr.id === evt.groupId
+                                    ).label
+                                  : ""
                               }-400 rounded ring-0 focus:ring-offset-0 focus:ring-0 cursor-pointer border-0 bg-${
                                 savedGroups.find((gr) => gr.id === evt.groupId)
-                                  .label
+                                  ? savedGroups.find(
+                                      (gr) => gr.id === evt.groupId
+                                    ).label
+                                  : ""
                               }-400`}
                             />
                             <p

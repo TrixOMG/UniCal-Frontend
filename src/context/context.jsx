@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+
 import React, {
   useContext,
   useEffect,
@@ -128,6 +129,46 @@ const GlobalContextProvider = ({ children }) => {
   //
   const [chosenDayForTask, setChosenDayForTask] = useState(dayjs());
 
+  // confirmation window start
+  const [showConfirmationWin, setShowConfirmationWin] = useState(false);
+  const [confirmationWindowTitle, setConfirmationWindowTitle] = useState("");
+  const [showCancelButton, setShowCancelButton] = useState(true);
+  const [objectForAction, setObjectForAction] = useState({});
+
+  //const [confirm, setConfirm] = useState(null);
+  //const [passedAction, setPassedAction] = useState(
+  //  () => () => console.log("defauldPassedAction")
+  //);
+
+  //function confirmAction(pTitle) {
+  //  setShowCancelButton(true);
+  //  setConfirmationWindowTitle(pTitle);
+  //  setShowConfirmationWin(true);
+  //
+  //  let res = null;
+
+  // setTimeout(() => {
+  //   if (res !== true || res === null) {
+  //     setShowCancelButton(false);
+  //     setConfirmationWindowTitle("");
+  //     setShowConfirmationWin(false);
+  //    res = false;
+  //   }
+  // }, 5000);
+
+  // res = confirm;
+  // console.log(res);
+  // return res;
+  // }
+
+  // code function below
+  // function getConfirmationWindow(pTitle, numOfButtons) {
+  //   setConfirmationWindowTitle(pTitle);
+
+  //   setShowConfirmationWin(true);
+  // }
+  // confirmation window end
+
   // groups
   const [savedGroups, dispatchGroups] = useReducer(
     groupsReducer,
@@ -209,6 +250,20 @@ const GlobalContextProvider = ({ children }) => {
     showTooltip,
     setShowTooltip,
     //tooltip
+
+    // confirmation window
+    showConfirmationWin,
+    setShowConfirmationWin,
+    confirmationWindowTitle,
+    setConfirmationWindowTitle,
+    showCancelButton,
+    setShowCancelButton,
+    objectForAction,
+    setObjectForAction,
+    //confirmAction,
+    //passedAction,
+    //setPassedAction,
+    // confirmation window
 
     //group modal
     showGroupModal,

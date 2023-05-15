@@ -26,10 +26,12 @@
 // 06.05.23
 //+ TODO: checkboxes in the tasks with colors of groups tasks are in,
 //+ TODO: + state of the tasks (done or not)
+// TODO: fix bug when deleting group with tasks in it (show warning(are you sure) window + delete all tasks related to it)
+// TODO: create new component (are you sure) window
 
+// TODO: LATER
 
 // TODO: + event modal functionality to get task done/undone
-// TODO: fix bug when deleting group with tasks in it
 
 //redundant TODO: bg-color of tasks - their own, if not chosen - color of group tasks are in
 // TODO: create OptionsPopup component and options button in Navbar

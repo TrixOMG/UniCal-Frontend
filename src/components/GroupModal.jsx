@@ -1,5 +1,5 @@
 //import dayjs from "dayjs";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
 import { labelsClasses, useGlobalContext } from "../context/context";
 import "../index.css";
@@ -13,8 +13,15 @@ const GroupModal = () => {
     setGroupReferenceElement,
     dispatchGroups,
     savedGroups,
+    savedEvents,
     selectedGroup,
     setSelectedGroup,
+    //confirm,
+    setShowConfirmationWin,
+    setConfirmationWindowTitle,
+    //confirmAction,
+    //setPassedAction,
+    setObjectForAction,
   } = useGlobalContext();
 
   //////////////
@@ -39,12 +46,6 @@ const GroupModal = () => {
       setSelectedLabel(labelsClasses[0]);
     }
   }, [selectedGroup, savedGroups]);
-
-  useCallback(() => {
-    if (!showGroupModal) {
-      setModalDefaults();
-    }
-  }, [showGroupModal, setModalDefaults]);
 
   // POPPER
   const [popperElement, setPopperElement] = useState(null);
@@ -110,16 +111,29 @@ const GroupModal = () => {
     return showGroupModal ? "visible" : "invisible";
   }
 
-  function handleDelete(e) {
+  function handleDelete(e, pGroup) {
     e.preventDefault();
 
-    if (savedGroups.length > 1) {
-      dispatchGroups({ type: "delete", payload: selectedGroup });
-      changeShowGroupModal(false);
-      setGroupReferenceElement(null);
-      setModalDefaults();
-    } else {
+    if (savedGroups.length < 1) {
       //TODO: make a hint 'At least one group is required'
+      return;
+    } else {
+      if (savedEvents.find((evt) => evt.groupId === pGroup.id)) {
+        //TODO: передать окну подтверждения функцию, её тип и пэйлоад.
+        //(если не выйдет с функцией, вместо неё послать тип удаляемого объекта
+        //дальше уже в окне подтверждения разбитаться что с этим всем делать)
+        setObjectForAction({
+          name: "group",
+          payload: pGroup,
+          type: "delete",
+        });
+        setConfirmationWindowTitle('Are you sure you want to delete this group? All tasks in this group will be deleted too.');
+        setShowConfirmationWin(true);
+      }
+    }
+
+    if (savedGroups.length > 1) {
+    } else {
     }
   }
 
@@ -134,22 +148,22 @@ const GroupModal = () => {
         ref={setPopperElement}
         style={styles.popper}
       >
-        <header className='bg-gray-100 px-4 py-2 flex justify-end items-center'>
+        <header className="bg-gray-100 px-4 py-2 flex justify-end items-center">
           <div>
             {selectedGroup && (
               <button
                 onClick={(e) => {
-                  handleDelete(e);
+                  handleDelete(e, selectedGroup);
                 }}
               >
-                <span className='material-icons text-gray-400 unselectable'>
+                <span className="material-icons text-gray-400 unselectable">
                   delete
                 </span>
               </button>
             )}
-            <button type='button'>
+            <button type="button">
               <span
-                className='material-icons text-gray-400 unselectable'
+                className="material-icons text-gray-400 unselectable"
                 onClick={() => {
                   handleClose();
                 }}
@@ -159,35 +173,35 @@ const GroupModal = () => {
             </button>
           </div>
         </header>
-        <div className='p-3'>
-          <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle'>
+        <div className="p-3">
+          <div className="grid grid-cols-1/5 items-end gap-y-5 align-middle">
             <div></div>
             <input
-              type='text'
-              name='title'
-              placeholder='Add Group Title'
+              type="text"
+              name="title"
+              placeholder="Add Group Title"
               required
-              className='pt-3 border-0 text-gray-600 text-lg font-semibold w-full pb-2 border-b-2 border-gray-200 focus:outline-none focus:border-b-blue-500'
+              className="pt-3 border-0 text-gray-600 text-lg font-semibold w-full pb-2 border-b-2 border-gray-200 focus:outline-none focus:border-b-blue-500"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
-            <span className='material-icons text-gray-400 unselectable pb-7'>
+            <span className="material-icons text-gray-400 unselectable pb-7">
               segment
             </span>
             <textarea
-              type='text'
-              name='description'
-              placeholder='Add a Description'
-              className='border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500 resize-none'
+              type="text"
+              name="description"
+              placeholder="Add a Description"
+              className="border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500 resize-none"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              maxLength='100'
+              maxLength="100"
               rows={2}
             />
-            <span className='material-icons text-gray-400 unselectable'>
+            <span className="material-icons text-gray-400 unselectable">
               bookmark_border
             </span>
-            <div className='flex gap-x-2'>
+            <div className="flex gap-x-2">
               {labelsClasses.map((lblClass, i) => (
                 <span
                   key={i}
@@ -195,7 +209,7 @@ const GroupModal = () => {
                   className={`bg-${lblClass}-500 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer `}
                 >
                   {selectedLabel === lblClass && (
-                    <span className='material-icons text-white text-sm'>
+                    <span className="material-icons text-white text-sm">
                       check
                     </span>
                   )}
@@ -204,11 +218,11 @@ const GroupModal = () => {
             </div>
           </div>
         </div>
-        <footer className='flex justify-end border-t p-3 mt-3'>
+        <footer className="flex justify-end border-t p-3 mt-3">
           <button
-            type='submit'
+            type="submit"
             onClick={handleSubmit}
-            className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable'
+            className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable"
           >
             Save
           </button>
