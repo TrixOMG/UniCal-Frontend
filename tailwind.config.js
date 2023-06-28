@@ -52,6 +52,7 @@ module.exports = {
       "bg-red-400",
     ],
   },
+
   theme: {
     extend: {
       display: ["group-hover"],

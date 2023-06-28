@@ -29,11 +29,12 @@ const ConfirmationWindow = () => {
   function handleSubmit(e) {
     e.preventDefault();
     if (objectForAction.name === "group") {
-      savedEvents.map((evt) => {
-        if (evt.groupId === objectForAction.payload.id) {
-          dispatchCalEvent({ type: "delete", payload: evt });
+      for (let i = 0; i < savedEvents.length; i++) {
+        if (savedEvents[i].groupId === objectForAction.payload.id) {
+          console.log(savedEvents[i]);
+          dispatchCalEvent({ type: "delete", payload: savedEvents[i] });
         }
-      });
+      }
 
       dispatchGroups({
         type: objectForAction.type,
@@ -49,14 +50,14 @@ const ConfirmationWindow = () => {
   }
 
   return (
-    <div className="z-10">
-      <div className="w-[100%] h-[100%] bg-black opacity-50 absolute left-0 top-0 z-20" />
-      <div className="flex justify-center items-center absolute z-30 w-[100%] h-[100%] bg-none">
-        <form className="w-[15em] h-[10em] bg-white rounded-lg">
-          <header className="bg-gray-100 px-4 py-2 flex justify-end items-center rounded-lg">
-            <button type="button">
+    <div className='z-10'>
+      <div className='w-[100%] h-[100%] bg-black opacity-50 absolute left-0 top-0 z-20' />
+      <div className='flex justify-center items-center absolute z-30 w-[100%] h-[100%] bg-none'>
+        <form className='w-[15em] h-[10em] bg-white rounded-lg'>
+          <header className='bg-gray-100 px-4 py-2 flex justify-end items-center rounded-lg'>
+            <button type='button'>
               <span
-                className="material-icons text-gray-400 unselectable"
+                className='material-icons text-gray-400 unselectable'
                 onClick={() => handleClose()}
               >
                 close
@@ -65,19 +66,19 @@ const ConfirmationWindow = () => {
           </header>
           <h1>{confirmationWindowTitle}</h1>
           <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable"
+            type='submit'
+            className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable'
             onClick={(e) => handleSubmit(e)}
           >
-            {Variables.confirmationWindow.confirm}
+            {Variables.eng.confirmationWindow.confirm}
           </button>
           {showCancelButton && (
             <button
-              type="button"
-              className="bg-white text-gray-500 hover:bg-gray-200 px-6 py-2 rounded unselectable"
+              type='button'
+              className='bg-white text-gray-500 hover:bg-gray-200 px-6 py-2 rounded unselectable'
               onClick={() => handleCancel()}
             >
-              {Variables.confirmationWindow.cancel}
+              {Variables.eng.confirmationWindow.cancel}
             </button>
           )}
         </form>

@@ -1,8 +1,10 @@
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
+import { popperConfig } from "../Variables";
 import { labelsClasses, useGlobalContext } from "../context/context";
 import "../index.css";
+import { Dropdown } from "./common/Dropdown";
 
 const EventModal = () => {
   const {
@@ -33,8 +35,6 @@ const EventModal = () => {
       : savedGroups[0]
   );
 
-  const [showDropdown, setShowDropdown] = useState(false);
-
   useEffect(() => {
     if (selectedEvent) {
       setTitle(selectedEvent.title);
@@ -61,67 +61,9 @@ const EventModal = () => {
   // POPPER
   const [popperElement, setPopperElement] = useState(null);
 
-  const { styles } = usePopper(referenceElement, popperElement, {
-    placement: "bottom-start",
-    modifiers: [
-      {
-        name: "offset",
-        options: {
-          offset: [0, 5],
-        },
-      },
-      {
-        name: "flip",
-        options: {
-          fallbackPlacements: [
-            "right-start",
-            "left-start",
-            "bottom-start",
-            "top-start",
-          ],
-          rootBoundary: "viewport",
-        },
-      },
-    ],
-  });
+  const { styles } = usePopper(referenceElement, popperElement, popperConfig);
 
   // POPPER
-
-  // POPPER for dropdown
-
-  const [dropdownPopperRefElement, setDropdownPopperRefElement] =
-    useState(null);
-  const [dropdownPopperElement, setDropdownPopperElement] = useState(null);
-
-  const { styles: dpdStyles } = usePopper(
-    dropdownPopperRefElement,
-    dropdownPopperElement,
-    {
-      placement: "bottom-start", //"bottom-start",
-      modifiers: [
-        {
-          name: "offset",
-          options: {
-            offset: [0, 4],
-          },
-        },
-        {
-          name: "flip",
-          options: {
-            fallbackPlacements: [
-              "right-start",
-              "left-start",
-              "bottom-start",
-              "top-start",
-            ],
-            rootBoundary: "viewport",
-          },
-        },
-      ],
-    }
-  );
-
-  // POPPER for dropdown
 
   function getClassShow() {
     //if (!showEventModal) setShowFakeTask(false);
@@ -134,7 +76,6 @@ const EventModal = () => {
     setSelectedLabel(labelsClasses[0]);
     setChosenGroupForTask(savedGroups[0]);
     setShowFakeTask(false);
-    setShowDropdown(false);
     //appearance
     setTitle("");
     setDescription("");
@@ -243,55 +184,15 @@ const EventModal = () => {
               maxLength='100'
               rows={2}
             />
+
             <span className='material-icons text-gray-400 unselectable py-1'>
               list_alt
             </span>
-            <div className='w-full'>
-              <header
-                className='w-full cursor-pointer border border-gray-300 rounded-lg p-1'
-                ref={setDropdownPopperRefElement}
-                onClick={() => {
-                  setShowDropdown(true);
-                }}
-              >
-                <button
-                  className='flex flex-row bg-white gap-2 justify-start align-middle'
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setShowDropdown(false);
-                  }}
-                >
-                  <span
-                    className={`bg-${chosenGroupForTask.label}-500 w-6 h-6 rounded-lg flex items-center justify-center cursor-pointer `}
-                  ></span>
-                  {chosenGroupForTask.title}
-                </button>
-              </header>
-              {showDropdown && (
-                <div
-                  className='absolute flex flex-col justify-items-start w-[77%] border border-gray-300 rounded-lg overflow-hidden bg-white'
-                  ref={setDropdownPopperElement}
-                  style={dpdStyles.popper}
-                >
-                  {savedGroups.map((group, idx) => (
-                    <button
-                      className='flex flex-row bg-white gap-2 p-1 justify-start align-middle'
-                      key={idx}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setChosenGroupForTask(group);
-                        setShowDropdown(false);
-                      }}
-                    >
-                      <span
-                        className={`bg-${group.label}-500 w-6 h-6 rounded-lg flex items-center justify-center cursor-pointer`}
-                      ></span>
-                      {group.title}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            <Dropdown
+              dropdownArray={savedGroups}
+              actionFunction={setChosenGroupForTask}
+              actionResult={chosenGroupForTask}
+            />
             <span className='material-icons text-gray-400 unselectable'>
               bookmark_border
             </span>

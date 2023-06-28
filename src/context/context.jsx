@@ -5,10 +5,10 @@ import React, {
   useEffect,
   useMemo,
   useReducer,
-  useRef,
   useState,
 } from "react";
 
+import { useOutsideAlerter } from "../hooks/useOutsideAlerter";
 import { getProperSelectedDays } from "../util/util";
 
 export const labelsClasses = [
@@ -19,27 +19,6 @@ export const labelsClasses = [
   "red",
   "purple",
 ];
-
-// Custom hook (closing on click outside component functionality)
-//////////////////////////////
-export const useOutsideAlerter = (initialValue) => {
-  const ref = useRef(null);
-  const [show, setShow] = useState(initialValue);
-
-  const handleClickOutside = (event) => {
-    if (ref.current && !ref.current.contains(event.target)) setShow(false);
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("click", handleClickOutside, true);
-    };
-  }, [ref]);
-
-  return { show, setShow, ref };
-};
-/////////////////////////////
 
 function groupsReducer(state, { type, payload }) {
   switch (type) {
@@ -137,7 +116,7 @@ const GlobalContextProvider = ({ children }) => {
 
   //const [confirm, setConfirm] = useState(null);
   //const [passedAction, setPassedAction] = useState(
-  //  () => () => console.log("defauldPassedAction")
+  //  () => () => console.log("defaultPassedAction")
   //);
 
   //function confirmAction(pTitle) {
