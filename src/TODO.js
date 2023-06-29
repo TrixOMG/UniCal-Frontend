@@ -33,14 +33,17 @@
 
 // TODO: LATER
 
-// TODO: + event modal functionality to get task done/undone
-
 //redundant TODO: bg-color of tasks - their own, if not chosen - color of group tasks are in
 // TODO: create OptionsPopup(window) component and options button in Navbar
 // TODO: create Tooltip component and reuse it where needed
 
 // TODO: "switch" if statements to switch statements where it is possible
 // TODO: (improves performance)
+
+// TODO: realize some ideas from Notion
+
+
+// TODO: !!! fix bug with deleting group without any tasks in it
 //+ TODO: click away feature to close modals
 
 // 16.03.23
@@ -50,5 +53,7 @@
 //+ TODO: create dropdown component
 //+ TODO: + modify dropdown component using useOutsideAlerter
 
-// TODO: realize some ideas from Notion
 //+ TODO: make reusable popper (do not repeat yourself)
+
+// 29.06.23
+// TODO: event modal functionality to get task done/undone

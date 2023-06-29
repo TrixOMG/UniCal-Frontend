@@ -121,6 +121,16 @@ const EventModal = () => {
     setModalDefaults();
   }
 
+  function handleDoneUndone(e) {
+    e.preventDefault();
+    let copySelEvent = selectedEvent;
+    copySelEvent.done = !selectedEvent.done;
+    dispatchCalEvent({
+      type: "update",
+      payload: copySelEvent,
+    });
+  }
+
   return (
     <div ref={modalRef}>
       <form
@@ -214,13 +224,24 @@ const EventModal = () => {
           </div>
         </div>
         <footer className='flex justify-end border-t p-3 mt-3'>
-          <button
-            type='submit'
-            onClick={handleSubmit}
-            className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable'
-          >
-            Save
-          </button>
+          {!selectedEvent && (
+            <button
+              type='submit'
+              onClick={handleSubmit}
+              className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable'
+            >
+              Save
+            </button>
+          )}
+          {selectedEvent && (
+            <button
+              type='submit'
+              className='bg-white hover:bg-gray-200 px-6 py-2 rounded text-gray-600 unselectable'
+              onClick={handleDoneUndone}
+            >
+              {selectedEvent.done ? "Task not completed" : "Task completed"}
+            </button>
+          )}
         </footer>
       </form>
     </div>
