@@ -35,6 +35,8 @@ const EventModal = () => {
       : savedGroups[0]
   );
 
+  const [editMode, setEditMode] = useState(false);
+
   useEffect(() => {
     if (selectedEvent) {
       setTitle(selectedEvent.title);
@@ -48,13 +50,13 @@ const EventModal = () => {
       setDescription("");
       setSelectedLabel(labelsClasses[0]);
       setChosenGroupForTask(savedGroups[0]);
-      // setShowFakeTask(true);
     }
   }, [selectedEvent, savedGroups]);
 
   useEffect(() => {
     if (showEventModal === false) {
       setShowFakeTask(false);
+      setEditMode(false);
     }
   }, [setShowFakeTask, showEventModal]);
 
@@ -76,6 +78,7 @@ const EventModal = () => {
     setSelectedLabel(labelsClasses[0]);
     setChosenGroupForTask(savedGroups[0]);
     setShowFakeTask(false);
+    setEditMode(false);
     //appearance
     setTitle("");
     setDescription("");
@@ -125,125 +128,175 @@ const EventModal = () => {
     e.preventDefault();
     let copySelEvent = selectedEvent;
     copySelEvent.done = !selectedEvent.done;
+
     dispatchCalEvent({
       type: "update",
       payload: copySelEvent,
     });
+
+    setModalDefaults();
   }
 
   return (
     <div ref={modalRef}>
-      <form
-        className={`bg-white rounded-xl drop-shadow-lg overflow-hidden ${getClassShow()}`}
+      <div
+        className={`${getClassShow()} rounded-xl drop-shadow-lg overflow-hidden bg-white`}
         ref={setPopperElement}
         style={styles.popper}
       >
-        <header className='bg-gray-100 px-4 py-2 flex justify-end items-center'>
+        {selectedEvent && !editMode ? (
           <div>
-            {selectedEvent && (
-              <button
-                onClick={(e) => {
-                  handleDelete(e);
-                }}
-              >
-                <span className='material-icons text-gray-400 unselectable'>
-                  delete
-                </span>
-              </button>
-            )}
-            <button type='button'>
-              <span
-                className='material-icons text-gray-400 unselectable'
-                onClick={() => handleClose()}
-              >
-                close
-              </span>
-            </button>
-          </div>
-        </header>
-        <div className='p-3'>
-          <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle'>
-            <div></div>
-            <input
-              type='text'
-              name='title'
-              placeholder='Add Title'
-              required
-              className='pt-3 border-0 text-gray-600 text-lg font-semibold w-full pb-2 border-b-2 border-gray-200 focus:outline-none focus:border-b-blue-500'
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <span className='material-icons text-gray-400 unselectable'>
-              schedule
-            </span>
-            <p className='pl-1 unselectable'>
-              {selectedEvent
-                ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
-                : chosenDayForTask.format("dddd, MMMM DD")}
-            </p>
-            <span className='material-icons text-gray-400 unselectable pb-7'>
-              segment
-            </span>
-            <textarea
-              type='text'
-              name='description'
-              placeholder='Add a Description'
-              className='border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500 resize-none'
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              maxLength='100'
-              rows={2}
-            />
-
-            <span className='material-icons text-gray-400 unselectable py-1'>
-              list_alt
-            </span>
-            <Dropdown
-              dropdownArray={savedGroups}
-              actionFunction={setChosenGroupForTask}
-              actionResult={chosenGroupForTask}
-            />
-            <span className='material-icons text-gray-400 unselectable'>
-              bookmark_border
-            </span>
-            <div className='flex gap-x-2'>
-              {labelsClasses.map((lblClass, i) => (
-                <span
-                  key={i}
-                  onClick={() => setSelectedLabel(lblClass)}
-                  className={`bg-${lblClass}-500 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer `}
+            <header className='bg-gray-100 px-4 py-2 flex justify-end items-center'>
+              <div>
+                <button onClick={() => setEditMode(true)}>
+                  <span className='material-icons text-gray-400 unselectable'>
+                    edit
+                  </span>
+                </button>
+                <button
+                  onClick={(e) => {
+                    handleDelete(e);
+                  }}
                 >
-                  {selectedLabel === lblClass && (
-                    <span className='material-icons text-white text-sm'>
-                      check
-                    </span>
-                  )}
-                </span>
-              ))}
+                  <span className='material-icons text-gray-400 unselectable'>
+                    delete
+                  </span>
+                </button>
+                <button type='button'>
+                  <span
+                    className='material-icons text-gray-400 unselectable'
+                    onClick={() => handleClose()}
+                  >
+                    close
+                  </span>
+                </button>
+              </div>
+            </header>
+            <div className='p-3'>
+              <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle'>
+                <div
+                  className={`bg-${selectedLabel}-500 w-6 h-6 rounded-lg flex items-center justify-center unselectable `}
+                />
+                <p className='pl-1 pt-3 text-gray-600 text-lg font-semibold w-full pb-2'>
+                  {selectedEvent.title}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <footer className='flex justify-end border-t p-3 mt-3'>
-          {!selectedEvent && (
-            <button
-              type='submit'
-              onClick={handleSubmit}
-              className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable'
-            >
-              Save
-            </button>
-          )}
-          {selectedEvent && (
-            <button
-              type='submit'
-              className='bg-white hover:bg-gray-200 px-6 py-2 rounded text-gray-600 unselectable'
-              onClick={handleDoneUndone}
-            >
-              {selectedEvent.done ? "Task not completed" : "Task completed"}
-            </button>
-          )}
-        </footer>
-      </form>
+        ) : (
+          <form className='bg-white'>
+            <header className='bg-gray-100 px-4 py-2 flex justify-end items-center'>
+              <div>
+                {selectedEvent && (
+                  <button
+                    onClick={(e) => {
+                      handleDelete(e);
+                    }}
+                  >
+                    <span className='material-icons text-gray-400 unselectable'>
+                      delete
+                    </span>
+                  </button>
+                )}
+                <button type='button'>
+                  <span
+                    className='material-icons text-gray-400 unselectable'
+                    onClick={() => handleClose()}
+                  >
+                    close
+                  </span>
+                </button>
+              </div>
+            </header>
+            <div className='p-3'>
+              <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle'>
+                <div></div>
+                <input
+                  type='text'
+                  name='title'
+                  placeholder='Add Title'
+                  required
+                  className='pt-3 border-0 text-gray-600 text-lg font-semibold w-full pb-2 border-b-2 border-gray-200 focus:outline-none focus:border-b-blue-500'
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+                <span className='material-icons text-gray-400 unselectable'>
+                  schedule
+                </span>
+                <p className='pl-1 unselectable'>
+                  {selectedEvent
+                    ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
+                    : chosenDayForTask.format("dddd, MMMM DD")}
+                </p>
+                <span className='material-icons text-gray-400 unselectable pb-7'>
+                  segment
+                </span>
+                <textarea
+                  type='text'
+                  name='description'
+                  placeholder='Add a Description'
+                  className='border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500 resize-none'
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  maxLength='100'
+                  rows={2}
+                />
+
+                <span className='material-icons text-gray-400 unselectable py-1'>
+                  list_alt
+                </span>
+                <Dropdown
+                  dropdownArray={savedGroups}
+                  actionFunction={setChosenGroupForTask}
+                  actionResult={chosenGroupForTask}
+                />
+                <span className='material-icons text-gray-400 unselectable'>
+                  bookmark_border
+                </span>
+                <div className='flex gap-x-2'>
+                  {labelsClasses.map((lblClass, i) => (
+                    <span
+                      key={i}
+                      onClick={() => setSelectedLabel(lblClass)}
+                      className={`bg-${lblClass}-500 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer `}
+                    >
+                      {selectedLabel === lblClass && (
+                        <span className='material-icons text-white text-sm'>
+                          check
+                        </span>
+                      )}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <footer className='flex justify-end border-t p-3 mt-3'>
+              {!selectedEvent && (
+                <button
+                  type='submit'
+                  onClick={handleSubmit}
+                  className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable'
+                >
+                  Save
+                </button>
+              )}
+              {selectedEvent && (
+                <button
+                  type='submit'
+                  className={`${
+                    selectedEvent.done
+                      ? "bg-white hover:bg-gray-200 text-gray-600"
+                      : "bg-blue-500 hover:bg-blue-600 text-white"
+                  } px-6 py-2 rounded  unselectable`}
+                  onClick={handleDoneUndone}
+                >
+                  {selectedEvent.done ? "Task not completed" : "Task completed"}
+                </button>
+              )}
+            </footer>
+          </form>
+        )}
+      </div>
     </div>
   );
 };
