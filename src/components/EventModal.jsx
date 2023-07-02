@@ -172,16 +172,41 @@ const EventModal = () => {
                 </button>
               </div>
             </header>
-            <div className='p-3'>
+            <section className='p-3 w-[20em]'>
               <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle'>
-                <div
-                  className={`bg-${selectedLabel}-500 w-6 h-6 rounded-lg flex items-center justify-center unselectable `}
-                />
-                <p className='pl-1 pt-3 text-gray-600 text-lg font-semibold w-full pb-2'>
+                <div className='flex items-center justify-center h-full w-full'>
+                  <div
+                    className={`bg-${selectedLabel}-500 w-6 h-6 rounded-lg flex items-center justify-center unselectable `}
+                  />
+                </div>
+                <p className='pl-1 pt-1 text-gray-600 text-lg font-semibold w-full pb-2'>
                   {selectedEvent.title}
                 </p>
+                <div className='flex justify-center h-full w-full'>
+                  <span className='material-icons text-gray-400 unselectable'>
+                    schedule
+                  </span>
+                </div>
+                <p className='pl-1 unselectable'>
+                  {selectedEvent
+                    ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
+                    : chosenDayForTask.format("dddd, MMMM DD")}
+                </p>
               </div>
-            </div>
+            </section>
+            <footer className='flex justify-end border-t p-3 mt-3'>
+              <button
+                type='submit'
+                className={`${
+                  selectedEvent.done
+                    ? "bg-white hover:bg-gray-200 text-gray-600"
+                    : "bg-blue-500 hover:bg-blue-600 text-white"
+                } px-6 py-2 rounded  unselectable`}
+                onClick={handleDoneUndone}
+              >
+                {selectedEvent.done ? "Task not completed" : "Task completed"}
+              </button>
+            </footer>
           </div>
         ) : (
           <form className='bg-white'>
@@ -208,7 +233,7 @@ const EventModal = () => {
                 </button>
               </div>
             </header>
-            <div className='p-3'>
+            <section className='p-3 w-[20em]'>
               <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle'>
                 <div></div>
                 <input
@@ -238,7 +263,7 @@ const EventModal = () => {
                   className='border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500 resize-none'
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  maxLength='100'
+                  maxLength='250'
                   rows={2}
                 />
 
@@ -269,30 +294,15 @@ const EventModal = () => {
                   ))}
                 </div>
               </div>
-            </div>
+            </section>
             <footer className='flex justify-end border-t p-3 mt-3'>
-              {!selectedEvent && (
-                <button
-                  type='submit'
-                  onClick={handleSubmit}
-                  className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable'
-                >
-                  Save
-                </button>
-              )}
-              {selectedEvent && (
-                <button
-                  type='submit'
-                  className={`${
-                    selectedEvent.done
-                      ? "bg-white hover:bg-gray-200 text-gray-600"
-                      : "bg-blue-500 hover:bg-blue-600 text-white"
-                  } px-6 py-2 rounded  unselectable`}
-                  onClick={handleDoneUndone}
-                >
-                  {selectedEvent.done ? "Task not completed" : "Task completed"}
-                </button>
-              )}
+              <button
+                type='submit'
+                onClick={handleSubmit}
+                className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable'
+              >
+                Save
+              </button>
             </footer>
           </form>
         )}
