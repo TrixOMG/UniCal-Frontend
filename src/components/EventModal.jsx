@@ -172,7 +172,7 @@ const EventModal = () => {
                 </button>
               </div>
             </header>
-            <section className='p-3 w-[20em]'>
+            <section className='p-3 w-[25em]'>
               <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle'>
                 <div className='flex items-center justify-center h-full w-full'>
                   <div
@@ -191,6 +191,26 @@ const EventModal = () => {
                   {selectedEvent
                     ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
                     : chosenDayForTask.format("dddd, MMMM DD")}
+                </p>
+                {description && (
+                  <div className='flex justify-center h-full w-full'>
+                    <span className='material-icons text-gray-400 unselectable'>
+                      segment
+                    </span>
+                  </div>
+                )}
+                {description && <p className='pl-1'>{description}</p>}
+                <div className='flex justify-center h-full w-full'>
+                  <span className='material-icons text-gray-400 unselectable py-1'>
+                    list_alt
+                  </span>
+                </div>
+                <p className='pl-1 unselectable pb-1'>
+                  {
+                    savedGroups.find(
+                      (group) => group.id === selectedEvent.groupId
+                    ).title
+                  }
                 </p>
               </div>
             </section>
@@ -233,7 +253,7 @@ const EventModal = () => {
                 </button>
               </div>
             </header>
-            <section className='p-3 w-[20em]'>
+            <section className='p-3 w-[25em]'>
               <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle'>
                 <div></div>
                 <input
@@ -266,7 +286,6 @@ const EventModal = () => {
                   maxLength='250'
                   rows={2}
                 />
-
                 <span className='material-icons text-gray-400 unselectable py-1'>
                   list_alt
                 </span>

@@ -14,7 +14,7 @@ const Variables = {
 };
 
 export const popperConfig = {
-  placement: "bottom-start",
+  placement: "right-start",
   modifiers: [
     {
       name: "offset",
@@ -25,11 +25,21 @@ export const popperConfig = {
     {
       name: "flip",
       options: {
+        padding: 500,
+      },
+    },
+    {
+      name: "flip",
+      options: {
         fallbackPlacements: [
           "right-start",
           "left-start",
           "bottom-start",
           "top-start",
+          "top",
+          "bottom",
+          "right",
+          "left",
         ],
         rootBoundary: "viewport",
       },
