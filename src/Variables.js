@@ -23,23 +23,77 @@ export const popperConfig = {
       },
     },
     {
+      name: "preventOverflow",
+      options: {
+        altAxis: true,
+      },
+    },
+    {
       name: "flip",
       options: {
-        padding: 500,
+        padding: 50,
       },
     },
     {
       name: "flip",
       options: {
         fallbackPlacements: [
+          "top",
+          "left",
+          "right",
+          "top-end",
+          "bottom-end",
+          "left-end",
+          "right-end",
+          "bottom",
           "right-start",
           "left-start",
           "bottom-start",
           "top-start",
+        ],
+        rootBoundary: "viewport",
+      },
+    },
+  ],
+};
+
+export const dropdownPopperConfig = {
+  placement: "bottom",
+  modifiers: [
+    {
+      name: "offset",
+      options: {
+        offset: [0, 5],
+      },
+    },
+    {
+      name: "preventOverflow",
+      options: {
+        altAxis: true,
+      },
+    },
+    // {
+    //   name: "flip",
+    //   options: {
+    //     padding: 100,
+    //   },
+    // },
+    {
+      name: "flip",
+      options: {
+        fallbackPlacements: [
           "top",
           "bottom",
           "right",
           "left",
+          // "top-end",
+          // "bottom-end",
+          "left-end",
+          "right-end",
+          // "right-start",
+          // "left-start",
+          // "bottom-start",
+          // "top-start",
         ],
         rootBoundary: "viewport",
       },

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { usePopper } from "react-popper";
-import { popperConfig } from "../../Variables";
+import { dropdownPopperConfig } from "../../Variables";
 import { useOutsideAlerter } from "../../hooks/useOutsideAlerter";
 
 export const Dropdown = ({ dropdownArray, actionFunction, actionResult }) => {
@@ -17,7 +17,7 @@ export const Dropdown = ({ dropdownArray, actionFunction, actionResult }) => {
   const { styles: dpdStyles } = usePopper(
     dropdownPopperRefElement,
     dropdownPopperElement,
-    popperConfig
+    dropdownPopperConfig
   );
 
   return (
