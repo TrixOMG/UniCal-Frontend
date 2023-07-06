@@ -1,8 +1,10 @@
 //import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
+import { popperConfig } from "../Variables";
 import { labelsClasses, useGlobalContext } from "../context/context";
 import "../index.css";
+import { Icon } from "./common/Icon";
 
 const GroupModal = () => {
   const {
@@ -10,7 +12,7 @@ const GroupModal = () => {
     changeShowGroupModal,
     groupModalRef,
     groupReferenceElement,
-    setGroupReferenceElement,
+    // setGroupReferenceElement,
     dispatchGroups,
     savedGroups,
     savedEvents,
@@ -50,29 +52,11 @@ const GroupModal = () => {
   // POPPER
   const [popperElement, setPopperElement] = useState(null);
 
-  const { styles } = usePopper(groupReferenceElement, popperElement, {
-    placement: "right-start",
-    modifiers: [
-      {
-        name: "offset",
-        options: {
-          offset: [0, 5],
-        },
-      },
-      {
-        name: "flip",
-        options: {
-          fallbackPlacements: [
-            "right-start",
-            "left-start",
-            "bottom-start",
-            "top-start",
-          ],
-          rootBoundary: "viewport",
-        },
-      },
-    ],
-  });
+  const { styles } = usePopper(
+    groupReferenceElement,
+    popperElement,
+    popperConfig
+  );
 
   // POPPER
 
@@ -127,7 +111,9 @@ const GroupModal = () => {
           payload: pGroup,
           type: "delete",
         });
-        setConfirmationWindowTitle('Are you sure you want to delete this group? All tasks in this group will be deleted too.');
+        setConfirmationWindowTitle(
+          "Are you sure you want to delete this group? All tasks in this group will be deleted too."
+        );
         setShowConfirmationWin(true);
       }
     }
@@ -148,7 +134,7 @@ const GroupModal = () => {
         ref={setPopperElement}
         style={styles.popper}
       >
-        <header className="bg-gray-100 px-4 py-2 flex justify-end items-center">
+        <header className='bg-gray-100 px-4 py-2 flex justify-end items-center'>
           <div>
             {selectedGroup && (
               <button
@@ -156,52 +142,44 @@ const GroupModal = () => {
                   handleDelete(e, selectedGroup);
                 }}
               >
-                <span className="material-icons text-gray-400 unselectable">
-                  delete
-                </span>
+                <Icon type={"delete"} />
               </button>
             )}
-            <button type="button">
-              <span
-                className="material-icons text-gray-400 unselectable"
-                onClick={() => {
-                  handleClose();
-                }}
-              >
-                close
-              </span>
+            <button
+              type='button'
+              onClick={() => {
+                handleClose();
+              }}
+            >
+              <Icon type={"close"} />
             </button>
           </div>
         </header>
-        <div className="p-3">
-          <div className="grid grid-cols-1/5 items-end gap-y-5 align-middle">
+        <div className='p-3'>
+          <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle'>
             <div></div>
             <input
-              type="text"
-              name="title"
-              placeholder="Add Group Title"
+              type='text'
+              name='title'
+              placeholder='Add Group Title'
               required
-              className="pt-3 border-0 text-gray-600 text-lg font-semibold w-full pb-2 border-b-2 border-gray-200 focus:outline-none focus:border-b-blue-500"
+              className='pt-3 border-0 text-gray-600 text-lg font-semibold w-full pb-2 border-b-2 border-gray-200 focus:outline-none focus:border-b-blue-500'
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
-            <span className="material-icons text-gray-400 unselectable pb-7">
-              segment
-            </span>
+            <Icon type={"segment"} />
             <textarea
-              type="text"
-              name="description"
-              placeholder="Add a Description"
-              className="border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500 resize-none"
+              type='text'
+              name='description'
+              placeholder='Add a Description'
+              className='border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500 resize-none'
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              maxLength="100"
+              maxLength='100'
               rows={2}
             />
-            <span className="material-icons text-gray-400 unselectable">
-              bookmark_border
-            </span>
-            <div className="flex gap-x-2">
+            <Icon type={"bookmark_border"} />
+            <div className='flex gap-x-2'>
               {labelsClasses.map((lblClass, i) => (
                 <span
                   key={i}
@@ -209,7 +187,7 @@ const GroupModal = () => {
                   className={`bg-${lblClass}-500 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer `}
                 >
                   {selectedLabel === lblClass && (
-                    <span className="material-icons text-white text-sm">
+                    <span className='material-icons text-white text-sm'>
                       check
                     </span>
                   )}
@@ -218,11 +196,11 @@ const GroupModal = () => {
             </div>
           </div>
         </div>
-        <footer className="flex justify-end border-t p-3 mt-3">
+        <footer className='flex justify-end border-t p-3 mt-3'>
           <button
-            type="submit"
+            type='submit'
             onClick={handleSubmit}
-            className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable"
+            className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white unselectable'
           >
             Save
           </button>

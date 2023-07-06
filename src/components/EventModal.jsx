@@ -5,6 +5,7 @@ import { popperConfig } from "../Variables";
 import { labelsClasses, useGlobalContext } from "../context/context";
 import "../index.css";
 import { Dropdown } from "./common/Dropdown";
+import { Icon } from "./common/Icon";
 
 const EventModal = () => {
   const {
@@ -149,31 +150,22 @@ const EventModal = () => {
             <header className='bg-gray-100 px-4 py-2 flex justify-end items-center'>
               <div>
                 <button onClick={() => setEditMode(true)}>
-                  <span className='material-icons text-gray-400 unselectable'>
-                    edit
-                  </span>
+                  <Icon type={"edit"} />
                 </button>
                 <button
                   onClick={(e) => {
                     handleDelete(e);
                   }}
                 >
-                  <span className='material-icons text-gray-400 unselectable'>
-                    delete
-                  </span>
+                  <Icon type={"delete"} />
                 </button>
-                <button type='button'>
-                  <span
-                    className='material-icons text-gray-400 unselectable'
-                    onClick={() => handleClose()}
-                  >
-                    close
-                  </span>
+                <button type='button' onClick={() => handleClose()}>
+                  <Icon type={"close"} />
                 </button>
               </div>
             </header>
             <section className='p-3 w-[25em]'>
-              <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle'>
+              <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle mr-5'>
                 <div className='flex items-center justify-center h-full w-full'>
                   <div
                     className={`bg-${selectedLabel}-500 w-6 h-6 rounded-lg flex items-center justify-center unselectable `}
@@ -182,29 +174,19 @@ const EventModal = () => {
                 <p className='pl-1 pt-1 text-gray-600 text-lg font-semibold w-full pb-2'>
                   {selectedEvent.title}
                 </p>
-                <div className='flex justify-center h-full w-full'>
-                  <span className='material-icons text-gray-400 unselectable'>
-                    schedule
-                  </span>
-                </div>
+                <Icon type={"schedule"} />
                 <p className='pl-1 unselectable'>
                   {selectedEvent
                     ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
                     : chosenDayForTask.format("dddd, MMMM DD")}
                 </p>
+                {description && <Icon type={"segment"} />}
                 {description && (
-                  <div className='flex justify-center h-full w-full'>
-                    <span className='material-icons text-gray-400 unselectable'>
-                      segment
-                    </span>
-                  </div>
+                  <p className='pl-1 max-w-full'>
+                    <pre>{description}</pre>
+                  </p>
                 )}
-                {description && <p className='pl-1'>{description}</p>}
-                <div className='flex justify-center h-full w-full'>
-                  <span className='material-icons text-gray-400 unselectable py-1'>
-                    list_alt
-                  </span>
-                </div>
+                <Icon type={"list_alt"} />
                 <p className='pl-1 unselectable pb-1'>
                   {
                     savedGroups.find(
@@ -238,23 +220,16 @@ const EventModal = () => {
                       handleDelete(e);
                     }}
                   >
-                    <span className='material-icons text-gray-400 unselectable'>
-                      delete
-                    </span>
+                    <Icon type={"delete"} />
                   </button>
                 )}
-                <button type='button'>
-                  <span
-                    className='material-icons text-gray-400 unselectable'
-                    onClick={() => handleClose()}
-                  >
-                    close
-                  </span>
+                <button type='button' onClick={() => handleClose()}>
+                  <Icon type={"close"} />
                 </button>
               </div>
             </header>
             <section className='p-3 w-[25em]'>
-              <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle'>
+              <div className='grid grid-cols-1/5 items-end gap-y-5 align-middle mr-5'>
                 <div></div>
                 <input
                   type='text'
@@ -265,17 +240,13 @@ const EventModal = () => {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
-                <span className='material-icons text-gray-400 unselectable'>
-                  schedule
-                </span>
+                <Icon type={"schedule"} />
                 <p className='pl-1 unselectable'>
                   {selectedEvent
                     ? dayjs(selectedEvent.day).format("dddd, MMMM DD")
                     : chosenDayForTask.format("dddd, MMMM DD")}
                 </p>
-                <span className='material-icons text-gray-400 unselectable pb-7'>
-                  segment
-                </span>
+                <Icon type={"segment"} />
                 <textarea
                   type='text'
                   name='description'
@@ -286,17 +257,13 @@ const EventModal = () => {
                   maxLength='250'
                   rows={2}
                 />
-                <span className='material-icons text-gray-400 unselectable py-1'>
-                  list_alt
-                </span>
+                <Icon type={"list_alt"} />
                 <Dropdown
                   dropdownArray={savedGroups}
                   actionFunction={setChosenGroupForTask}
                   actionResult={chosenGroupForTask}
                 />
-                <span className='material-icons text-gray-400 unselectable'>
-                  bookmark_border
-                </span>
+                <Icon type={"bookmark_border"} />
                 <div className='flex gap-x-2'>
                   {labelsClasses.map((lblClass, i) => (
                     <span

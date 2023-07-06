@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import React from "react";
 import { useGlobalContext } from "../context/context";
 import { getMonth, getProperSelectedDays } from "../util/util";
+import { Icon } from "./common/Icon";
 
 const Navbar = () => {
   const {
@@ -28,7 +29,6 @@ const Navbar = () => {
     setChosenDay(newFirstDay);
 
     return getProperSelectedDays(newFirstDay, selectedDaysArray.length);
-    // setSelectedDaysArray(getProperSelectedDays(newFirstDay, selectedDaysArray.length));
   }
 
   function handlePrevTimespanChange() {
@@ -44,7 +44,6 @@ const Navbar = () => {
     setChosenDay(newFirstDay);
 
     return getProperSelectedDays(newFirstDay, selectedDaysArray.length);
-    // setSelectedDaysArray(getProperSelectedDays(newFirstDay, selectedDaysArray.length));
   }
 
   function handleResetToday() {
@@ -75,11 +74,6 @@ const Navbar = () => {
     if (pSelDaysArray.length % 2 === 0)
       middleDayIndex = pSelDaysArray.length / 2 - 1;
     else middleDayIndex = Math.floor(pSelDaysArray.length / 2);
-    // console.log(pSelDaysArray[middleDayIndex].format("DD-MM-YY"));
-
-    // console.log(
-    // !oneLevelCurrentMonthArray.includes(pSelDaysArray[middleDayIndex].format("DD-MM-YY"))
-    // );
 
     if (
       !oneLevelCurrentMonthArray.includes(
@@ -123,40 +117,40 @@ const Navbar = () => {
   }
 
   return (
-    <header className="px-4 py-2 flex items-center align-middle border rounded-lg rounded-t-none mx-1 h-[10%]">
-      <div
-        className="material-symbols-outlined px-1 py-1 cursor-pointer w-8 h-8 block unselectable"
-        onClick={() => setShowSidebar(!showSidebar)}
-      >
-        menu
-      </div>
-      <div className="UniCal_Logo mr-1 w-12 h-12"></div>
-      <h1 className="mr-10 text-xl text-gray-500 font-bold">UniCal</h1>
+    <header className='px-4 py-2 flex items-center align-middle border rounded-lg rounded-t-none mx-1 h-[10%]'>
       <button
-        className="border rounded py-2 px-4 mr-5"
+        onClick={() => setShowSidebar(!showSidebar)}
+        className='w-8 h-8 cursor-pointer p-1'
+      >
+        <Icon type={"menu"} />
+      </button>
+      <div className='UniCal_Logo mr-1 w-12 h-12'></div>
+      <h1 className='mr-10 text-xl text-gray-500 font-bold'>UniCal</h1>
+      <button
+        className='border rounded py-2 px-4 mr-5'
         onClick={handleResetToday}
       >
         Today
       </button>
       <button
-        className="px-1 py-1 cursor-pointer w-8 h-8 block"
+        className='p-1 cursor-pointer w-8 h-8 block'
         onClick={() => {
           setSelectedDaysArray(handlePrevTimespanChange());
           handleMonthIndexChangeOnSelectedDays(false);
         }}
       >
-        <span className="material-icons">chevron_left</span>
+        <Icon type={"chevron_left"} />
       </button>
       <button
-        className="px-1 py-1 cursor-pointer w-8 h-8 block"
+        className='p-1 cursor-pointer w-8 h-8 block'
         onClick={() => {
           setSelectedDaysArray(handleNextTimespanChange());
           handleMonthIndexChangeOnSelectedDays(true);
         }}
       >
-        <span className="material-icons">chevron_right</span>
+        <Icon type={"chevron_right"} />
       </button>
-      <h2 className=" ml-4 text-xl text-gray-500 font-bold">
+      <h2 className=' ml-4 text-xl text-gray-500 font-bold'>
         {renderMonthAndYear()}
       </h2>
     </header>

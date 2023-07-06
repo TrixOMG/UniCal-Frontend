@@ -45,7 +45,7 @@ export const Dropdown = ({ dropdownArray, actionFunction, actionResult }) => {
       {showDropdown && (
         <div ref={dropdownRef}>
           <div
-            className='absolute flex flex-col justify-items-start w-[77%] border border-gray-300 rounded-lg overflow-hidden bg-white'
+            className='absolute flex flex-col justify-items-start w-[80%] border border-gray-300 rounded-lg overflow-hidden bg-white'
             ref={setDropdownPopperElement}
             style={dpdStyles.popper}
           >

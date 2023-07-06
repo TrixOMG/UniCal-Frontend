@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { labelsClasses, useGlobalContext } from "../context/context";
+import { Icon } from "./common/Icon";
 
 const Groups = () => {
   const {
@@ -32,15 +33,14 @@ const Groups = () => {
     <div className='border border-gray-200 mt-10 rounded-lg'>
       <header className='flex justify-between rounded-t-lg bg-gray-300'>
         <p className='text-gray-500 font-bold mx-1'>Groups</p>
-        <span
-          className='material-symbols-outlined text-gray-500 cursor-pointer unselectable'
+        <button
           onClick={() => {
             handleAddClick();
           }}
           ref={modalReference}
         >
-          add
-        </span>
+          <Icon type={"add"} />
+        </button>
       </header>
       {savedGroups.length > 0 &&
         savedGroups.map((group, idx) => (

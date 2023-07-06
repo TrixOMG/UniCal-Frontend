@@ -19,7 +19,7 @@ export const popperConfig = {
     {
       name: "offset",
       options: {
-        offset: [0, 5],
+        offset: [0, 10],
       },
     },
     {
