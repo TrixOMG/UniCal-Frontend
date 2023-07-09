@@ -61,4 +61,15 @@
 
 // TODO: in the late development create hover tooltips for everything interactable button, field etc.
 // TODO: in the late development use FramerMotion to animate everything
+
 // GLOBAL TODOS END
+
+// TODO: make same look-adjustments for GroupModal as EventModal
+
+// MAIN TODOS START
+// +TODO: create Event component
+// TODO: create timeline component
+// TODO: make timeline work
+// TODO: fix appearance of AllDayTaskBox when there is no tasks
+// TODO: fix relative positions of timeline and task-box
+// MAIN TODOS END

@@ -10,12 +10,8 @@ const MainDaysComponent = ({ timeSpan }) => {
     getMonth(dayjs().month())
   );
 
-  const {
-    selectedDaysArray,
-    savedEvents,
-    dispatchCalEvent,
-    //    setShowEventModal,
-  } = useGlobalContext();
+  const { selectedDaysArray, savedEvents, dispatchCalEvent } =
+    useGlobalContext();
 
   useEffect(() => {
     if (timeSpan.length > 0)

@@ -69,7 +69,6 @@ const EventModal = () => {
   // POPPER
 
   function getClassShow() {
-    //if (!showEventModal) setShowFakeTask(false);
     return showEventModal ? "visible" : "invisible";
   }
 

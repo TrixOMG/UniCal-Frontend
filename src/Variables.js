@@ -31,17 +31,17 @@ export const popperConfig = {
     {
       name: "flip",
       options: {
-        padding: 50,
+        padding: 90,
       },
     },
     {
       name: "flip",
       options: {
         fallbackPlacements: [
-          "top",
+          // "top",
           "left",
           "right",
-          "top-end",
+          // "top-end",
           "bottom-end",
           "left-end",
           "right-end",
