@@ -64,7 +64,7 @@
 
 // GLOBAL TODOS END
 
-// TODO: make same look-adjustments for GroupModal as EventModal
+//+ TODO: make same look-adjustments for GroupModal as EventModal
 
 // MAIN TODOS START
 // +TODO: create Event component

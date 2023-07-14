@@ -181,9 +181,7 @@ const EventModal = () => {
                 </p>
                 {description && <Icon type={"segment"} />}
                 {description && (
-                  <p className='pl-1 max-w-full'>
-                    <pre>{description}</pre>
-                  </p>
+                  <pre className='pl-1 max-w-[24em]'>{description}</pre>
                 )}
                 <Icon type={"list_alt"} />
                 <p className='pl-1 unselectable pb-1'>

@@ -66,7 +66,7 @@ const Groups = () => {
               className={`form-checkbox h-5 w-5 text-${group.label}-400 rounded focus:ring-0 cursor-pointer bg-${group.label}-400 border-0`}
             />
             <span
-              className='ml-2 text-gray-700 capitalize cursor-pointer'
+              className='ml-2 text-gray-700 capitalize cursor-pointer truncate'
               onClick={() => handleGroupClick(group)}
             >
               {group.title}

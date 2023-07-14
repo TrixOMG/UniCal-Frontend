@@ -2,6 +2,9 @@ import React from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 const Timeline = () => {
+  //TODO: create FiveMinuteSegment array variable
+  const FiveMinuteSegment = {};
+
   function handleDragEnd({ destination, source, draggableId }) {
     // // если таск дропнули в место куда его нельзя дропнуть
     // if (!destination) return;
@@ -65,7 +68,7 @@ const Timeline = () => {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Droppable droppableId={pDay.valueOf() + ""}>
+      {/* <Droppable droppableId={pDay.valueOf() + ""}>
         {(provided) => {
           return (
             <div
@@ -90,7 +93,7 @@ const Timeline = () => {
             </div>
           );
         }}
-      </Droppable>
+      </Droppable> */}
     </DragDropContext>
   );
 };

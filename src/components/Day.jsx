@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import React, { useEffect, useRef, useState } from "react";
 import { useGlobalContext } from "../context/context";
 import { AllDayTaskBox } from "./AllDayTaskBox";
-import Timeline from "./Timeline";
+import Timeline from "./timeline/Timeline";
 
 const Day = ({ pDay, rowIdx }) => {
   const {
@@ -68,7 +68,7 @@ const Day = ({ pDay, rowIdx }) => {
         /
       </div>
       <AllDayTaskBox pDay={pDay} />
-      <Timeline />
+      {/* <Timeline /> */}
     </div>
   );
 };
